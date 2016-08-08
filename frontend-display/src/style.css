@@ -1,0 +1,62 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Roboto+Condensed';
+
+/*
+
+COLOUR SCHEME:
+
+#20BF55 - Green (Malachite)
+#0B4F6C - Dark Imperial Blue
+#01BAEF - Cyan
+#FBFBFF - Ghost White
+#757575 - Sonic Silver
+
+*/
+
+body
+{
+    margin: 0;
+    padding: 0;
+    background-color: #01BAEF;
+}
+
+.page
+{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    width: 980px;
+    margin: 0 auto;
+    font-family: "Roboto Condensed", sans-serif;
+    color: #FBFBFF;
+}
+
+.content
+{
+    flex: 1;
+}
+
+header
+{
+    text-align: center;
+    font-family: "Open Sans Condensed", sans-serif;
+}
+
+h1
+{
+    margin: 0;
+    font-weight: 700;
+    font-size: 36pt;
+}
+
+h2
+{
+    margin: 0;
+    font-weight: 300;
+    font-size: 18pt;
+}
+
+footer
+{
+    margin: 1em;
+    text-align: center;
+}
