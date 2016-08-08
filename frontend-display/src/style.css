@@ -1,306 +1,62 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Roboto+Condensed';
 
 /*
-CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
-#2E0927 - Purple
-#E74C3C - Red
-#D90000 - Darker Red
-#FF2D00 - Orange
-#FF8C00 - Yellow
-#04756F - Blue
-#FBFBFF - White
+
+COLOUR SCHEME:
+
+#20BF55 - Green (Malachite)
+#0B4F6C - Dark Imperial Blue
+#01BAEF - Cyan
+#FBFBFF - Ghost White
+#757575 - Sonic Silver
+
 */
 
-/* Start page */
-
-#chat-info {
-    color: #FF8C00;
-    font-size: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
-    align-items: center;
-    display: flex;
-}
-
-.info-entry {
-    display: none;
-    padding: 1em;
-    max-width: 300px;
-    min-width: 200px;
-    width: 30%;
-    border: solid .25em #FBFBFF;
-    border-radius: 1em;
-}
-
-.continue-button {
-    margin: 0 auto;
-    display: flex;
-    text-align: left;
-}
-
-/* Chat */
-.chat-section {
-    width: 90%;
-    height: 75vh;
-    display: none;
-}
-
-.chat-box {
-    display: block;
-    background-color: #FBFBFF;
-    height: 65vh;
-    border: none;
-    border-radius: 1em;
-}
-
-.chat-buttons {
-    height: 40px;
-    margin-bottom: 10px;
-    color: black;
-    text-align: center;
-    line-height: 40px;
-    font-size: 16px;
-    display: block;
-}
-
-.c-b {
-    padding-left: 50px;
-    padding-right: 50px;
-    align-items: center;
-    display: flex;
-    color: #04756F;
-}
-
-#timer {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: inline;
-    font-size: 20px;
-}
-
-.chat-window {
-    display: block;
-    background-color: #FBFBFF;
-    height: 80%;
-    color: #FBFBFF;
-    overflow: auto;
-}
-
-.message-list {
-    list-style: none;
-    padding-left: 2em;
-    overflow: auto;
-    word-wrap: break-word;
-    font-size: 20px;
-}
-
-.message {
-    display: inline-block;
-    margin-bottom: .5em;
-    width: 100%;
-}
-
-.message-text {
-    border-radius: 1em;
-    padding: .5em 1em .5em 1em;
-}
-
-.me {
-    background: #E74C3C;
-    float: right;
-    text-align: right;
-    margin-right: 2em;
-}
-
-.match {
-    background: #FF8C00;
-    float: left;
-}
-
-#type-message {
-    font-size: 20px;
-    height: 50px;
-    margin-top: 10px;
-    border: solid .25em #FBFBFF;
-    border-radius: 1em;
-}
-
-.typing-indicator {
-    display: none;
-    color: #FBFBFF;
-    font-size: 15px;
-    position: fixed;
-    padding-top: 5px;
-    padding-left: 19px;
-}
-
-/* Whole page */
-* {
+body
+{
     margin: 0;
-}
-
-body {
     padding: 0;
-    background-color: #2E0927;
+    background-color: #01BAEF;
 }
 
-.container {
+.page
+{
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    width: 80%;
+    width: 980px;
     margin: 0 auto;
     font-family: "Roboto Condensed", sans-serif;
     color: #FBFBFF;
 }
 
-.content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.content
+{
     flex: 1;
 }
 
-header {
-    margin: 1em 0 0;
+header
+{
     text-align: center;
     font-family: "Open Sans Condensed", sans-serif;
 }
 
-@media screen and (max-height:600px){
-    header{
-        display: none;
-    }
-    footer{
-        display: none;
-    }
-}
-
-h1 {
+h1
+{
     margin: 0;
     font-weight: 700;
     font-size: 36pt;
 }
 
-h2 {
+h2
+{
     margin: 0;
     font-weight: 300;
     font-size: 18pt;
 }
 
-footer {
-    margin: 0 0 1em;
+footer
+{
+    margin: 1em;
     text-align: center;
-}
-
-/* jQuery UI Dialog */
-
-.ui-button {
-    padding: 6px 12px;
-    border: none;
-    color: #FBFBFF;
-    background-color: #FF8C00;
-    outline: none;
-}
-
-.ui-button:hover, .ui-button:focus, .ui-button:active {
-    color: #FBFBFF;
-    background-color: #FFA727;
-}
-
-.ui-button[disabled] {
-    background-color: #A85C00;
-    border-color: #A85C00;
-}
-
-.ui-button-text-only .ui-button-text {
-    padding: 0;
-}
-
-.ui-corner-all {
-    border-radius: 1em;
-}
-
-.ui-widget-content {
-    border: none;
-    background: #2E0927;
-}
-
-.ui-widget {
-    font-family: "Roboto Condensed", sans-serif;
-}
-
-.ui-widget-header {
-    border: none;
-    background: none;
-    font-size: 19px;
-    color: #FBFBFF;
-}
-
-.ui-widget-content {
-    color: #FBFBFF;
-}
-
-.ui-state-default, .ui-widget-content .ui-state-default {
-    border: none;
-    background: #FF8C00;
-    color: #FBFBFF;
-}
-
-.ui-state-hover, .ui-widget-content .ui-state-hover {
-    background: #FFA727;
-}
-
-.ui-widget button {
-    font-family: "Roboto Condensed", sans-serif;
-}
-
-.ui-dialog-titlebar-close {
-    display: none
-}
-
-/* About Dialogue */
-
-.about-dialogue h2 {
-    padding-top: 10px;
-}
-
-table {
-    margin: 0 auto;
-}
-
-th {
-    font-size: 25px;
-}
-
-td {
-    padding-right: 3vw;
-    font-size: 16px;
-}
-
-.modal {
-    display: none;
-    overflow: auto;
-    z-index: 1;
-    position: fixed;
-    border: solid .25em #FBFBFF;
-    border-radius: 1em;
-    background-color: #4C0B2E;
-    margin: 10% auto;
-    padding: 25px;
-    height: 70%;
-    width: 70%;
-    color: #FBFBFF;
-}
-
-
-.close {
-    color: white;
-    float: right;
-    font-size: 40px;
-    font-weight: bold;
-}
-
-.pending {
-    opacity: 0.5;
 }
