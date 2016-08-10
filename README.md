@@ -23,6 +23,7 @@ Say for example you've been given the task: "implement a parser for the stored d
 6. `git checkout master`
 7. `git merge parser` (use whatever branch name you chose.
 8. `git status` just to make sure all's cool.
-9. `git push`
+9. `git commit -a` write a lil message then esc :wq
+10. `git push`
 
 This way we can always ensure that the master branch will ALWAYS compile. It's really difficult for everyone if there's broken code on the master branch xo
