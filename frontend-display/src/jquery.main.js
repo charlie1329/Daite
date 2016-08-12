@@ -14,32 +14,14 @@ function sendMessage() {
                                 "</span> </li>";
 
      // Clear text entry
-     $('#type-message').val("");
+    $('#type-message').val("");
 
      // Add client message to window
-     $('.message-list').append($client_message)
+    $('.message-list').append($client_message);
     $('.chat-window').prop("scrollHeight")
 
 
 }
-
-(function ($) {
-    $.get('views/enter-name.html', function (enter_name) {
-        $('.content').append(enter_name);
-        $('.enter-name').slideDown();
-        $('.enter-name .btn').click(function (event) {
-            event.preventDefault();
-            $('.enter-name .btn').prop('disabled', true).html('Loading...');
-            username = $('#name').val();
-            setTimeout(function () {
-                $('.enter-name').slideUp();
-            }, 1500); //simulate connecting with back-end
-            setTimeout(function () {
-                $('.chat-section').slideDown();
-            }, 2500);
-        });
-     })
-}(jQuery));
 
 $(document).ready(function() {
     $('#type-message').keydown(function(ee) {
@@ -49,17 +31,44 @@ $(document).ready(function() {
     }
 )});
 
-
-
 function endConvo() {
     confirm("You are about to end the conversation.");
 }
 
 $('#end').click(endConvo);
 
-var start = new Date;
+// Main stuff happens below!!!
 
-setInterval(function() {
-    $('#timer').text(Math.floor((new Date - start) / 1000) + " Seconds");
-}, 1000);
+(function ($) {
+    var view_enter_name = $.get('views/enter-name.html', function (enter_name) {
+        $('.content').append(enter_name);
+    });
+
+    var view_chat_section = $.get('views/chat-section.html', function (chat_section) {
+        $('.content').append(chat_section);
+    });
+
+    $.when(view_enter_name, view_chat_section).done(function () {
+        $('.enter-name').slideDown();
+        $('.enter-name .btn').click(function (event) {
+            event.preventDefault();
+            $('.enter-name .btn').prop('disabled', true).html('Loading...');
+            username = $('#name').val();
+            setTimeout(function () {
+                $('.enter-name').slideUp();
+            }, 1000); //simulate connecting with back-end
+            setTimeout(showChat, 2000);
+        });
+
+        function showChat () {
+            $('.chat-section').slideDown();
+
+            //moved this here to prevent the timer from starting upon page loading
+            var start = new Date;
+            setInterval(function () {
+                $('#timer').text(Math.floor((new Date - start) / 1000) + " seconds");
+            }, 1000);
+        }
+    })
+})(jQuery);
 
