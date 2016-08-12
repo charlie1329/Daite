@@ -2,13 +2,6 @@
 
 /*
 
-COLOUR SCHEME:
-
-#20BF55 - Green (Malachite)
-#0B4F6C - Dark Imperial Blue
-#01BAEF - Cyan
-#FBFBFF - Ghost White
-
 CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 #2E0927 - Purple
 #D90000 - Red
@@ -24,8 +17,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     text-align: center;
 }
 
-.enter-name
-{
+.enter-name {
     display: none;
     padding: 1em;
     width: 30%;
@@ -57,8 +49,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     font-size: 15px;
 }
 
-.c-b{
-    display: inline;
+.c-b {
     padding-left: 50px;
     padding-right: 50px;
     align-items: center;
