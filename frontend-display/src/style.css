@@ -9,8 +9,122 @@ COLOUR SCHEME:
 #01BAEF - Cyan
 #FBFBFF - Ghost White
 
+CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
+#2E0927 - Purple
+#D90000 - Red
+#FF2D00 - Orange
+#FF8C00 - Yellow
+#04756F - Blue
 */
 
+/* Start */
+#name-continue {
+    margin: 0 auto;
+    display: flex;
+    text-align: center;
+}
+
+.enter-name
+{
+    display: none;
+    padding: 1em;
+    width: 30%;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+}
+
+/* Chat */
+.chat-section {
+    width: 100%;
+    display: none;
+}
+
+.chat-box {
+    display: block;
+    background-color: white;;
+    height: 400px;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+   
+}
+
+.chat-buttons {
+    height: 40px;
+    margin-bottom: 10px;
+    color: black;
+    text-align: center;
+    line-height: 40px;
+    font-size: 15px;
+}
+
+.c-b{
+    display: inline;
+    padding-left: 50px;
+    padding-right: 50px;
+    align-items: center;
+    display: flex;
+    color: #04756F;
+}
+
+#timer {
+        padding-top: 10px;
+    padding-bottom: 10px;
+    display:inline; 
+    font-size: 20px;
+}
+
+.chat-window {
+    display: block;
+    background-color: white;
+    height: 330px;
+    color: black;
+    overflow: auto;
+}
+
+.message-list {
+    list-style: none;
+    overflow: auto;
+    word-wrap: break-word
+}
+
+li {
+    padding-bottom: 7px;
+}
+
+.user-name {
+    font-size: 20px;
+}
+
+.message-text {
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.me {
+    color: #D90000;
+}
+
+.match {
+    color: #FF8C00;
+}
+
+#type-message {
+    font-size: 20px;
+    height: 50px;
+    margin-top: 10px;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+}
+
+.typing-indicator {
+    color: white;
+    font-size: 15px;
+    position: fixed;
+    padding-top: 5px;  
+}
+
+
+/* Main page */
 *
 {
     margin: 0;
@@ -19,7 +133,7 @@ COLOUR SCHEME:
 body
 {
     padding: 0;
-    background-color: #01BAEF;
+    background-color: #2E0927;
 }
 
 .page
@@ -41,27 +155,19 @@ body
     flex: 1;
 }
 
-.enter-name
-{
-    display: none;
-    padding: 1em;
-    width: 30%;
-    border: solid .25em #FBFBFF;
-    border-radius: 1em;
-}
 
 .btn
 {
     color: #FBFBFF;
-    background-color: #01BAEF;
-    border-color: #FBFBFF;
+    background-color: #FF8C00;
+    border-color: #FF8C00;
 }
 
 .btn:hover, .btn:focus, .btn:active, .btn.active, .open .dropdown-toggle.btn
 {
     color: #FBFBFF;
-    background-color: #0B4F6C;
-    border-color: #FBFBFF;
+    background-color: #FFA727;
+    border-color: #FF8C00;
 }
 
 .btn:active, .btn.active, .open .dropdown-toggle.btn
