@@ -19,9 +19,7 @@ import com.corundumstudio.socketio.listener.DataListener;
  * @author andreas, @date 8/12/16 4:39 AM
  */
 public class Server {
-    public boolean someLibraryMethod() {
-        return true;
-    }
+
     public static void main(String[] args) {
     	Logger logger = LoggerFactory.getLogger(Server.class);
     	logger.info("Test");
@@ -32,7 +30,6 @@ public class Server {
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
     	config.setSocketConfig(socketConfig);
-    	//config.setTransports(Transport.WEBSOCKET, Transport.POLLING);
     	
     	SocketIOServer server = new SocketIOServer(config);
     	
