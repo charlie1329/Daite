@@ -27,7 +27,6 @@ public class Server {
     	logger.info("Test");
     	
     	Configuration config = new Configuration();
-    	config.setHostname("localhost");
     	config.setPort(6969);
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
