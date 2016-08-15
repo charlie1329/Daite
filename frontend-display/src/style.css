@@ -158,7 +158,7 @@ body
 {
     color: #FBFBFF;
     background-color: #FFA727;
-    border-color: #FF8C00;
+    border-color: #FFA727;
 }
 
 .btn:active, .btn.active, .open .dropdown-toggle.btn
@@ -171,8 +171,8 @@ fieldset[disabled] .btn:hover, .btn.disabled:focus, .btn[disabled]:focus, fields
 .btn.disabled:active, .btn[disabled]:active, fieldset[disabled] .btn:active, .btn.disabled.active,
 .btn[disabled].active, fieldset[disabled] .btn.active
 {
-    background-color: #01BAEF;
-    border-color: #FBFBFF;
+    background-color: #A85C00;
+    border-color: #A85C00;
 }
 
 .btn .badge
@@ -206,4 +206,41 @@ footer
 {
     margin: 0 0 1em;
     text-align: center;
+}
+
+/* About Dialogue */
+table {
+    margin: 0 auto;
+}
+
+th {
+    padding-top: 30px;
+    font-size: 25px;
+}
+
+td {
+    padding-right: 7vw;
+    font-size: 16px;
+}
+
+.modal {
+    display: none;
+    overflow: auto;
+    z-index: 1;
+    position: fixed;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+    background-color: #FBFBFB;
+    margin: 10% auto; 
+    padding: 30px;
+    height: 50%;
+    width: 60%; 
+    color: black;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
 }
