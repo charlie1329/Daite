@@ -66,7 +66,21 @@ $('#end').click(endConvo);
             //moved this here to prevent the timer from starting upon page loading
             var start = new Date;
             setInterval(function () {
-                $('#timer').text(Math.floor((new Date - start) / 1000) + " seconds");
+                
+                //total length of time you want the conversation to be
+                var totalTime = 180;
+                
+                var time = totalTime - Math.floor((new Date - start) / 1000);
+                var countdown = function(){
+                    if(time > 0){
+                        return time;
+                    }
+                    else if(time == 0){
+                        endConvo(); //ends conversation when the timer reaches 0
+                        $('.chat-section').slideUp();
+                    }
+                }
+                $('#timer').text(countdown() + " seconds");
             }, 1000);
         }
     })
