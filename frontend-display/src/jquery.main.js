@@ -56,24 +56,35 @@ function receiveMessage(data) {
 
 function sendMessage() {
     var type_message = $('#type-message');
-    // Add message to the chat window
-    var client_message = "<li class='message'> <span class='user-name me''>" +
-        username +
-        "</span> <span class='message-text'>" +
-        type_message.val() +
-        "</span> </li>";
-    $('.message-list').append(client_message);
+    
+    if(type_message.val().length > 0) {
+        // Add message to the chat window
+        var client_message = "<li class='message'> <span class='user-name me''>" +
+            username +
+            "</span> <span class='message-text'>" +
+            type_message.val() +
+            "</span> </li>";
+        $('.message-list').append(client_message);
 
-    // Clear text entry
-    type_message.val("");
+        // Clear text entry
+        type_message.val("");
 
-    socket.send({username: username, message: client_message})
+        socket.send({username: username, message: client_message})
+        
+        // Reset placeholder message
+        $('#type-message').attr('placeholder', 'Please Enter to send')
+    }
+    else {
+        $('#type-message').attr('placeholder', 'Please type a message to send it')
+        type_message.val("");
+    }
 }
 
 /* MISC FUNCTIONS */
 function endConvo() {
     alert("Your conversation has ended!");
     $('.chat-section').slideUp();
+    location.reload();
 }
 
 // Toggle the typing indicator 
@@ -114,11 +125,11 @@ function typingIndicator() {
         function showChat() {
             $('.chat-section').slideDown();
 
-            //moved this here to prevent the timer from starting upon page loading
+            // Moved this here to prevent the timer from starting upon page loading
             var start = new Date;
             setInterval(function () {
 
-                //total length of time you want the conversation to be
+                // Total length of time you want the conversation to be
                 var totalTime = 180;
 
                 var time = totalTime - Math.floor((new Date - start) / 1000);

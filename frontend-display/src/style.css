@@ -10,7 +10,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 #04756F - Blue
 */
 
-/* Start */
+/* Start page */
 #name-continue {
     margin: 0 auto;
     display: flex;
@@ -108,14 +108,15 @@ li {
 }
 
 .typing-indicator {
+    display: block;
     color: white;
     font-size: 15px;
     position: fixed;
     padding-top: 5px;
-    padding-left: 19px;
+    padding-left: 10px;
 }
 
-/* Main page */
+/* Whole page */
 * {
     margin: 0;
 }
@@ -200,12 +201,11 @@ table {
 }
 
 th {
-    padding-top: 30px;
     font-size: 25px;
 }
 
 td {
-    padding-right: 7vw;
+    padding-right: 5vw;
     font-size: 16px;
 }
 
@@ -219,7 +219,7 @@ td {
     background-color: #FBFBFB;
     margin: 10% auto;
     padding: 30px;
-    height: 50%;
+    height: 55%;
     width: 60%;
     color: black;
 }
