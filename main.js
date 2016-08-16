@@ -3,7 +3,7 @@ var S = require('string');
 var fs = require('fs');
 var key = 'xoxp-64843053010-67049675732-69596346227-f33084bdf3'; //should be read from key store, not put on git :/
 
-var training-channel-id = 0;
+var trainingChannelID = 0;
 
 var bot = new SlackBot({
     token: key,
@@ -15,7 +15,7 @@ bot.on('start', function() {
     bot.postMessageToChannel('training', 'Give me some training questions, followed by \'?\'', {});
 
     bot.getChannelId('training').then(function(data) {
-        training-channel-id = data;
+        trainingChannelID = data;
         console.log('training channel id: ' + channelID);
     });
 });
@@ -29,7 +29,7 @@ questions = [];
 bot.on('message', function(data) {
 
     // training data
-    if(data.channel == training-channel-id && data.username != 'AImy') {
+    if(data.channel == trainingChannelID && data.username != 'AImy') {
         if(data.text.includes('?')){
             console.log('question added: ' + data.text);
             questions.push(data.text);
