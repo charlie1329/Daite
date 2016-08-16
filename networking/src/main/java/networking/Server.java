@@ -18,13 +18,13 @@ import networking.chat.ChatMessage;
  */
 public class Server {
 	private static final Logger log = LoggerFactory.getLogger(Server.class);
-	private SocketIOServer server;
+	private SocketIOServer socketServer;
 	
 	public Server(Configuration config) {
 
-    	server = new SocketIOServer(config);
+    	socketServer = new SocketIOServer(config);
     	
-    	SocketIONamespace chatNamespace = server.addNamespace("/chat");
+    	SocketIONamespace chatNamespace = socketServer.addNamespace("/chat");
     	
     	log.info(String.format("Created namespace: %s", chatNamespace.getName()));
     	
@@ -65,7 +65,7 @@ public class Server {
 	}
 
 	public void start() {
-		server.start();
+		socketServer.start();
 	}
 	
 	
