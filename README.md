@@ -15,7 +15,7 @@ Our aim: Get our AI a date!
 So I've pre-made the packages so where each team should work is obvious.
 Say for example you've been given the task: "implement a parser for the stored data".
 
-1. Create a new branch, e.g. `git checkout parser`.
+1. Create a new branch, e.g. `git checkout -b parser`.
 2. Do yo thang.
 3. When finished, `git fetch` and then `git rebase origin/master`
 4. Fix any merge conflicts you may now have.
