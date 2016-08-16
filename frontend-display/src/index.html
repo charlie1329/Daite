@@ -7,39 +7,47 @@
     <title>AiDate - an intelligent dating app!</title>
 
     <!-- Bootstrap (in case it's needed) -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- jQuery UI -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- Socket.io -->
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 
 </head>
 <body>
 
-    <div class="page">
-        <header>
-            <img src="assets/info-icon.png" class="about-button" style="height: 20px; float: right">
-            <h1>AiDate</h1>
-            <h2>An intelligent dating app!</h2>
-        </header>
+<div class="page">
+    <header>
+        <img src="assets/info-icon.png" class="about-button" style="height: 20px; float: right">
+        <h1>AiDate</h1>
+        <h2>An intelligent dating app!</h2>
+    </header>
 
-        <main class="content">
+    <main class="content">
 
-            <!-- jQuery -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-            <script src="jquery.main.js"></script>
-        </main>
+        <div class="dialog">
+            <div id="no-name-dialog" title="Uh oh!">You must enter your first name to continue!</div>
+            <div id="convo-ended-dialog" title="It's over!">Time is up, the conversation is now over!</div>
+            <div id="end-convo-dialog" title="End conversation">Are you sure you want to end this conversation early?
+            </div>
+        </div>
 
-        <footer>
-            Made for The Gadget Show by University of Birmingham Computer Science students &copy; 2016
-        </footer>
-    </div>
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="jquery.main.js"></script>
+    </main>
+
+    <footer>
+        Made for The Gadget Show by University of Birmingham Computer Science students &copy; 2016
+    </footer>
+</div>
 
 </body>
 </html>
