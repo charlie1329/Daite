@@ -27,15 +27,35 @@ $(document).ready(function () {
     });
 
     $('#end').click(function () {
-            if(confirm("End the conversation?"))
-                endConvo()
+            var content = $('.content');
+            $('#end-convo-dialog').dialog({
+                draggable: false,
+                resizable: false,
+                modal: true,
+                position: {my: 'bottom-100%', of: content, within: content},
+                buttons: [
+                    {
+                        text: "Yes",
+                        click: function () {
+                            $(this).dialog('close');
+                            endConvo();
+                        }
+                    },
+                    {
+                        text: "No",
+                        click: function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                ]
+            });
         }
-    )
+    );
 });
 
 /* Sending and Receiving Messages */
 socket.on("message", function (data) {
-    if(data.username == my_username) {
+    if (data.username == my_username) {
         alert("Message received by server");
     }
     else {
@@ -58,9 +78,11 @@ function receiveMessage(data) {
 }
 
 function sendMessage() {
+
+    //continuously grabbing a selector isn't free!
     var type_message = $('#type-message');
-    
-    if(type_message.val().length > 0) {
+
+    if (type_message.val().length > 0) {
         // Add message to the chat window
         var client_message = "<li class='message'> <span class='user-name me''>" +
             my_username +
@@ -71,24 +93,38 @@ function sendMessage() {
 
         // Clear text entry
         type_message.val("");
-        
+
         // Sends raw message to server
-        socket.send({username: my_username, message: type_message.val()})
-        
+        socket.send({username: my_username, message: type_message.val()});
+
         // Reset placeholder message
-        $('#type-message').attr('placeholder', 'Please Enter to send')
+        type_message.attr('placeholder', 'Please Enter to send')
     }
     else {
-        $('#type-message').attr('placeholder', 'Please type a message to send it')
-        type_message.val("");
+        type_message.attr('placeholder', 'Please type a message to send it').val("");
     }
 }
 
 /* MISC FUNCTIONS */
 function endConvo() {
-    alert("Your conversation has ended!");
+    //alert("Your conversation has ended!");
+    var content = $('.content');
+
+    $('#convo-ended-dialog').dialog({
+        draggable: false,
+        resizable: false,
+        modal: true,
+        position: {my: 'bottom-100%', of: content, within: content},
+        buttons: [
+            {
+                text: "Okay",
+                click: function () {
+                    location.reload();
+                }
+            }
+        ]
+    });
     $('.chat-section').slideUp();
-    location.reload();
 }
 
 // Toggle the typing indicator 
@@ -123,7 +159,21 @@ function typingIndicator() {
                 setTimeout(showChat, 2000);
             }
             else
-                alert('Enter your first name!')
+            //alert('Enter your first name!')
+                $('#no-name-dialog').dialog({
+                    draggable: false,
+                    resizable: false,
+                    modal: true,
+                    position: {my: 'bottom-100%', of: $('.content'), within: $('.content')},
+                    buttons: [
+                        {
+                            text: "Okay",
+                            click: function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    ]
+                })
         });
 
         function showChat() {

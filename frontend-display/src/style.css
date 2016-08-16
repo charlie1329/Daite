@@ -4,10 +4,11 @@
 
 CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 #2E0927 - Purple
-#D90000 - Red
+#E74C3C - Red
 #FF2D00 - Orange
 #FF8C00 - Yellow
 #04756F - Blue
+#FBFBFF - White
 */
 
 /* Start page */
@@ -33,7 +34,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 .chat-box {
     display: block;
-    background-color: white;;
+    background-color: #FBFBFF;
     height: 400px;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
@@ -108,12 +109,12 @@ li {
 }
 
 .typing-indicator {
-    display: block;
+    display: none;
     color: white;
     font-size: 15px;
     position: fixed;
     padding-top: 5px;
-    padding-left: 10px;
+    padding-left: 19px;
 }
 
 /* Whole page */
@@ -142,6 +143,31 @@ body {
     justify-content: center;
     flex: 1;
 }
+
+header {
+    margin: 1em 0 0;
+    text-align: center;
+    font-family: "Open Sans Condensed", sans-serif;
+}
+
+h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 36pt;
+}
+
+h2 {
+    margin: 0;
+    font-weight: 300;
+    font-size: 18pt;
+}
+
+footer {
+    margin: 0 0 1em;
+    text-align: center;
+}
+
+/* Bootstrap */
 
 .btn {
     color: #FBFBFF;
@@ -172,32 +198,58 @@ fieldset[disabled] .btn:hover, .btn.disabled:focus, .btn[disabled]:focus, fields
     background-color: #FBFBFF;
 }
 
-header {
-    margin: 1em 0 0;
-    text-align: center;
-    font-family: "Open Sans Condensed", sans-serif;
+.dialog {
+    display: none;
 }
 
-h1 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 36pt;
+/* jQuery UI Dialog */
+
+.ui-corner-all {
+    border-radius: 1em;
 }
 
-h2 {
-    margin: 0;
-    font-weight: 300;
-    font-size: 18pt;
+.ui-widget-content {
+    border: none;
+    background: #2E0927;
 }
 
-footer {
-    margin: 0 0 1em;
-    text-align: center;
+.ui-widget {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.ui-widget-header {
+    border: none;
+    background: none;
+    color: #FBFBFF;
+}
+
+.ui-widget-content {
+    color: #FBFBFF;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+    border: none;
+    background: #FF8C00;
+    color: #FBFBFF;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover {
+    background: #FFA727;
+}
+
+.ui-widget button {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.ui-dialog-titlebar-close {
+    display: none
 }
 
 /* About Dialogue */
+
 table {
     margin: 0 auto;
+    float: left;
 }
 
 th {
@@ -219,8 +271,8 @@ td {
     background-color: #FBFBFB;
     margin: 1% auto;
     padding: 25px;
-    height: 65%;
-    width: 60%;
+    height: 400px;
+    width: 50vw;
     color: black;
 }
 
