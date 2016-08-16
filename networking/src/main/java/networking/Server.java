@@ -3,14 +3,10 @@ package networking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketConfig;
-import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ConnectListener;
-import com.corundumstudio.socketio.listener.DataListener;
 
 import networking.chat.ChatMessage;
 
@@ -21,42 +17,68 @@ import networking.chat.ChatMessage;
  * @author andreas, @date 8/12/16 4:39 AM
  */
 public class Server {
+	private static final Logger log = LoggerFactory.getLogger(Server.class);
+	private SocketIOServer server;
+	
+	public Server(Configuration config) {
 
-    public static void main(String[] args) {
-    	Logger logger = LoggerFactory.getLogger(Server.class);
-    	logger.info("Test");
+    	server = new SocketIOServer(config);
     	
-    	Configuration config = new Configuration();
+    	SocketIONamespace chatNamespace = server.addNamespace("/chat");
+    	
+    	log.info(String.format("Created namespace: %s", chatNamespace.getName()));
+    	
+    	chatNamespace.addConnectListener(client -> {
+			log.info(String.format("Connection from %s to %s", client.getRemoteAddress(), chatNamespace.getName()));
+		});
+    	
+    	chatNamespace.addDisconnectListener(client -> {
+			log.info(String.format("%s disconnected from namespace %s", client.getRemoteAddress(), chatNamespace.getName()));
+		});
+    	
+    	// Handle joinroom requests
+    	chatNamespace.addEventListener("joinroom", String.class, (client, data, ackSender) -> {
+			String oldroom = client.get("room");
+			if(oldroom != null) {
+				client.leaveRoom(oldroom);
+			}
+			
+			client.set("room", data);
+			client.joinRoom(data);
+			
+			chatNamespace.getRoomOperations(data).sendEvent("message", new ChatMessage("user", "joined the room"));
+		});
+    	
+    	// Handle messages
+    	// TODO: decide on correct way to handle rooms
+    	chatNamespace.addEventListener("message", ChatMessage.class, (client, data, ackSender) -> {
+			log.info(String.format("Recieved message from %s: %s", data.getUsername(), data.getMessage()));
+			String room = client.get("room");
+			if(room != null) {
+				chatNamespace.getRoomOperations(room).sendEvent("message", data);
+				client.sendEvent("message", data);
+			} else {
+				log.error("Client isn't in a room: " + client.getRemoteAddress());
+			}
+		});
+    	
+	}
+
+	public void start() {
+		server.start();
+	}
+	
+	
+    public static void main(String[] args) {
+    	
+		Configuration config = new Configuration();
     	config.setPort(6969);
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
     	config.setSocketConfig(socketConfig);
     	
-    	SocketIOServer server = new SocketIOServer(config);
+    	Server chatServer = new Server(config);
+    	chatServer.start();
     	
-    	SocketIONamespace chatNamespace = server.addNamespace("/chat");
-    	
-    	logger.info(String.format("Created namespace: %s", chatNamespace.getName()));
-    	
-    	chatNamespace.addConnectListener(new ConnectListener() {
-			
-			@Override
-			public void onConnect(SocketIOClient client) {
-				logger.info(String.format("Connection from %s to %s", client.getRemoteAddress(), chatNamespace.getName()));
-			}
-			
-		});
-    	
-    	chatNamespace.addEventListener("message", ChatMessage.class, new DataListener<ChatMessage>() {
-
-			@Override
-			public void onData(SocketIOClient client, ChatMessage data, AckRequest ackSender) throws Exception {
-				logger.info(String.format("Recieved message from %s: %s", data.getUsername(), data.getMessage()));
-				chatNamespace.getBroadcastOperations().sendEvent("message", data);	
-			}
-    		
-		});
-    	server.start();
-  
 	}
 }
