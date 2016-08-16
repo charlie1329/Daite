@@ -3,7 +3,7 @@
  */
 
 /* Variables */
-var username;
+var my_username;
 var socket = io.connect("http://localhost:6969/chat");
 
 /* ON LOAD */
@@ -35,7 +35,10 @@ $(document).ready(function () {
 
 /* Sending and Receiving Messages */
 socket.on("message", function (data) {
-    if (data.username != username) {
+    if(data.username == my_username) {
+        alert("Message received by server");
+    }
+    else {
         receiveMessage(data);
     }
 });
@@ -60,7 +63,7 @@ function sendMessage() {
     if(type_message.val().length > 0) {
         // Add message to the chat window
         var client_message = "<li class='message'> <span class='user-name me''>" +
-            username +
+            my_username +
             "</span> <span class='message-text'>" +
             type_message.val() +
             "</span> </li>";
@@ -68,8 +71,9 @@ function sendMessage() {
 
         // Clear text entry
         type_message.val("");
-
-        socket.send({username: username, message: client_message})
+        
+        // Sends raw message to server
+        socket.send({username: my_username, message: type_message.val()})
         
         // Reset placeholder message
         $('#type-message').attr('placeholder', 'Please Enter to send')
@@ -110,8 +114,8 @@ function typingIndicator() {
         $('.enter-name').slideDown();
         $('.enter-name .btn').click(function (event) {
             event.preventDefault();
-            username = $('#name').val();
-            if (username.length > 0) {
+            my_username = $('#name').val();
+            if (my_username.length > 0) {
                 $('.enter-name .btn').prop('disabled', true).html('Loading...');
                 setTimeout(function () {
                     $('.enter-name').slideUp();
