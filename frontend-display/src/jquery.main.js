@@ -56,7 +56,10 @@ $(document).ready(function () {
 /* Sending and Receiving Messages */
 socket.on("message", function (data) {
     if (data.username == my_username) {
-        alert("Message received by server");
+        // Server sent the message back to us, so we know it was sent
+        // Remove pending class
+        setTimeout(function(){$(".pending").removeClass("pending");}, 100);
+
     }
     else {
         receiveMessage(data);
@@ -84,7 +87,8 @@ function sendMessage() {
 
     if (type_message.val().length > 0) {
         // Add message to the chat window
-        var client_message = "<li class='message'> <span class='user-name me''>" +
+        // Pending class used to grey out message until we know the server got it.
+        var client_message = "<li class='message pending'> <span class='user-name me''>" +
             my_username +
             "</span> <span class='message-text'>" +
             type_message.val() +
@@ -127,7 +131,7 @@ function endConvo() {
     $('.chat-section').slideUp();
 }
 
-// Toggle the typing indicator 
+// Toggle the typing indicator
 function typingIndicator() {
 
 }
@@ -200,4 +204,3 @@ function typingIndicator() {
         }
     })
 })(jQuery);
-
