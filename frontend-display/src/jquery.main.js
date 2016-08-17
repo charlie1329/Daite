@@ -4,7 +4,7 @@
 
 /* Variables */
 var my_username;
-var socket = io.connect("http://localhost:6969/chat");
+var socket = io.connect("http://duk.im:6969/chat");
 
 /* ON LOAD */
 $(document).ready(function () {
@@ -118,7 +118,9 @@ function receiveMessage(data) {
     var match_message = data.message;
 
     // Add message to the chat window
-    var received_message = "<li class='message'> <span class='user-name match'>" +
+    var received_message =
+        "<li class='message' style='display: list-item'>" +
+        "<span class='user-name match'>" +
         match_username +
         "</span> <span class='message-text'>" +
         match_message +
@@ -134,21 +136,23 @@ function sendMessage() {
     if (type_message.val().length > 0) {
         // Add message to the chat window
         // Pending class used to grey out message until we know the server got it.
-        var client_message = "<li class='message pending'> <span class='user-name me''>" +
+        var client_message =
+            "<li class='message pending'>" +
+            "<span class='user-name me''>" +
             my_username +
             "</span> <span class='message-text'>" +
             type_message.val() +
             "</span> </li>";
         $('.message-list').append(client_message);
 
-        // Clear text entry
-        type_message.val("");
-
         // Sends raw message to server
         socket.send({username: my_username, message: type_message.val()});
 
+        // Clear text entry
+        type_message.val("");
+
         // Reset placeholder message
-        type_message.attr('placeholder', 'Please Enter to send')
+        type_message.attr('placeholder', 'Press Enter to send')
     }
     else {
         type_message.attr('placeholder', 'Please type a message to send it').val("");
@@ -215,7 +219,7 @@ function typingIndicator() {
             setInterval(function () {
 
                 // Total length of time you want the conversation to be
-                var totalTime = 10;
+                var totalTime = 180;
 
                 var time = totalTime - Math.floor((new Date - start) / 1000);
                 var countdown = function () {
