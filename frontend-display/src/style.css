@@ -282,3 +282,7 @@ td {
     font-size: 50px;
     font-weight: bold;
 }
+
+.pending {
+    opacity: 0.6;
+}
