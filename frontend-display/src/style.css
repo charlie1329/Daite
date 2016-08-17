@@ -198,10 +198,6 @@ fieldset[disabled] .btn:hover, .btn.disabled:focus, .btn[disabled]:focus, fields
     background-color: #FBFBFF;
 }
 
-.dialog {
-    display: none;
-}
-
 /* jQuery UI Dialog */
 
 .ui-corner-all {

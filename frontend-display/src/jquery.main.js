@@ -9,6 +9,54 @@ var socket = io.connect("http://localhost:6969/chat");
 /* ON LOAD */
 $(document).ready(function () {
 
+    // Define the dialogs
+
+    var content = $('.content'),
+        warning_dialog = $('#warning-dialog'),
+        yes_no_dialog = $('#yes-no-dialog');
+
+    warning_dialog.dialog({
+        autoOpen: false,
+        draggable: false,
+        resizable: false,
+        modal: true,
+        show: {effect: 'fade', duration: 500},
+        hide: {effect: 'fade', duration: 500},
+        position: {my: 'bottom-75%', of: content, within: content},
+        buttons: [
+            {
+                text: "Okay",
+                click: function () {
+                    $(this).dialog('close');
+                }
+            }
+        ]
+    });
+
+    yes_no_dialog.dialog({
+        autoOpen: false,
+        draggable: false,
+        resizable: false,
+        modal: true,
+        show: {effect: 'fade', duration: 500},
+        hide: {effect: 'fade', duration: 500},
+        position: {my: 'bottom-75%', of: content, within: content},
+        buttons: [
+            {
+                text: "Yes",
+                click: function () {
+                    $(this).dialog('close');
+                }
+            },
+            {
+                text: "No",
+                click: function () {
+                    $(this).dialog('close');
+                }
+            }
+        ]
+    });
+
     // Send message when enter pressed in text box
     $('#type-message').keydown(function (ee) {
         if (ee.keyCode == 13) {
@@ -27,18 +75,14 @@ $(document).ready(function () {
     });
 
     $('#end').click(function () {
-            var content = $('.content');
-            $('#end-convo-dialog').dialog({
-                draggable: false,
-                resizable: false,
-                modal: true,
-                position: {my: 'bottom-100%', of: content, within: content},
-                buttons: [
+            yes_no_dialog.dialog('option', 'title', 'End conversation')
+                .text("Are you sure you want to end this conversation early?")
+                .dialog('option', 'buttons', [
                     {
                         text: "Yes",
                         click: function () {
                             $(this).dialog('close');
-                            endConvo();
+                            endConvo()
                         }
                     },
                     {
@@ -47,8 +91,8 @@ $(document).ready(function () {
                             $(this).dialog('close');
                         }
                     }
-                ]
-            });
+                ])
+                .dialog('open');
         }
     );
 });
@@ -58,7 +102,9 @@ socket.on("message", function (data) {
     if (data.username == my_username) {
         // Server sent the message back to us, so we know it was sent
         // Remove pending class
-        setTimeout(function(){$(".pending").removeClass("pending");}, 100);
+        setTimeout(function () {
+            $(".pending").removeClass("pending");
+        }, 100);
 
     }
     else {
@@ -111,24 +157,18 @@ function sendMessage() {
 
 /* MISC FUNCTIONS */
 function endConvo() {
-    //alert("Your conversation has ended!");
-    var content = $('.content');
-
-    $('#convo-ended-dialog').dialog({
-        draggable: false,
-        resizable: false,
-        modal: true,
-        position: {my: 'bottom-100%', of: content, within: content},
-        buttons: [
+    $('.chat-section').slideUp();
+    $('#warning-dialog').dialog('option', 'title', "It's over!")
+        .text("Time's up, the conversation is now finished.")
+        .dialog('option', 'buttons', [
             {
                 text: "Okay",
                 click: function () {
-                    location.reload();
+                    location.reload()
                 }
             }
-        ]
-    });
-    $('.chat-section').slideUp();
+        ])
+        .dialog('open');
 }
 
 // Toggle the typing indicator
@@ -159,36 +199,23 @@ function typingIndicator() {
                 $('.enter-name .btn').prop('disabled', true).html('Loading...');
                 setTimeout(function () {
                     $('.enter-name').slideUp();
-                }, 1000); //simulate connecting with back-end
-                setTimeout(showChat, 2000);
+                }, 500); //simulate connecting with back-end
+                setTimeout(showChat, 1000);
             }
             else
-            //alert('Enter your first name!')
-                $('#no-name-dialog').dialog({
-                    draggable: false,
-                    resizable: false,
-                    modal: true,
-                    position: {my: 'bottom-100%', of: $('.content'), within: $('.content')},
-                    buttons: [
-                        {
-                            text: "Okay",
-                            click: function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    ]
-                })
+                $('#warning-dialog').dialog('option', 'title', 'Uh oh!')
+                    .text('You must enter your first name to continue.')
+                    .dialog('open')
         });
 
         function showChat() {
             $('.chat-section').slideDown();
 
-            // Moved this here to prevent the timer from starting upon page loading
             var start = new Date;
             setInterval(function () {
 
                 // Total length of time you want the conversation to be
-                var totalTime = 180;
+                var totalTime = 10;
 
                 var time = totalTime - Math.floor((new Date - start) / 1000);
                 var countdown = function () {
