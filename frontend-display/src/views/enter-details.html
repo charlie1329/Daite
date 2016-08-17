@@ -1,0 +1,35 @@
+<div class="continue-button enter-details">
+    <form role="form">
+        <div class="form-group">
+            
+            <div class="detail-section">
+                <label for="age">Enter your age:</label>
+                <input type="number" class="form-control" id="age" min="1" max="99">
+            </div>
+            
+            <div class="detail-section">
+                <label for="gender">Select your gender:</label>
+                
+                <form id="gender-form">
+                    <br>
+                    <input type="radio" name="gender" value="male">
+                    Male<br>
+                    
+                    <input type="radio" name="gender" value="female">
+                    Female<br>
+                    
+                    <input type="radio" name="gender" value="other">
+                    Other<br>
+                    
+                    <input type="radio" name="gender" value="none">
+                    Prefer Not to Say<br>
+                
+                </form>
+                
+            </div>
+            
+        </div>
+
+        <button type="submit" class="btn continue-button" id="details-continue">Find a match</button>
+    </form>
+</div>
