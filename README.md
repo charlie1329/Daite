@@ -15,13 +15,13 @@ Our aim: Get our AI a date!
 So I've pre-made the packages so where each team should work is obvious.
 Say for example you've been given the task: "implement a parser for the stored data".
 
-1. Create a new branch, e.g. `git checkout -b parser`.
+1. Create a new branch, e.g. `git checkout -b branchName`.
 2. Do yo thang.
 3. When finished, `git fetch` and then `git rebase origin/master`
 4. Fix any merge conflicts you may now have.
 5. `git rebase --continue` to make sure there isn't more stuff you need to fix. (Repeat 4-5 as necessary)
 6. `git checkout master`
-7. `git merge parser` (use whatever branch name you chose.
+7. `git rebase branchName`
 8. `git status` just to make sure all's cool.
 9. `git commit -a` write a lil message then esc :wq
 10. `git push`
