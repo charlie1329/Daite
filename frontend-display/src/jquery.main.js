@@ -185,6 +185,10 @@ function typingIndicator() {
     var view_enter_name = $.get('views/enter-name.html', function (enter_name) {
         $('.content').append(enter_name);
     });
+    
+    var view_enter_details = $.get('views/enter-details.html', function (enter_details) {
+        $('.content').append(enter_details);
+    });
 
     var view_chat_section = $.get('views/chat-section.html', function (chat_section) {
         $('.content').append(chat_section);
@@ -204,13 +208,30 @@ function typingIndicator() {
                 setTimeout(function () {
                     $('.enter-name').slideUp();
                 }, 500); //simulate connecting with back-end
-                setTimeout(showChat, 1000);
+                setTimeout(showDetails, 1000);
             }
             else
                 $('#warning-dialog').dialog('option', 'title', 'Uh oh!')
                     .text('You must enter your first name to continue.')
                     .dialog('open')
         });
+        
+        function showDetails() {
+            $('.enter-details').slideDown();
+            
+            $('.enter-details .btn').click(function (event) {
+            event.preventDefault();
+            my_age = $('#age').val();
+            my_gender = $('input[name=gender]:checked', '#gender-form').val()
+            my_gender = $('input[name=gender]:checked').val();
+    
+            $('.enter-details .btn').prop('disabled', true).html('Loading...');
+            setTimeout(function () {
+                $('.enter-details').slideUp();
+            }, 500); //simulate connecting with back-end
+                setTimeout(showChat, 1500);
+            });
+        }
 
         function showChat() {
             $('.chat-section').slideDown();
