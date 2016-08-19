@@ -196,11 +196,6 @@ function autoScroll(){
     chat_window.scrollTop = chat_window.scrollHeight;
 }
 
-// Toggle the typing indicator
-function typingIndicator() {
-
-}
-
 function showWarning(title, message)
 {
     $('#warning-dialog').dialog('option', 'title', title)
@@ -318,12 +313,13 @@ function showWarning(title, message)
 
 /* TYPING -- MOVE ME LATER */
 
+// When user stops typing
 function typingTimeout() {  
   typing = false;
   socket.emit("typing", false);
 }
 
-// If receives an isTyping from the socket, toggles the typing display
+// If receives an isTyping from the socket, toggles the typing indicator
 socket.on("isTyping", function(data) {  
     if (data.isTyping) {
         $('.typing-indicator').slideDown;
