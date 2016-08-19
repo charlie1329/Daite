@@ -24,6 +24,7 @@ Now supports rooms and requires socket.io clients to register
 e.g. 
 
 `socket.emit(“register”, {name:”dukky”, age:22, gender:”Male”});`
+
 `socket.emit(“joinroom”, “test”);`
 
 After this continue to use `socket.send({username:$name, message:$message});` and when the chat is over you can leave the room using `socket.emit("leaveroom", $room)`
