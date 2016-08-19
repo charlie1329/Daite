@@ -9,27 +9,6 @@ var my_gender;
 
 var typing = false;
 
-
-/* TYPING -- MOVE ME LATER */
-
-function typingTimeout() {  
-  typing = false;
-  socket.emit("typing", false);
-}
-
-// If receives an isTyping from the socket, toggles the typing display
-socket.on("isTyping", function(data) {  
-    if (data.isTyping) {
-        $('.typing-indicator').slideDown;
-    }
-    else {
-        $('.typing-indicator').slideUp;
-    }
-});
-
-/// STILL TO BE CONTINUED -- BASING UPON http://www.tamas.io/further-additions-to-the-node-jssocket-io-chat-app/
-
-
 //var socket = io.connect("http://duk.im:6969/chat");
 var socket = io.connect("http://localhost:6969/chat");
 
@@ -335,3 +314,23 @@ function typingIndicator() {
         }
     })
 })(jQuery);
+
+/* TYPING -- MOVE ME LATER */
+
+function typingTimeout() {  
+  typing = false;
+  socket.emit("typing", false);
+}
+
+// If receives an isTyping from the socket, toggles the typing display
+socket.on("isTyping", function(data) {  
+    if (data.isTyping) {
+        $('.typing-indicator').slideDown;
+    }
+    else {
+        $('.typing-indicator').slideUp;
+    }
+});
+
+/// STILL TO BE CONTINUED -- BASING UPON http://www.tamas.io/further-additions-to-the-node-jssocket-io-chat-app/
+
