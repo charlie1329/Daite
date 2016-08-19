@@ -126,6 +126,8 @@ function receiveMessage(data) {
         match_message +
         "</span> </li>";
     $('.message-list').append(received_message);
+    autoScroll('.chat-window');
+
 }
 
 function sendMessage() {
@@ -150,9 +152,10 @@ function sendMessage() {
 
         // Clear text entry
         type_message.val("");
+        autoScroll('.chat-window');
 
         // Reset placeholder message
-        type_message.attr('placeholder', 'Press Enter to send')
+        type_message.attr('placeholder', 'Press Enter to send');
     }
     else {
         type_message.attr('placeholder', 'Please type a message to send it').val("");
@@ -173,6 +176,11 @@ function endConvo() {
             }
         ])
         .dialog('open');
+}
+
+function autoScroll(id){
+    var myDiv = $(id).get(0);
+    myDiv.scrollTop = myDiv.scrollHeight;
 }
 
 // Toggle the typing indicator
