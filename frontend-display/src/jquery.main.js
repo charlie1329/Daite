@@ -31,7 +31,7 @@ $(document).ready(function () {
         modal: true,
         show: {effect: 'fade', duration: 500},
         hide: {effect: 'fade', duration: 500},
-        position: {my: 'bottom-75%', of: content, within: content},
+        position: {my: 'center', of: content, within: content},
         buttons: [
             {
                 text: "Okay",
@@ -49,7 +49,7 @@ $(document).ready(function () {
         modal: true,
         show: {effect: 'fade', duration: 500},
         hide: {effect: 'fade', duration: 500},
-        position: {my: 'bottom-75%', of: content, within: content},
+        position: {my: 'center', of: content, within: content},
         buttons: [
             {
                 text: "Yes",
@@ -136,7 +136,7 @@ function receiveMessage(data) {
         match_message +
         "</span> </li>";
     $('.message-list').append(received_message);
-    autoScroll('.chat-window');
+    autoScroll();
 
 }
 
@@ -162,7 +162,7 @@ function sendMessage() {
 
         // Clear text entry
         type_message.val("");
-        autoScroll('.chat-window');
+        autoScroll();
 
         // Reset placeholder message
         type_message.attr('placeholder', 'Press Enter to send');
@@ -191,14 +191,21 @@ function endConvo() {
         .dialog('open');
 }
 
-function autoScroll(id){
-    var myDiv = $(id).get(0);
-    myDiv.scrollTop = myDiv.scrollHeight;
+function autoScroll(){
+    var chat_window = $('.chat-window').get(0);
+    chat_window.scrollTop = chat_window.scrollHeight;
 }
 
 // Toggle the typing indicator
 function typingIndicator() {
 
+}
+
+function showWarning(title, message)
+{
+    $('#warning-dialog').dialog('option', 'title', title)
+        .text(message)
+        .dialog('open')
 }
 
 /* Main stuff happens below!!! */
@@ -236,9 +243,7 @@ function typingIndicator() {
                 setTimeout(showDetails, 1000);
             }
             else
-                $('#warning-dialog').dialog('option', 'title', 'Uh oh!')
-                    .text('You must enter your first name to continue.')
-                    .dialog('open')
+                showWarning('Uh oh!', 'You must enter your first name to continue.')
         });
         
         // Show details entering view
@@ -260,19 +265,15 @@ function typingIndicator() {
         
                 // Prompt if no age entered
                 if (my_age == null || !my_age) {
-                    $('#warning-dialog').dialog('option', 'title', 'Uh oh!')
-                        .text('You must enter your age to continue.')
-                        .dialog('open')
+                    showWarning('Uh oh!', 'You must enter your age to continue.')
                 } 
                 
                 // Prompt if no gender selected
                 else if (my_gender == null || !my_age) {
-                    $('#warning-dialog').dialog('option', 'title', 'Uh oh!')
-                        .text('You must choose your gender to continue.')
-                        .dialog('open')
+                    showWarning('Uh oh!', 'You must choose your gender to continue.')
                 }
                 else {
-                    $('.enter-details .btn').prop('disabled', true).html('Loading...');
+                    $('.enter-details .btn').prop('disabled', true).html('Matching...');
                     setTimeout(function () {
                         $('.enter-details').slideUp();
                         }, 500); //simulate connecting with back-end

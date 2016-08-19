@@ -1,10 +1,14 @@
-<div class="enter-details info-entry">
+<div class="enter-details">
     <form role="form">
         <div class="form-group">
             <label for="age">Enter your age:</label>
             <input type="number" class="form-control" id="age" min="1" max="99">
+        </div>
+    </form>
 
-            <p style="margin: 5px auto 5px auto">Select your gender:</p>
+    <form role="form">
+        <div class="form-group">
+            <p style="margin-bottom: 5px">Select your gender:</p>
             <input type="radio" name="gender" value="male">
             Male<br>
 
@@ -19,7 +23,6 @@
 
         </div>
 
-        <button type="submit" class="ui-button ui-widget ui-corner-all continue-button" id="details-continue"
-                title="Enter your age and specify your gender to continue.">Find a match</button>
+        <button type="submit" class="btn continue-button" id="details-continue">Find a match</button>
     </form>
 </div>
