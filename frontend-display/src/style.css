@@ -79,7 +79,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 .chat-window {
     display: block;
-    background-color: white;
+    background-color: #FBFBFF;
     height: 330px;
     color: black;
     overflow: auto;
@@ -122,7 +122,7 @@ li {
 
 .typing-indicator {
     display: none;
-    color: white;
+    color: #FBFBFF;
     font-size: 15px;
     position: fixed;
     padding-top: 5px;
@@ -277,10 +277,10 @@ td {
     border: solid .25em #FBFBFF;
     border-radius: 1em;
     background-color: #FBFBFB;
-    margin: 1% auto;
+    margin: 10% auto;
     padding: 25px;
-    height: 400px;
-    width: 50vw;
+    height: 65%;
+    width: 60%;
     color: black;
 }
 

@@ -322,10 +322,10 @@ function typingTimeout() {
 // If receives an isTyping from the socket, toggles the typing indicator
 socket.on("isTyping", function(data) {  
     if (data.isTyping) {
-        $('.typing-indicator').slideDown;
+        $('.typing-indicator').slideDown();
     }
     else {
-        $('.typing-indicator').slideUp;
+        $('.typing-indicator').slideUp();
     }
 });
 
