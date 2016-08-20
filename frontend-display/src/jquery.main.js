@@ -3,21 +3,21 @@
  */
 
 /* Variables */
-var my_username;
-var my_age;
-var my_gender; 
+var my_username,
+    my_age,
+    my_gender,
 
 // Typing variables
-var typing = false;
-var timeout = undefined;
+    typing = false,
+    timeout = undefined,
 
-//var socket = io.connect("http://duk.im:6969/chat");
-var socket = io.connect("http://localhost:6969/chat");
+//  socket = io.connect("http://duk.im:6969/chat");
+    socket = io.connect("http://localhost:6969/chat");
 
 
 /* ON LOAD */
 $(document).ready(function () {
-    
+
     // Brings focus to name entry text box on page load
     $("#name").focus();
 
@@ -67,12 +67,12 @@ $(document).ready(function () {
             }
         ]
     });
-    
+
     // On keypress
-    $('#type-message').keypress(function(e) {
+    $('#type-message').keypress(function (e) {
         // If key isn't enter, set typing to true and tell the server
-        if(e.which !== 13) {
-            if(typing === false) {
+        if (e.which !== 13) {
+            if (typing === false) {
                 typing = true;
                 socket.emit("typing", true);
             }
@@ -82,12 +82,12 @@ $(document).ready(function () {
             }
         }
         // If key is enter, send message
-        else if(e.which == 13) {
+        else if (e.which == 13) {
             sendMessage();
         }
-    })
+    });
 
-    
+
     // Show about dialogue
     $('.about-button').click(function () {
         $('.about-dialogue').fadeIn();
@@ -139,8 +139,8 @@ socket.on("message", function (data) {
 
 function receiveMessage(data) {
     // Get username and message
-    var match_username = data.username;
-    var match_message = data.message;
+    var match_username = data.username,
+        match_message = data.message;
 
     // Add message to the chat window
     var received_message =
@@ -150,16 +150,16 @@ function receiveMessage(data) {
         "</span> <span class='message-text'>" +
         match_message +
         "</span> </li>";
+
     $('.message-list').append(received_message);
     autoScroll();
 
 }
 
 function sendMessage() {
-    
-    // Continuously grabbing a selector isn't free!
+
     var type_message = $('#type-message');
-    
+
     // Reset typing
     clearTimeout(timeout);
     timeout = setTimeout(typingTimeout, 0);
@@ -191,11 +191,29 @@ function sendMessage() {
     }
 }
 
+/* TYPING */
+
+// When user stops typing, reset the variables and tell the server
+function typingTimeout() {
+    typing = false;
+    socket.emit("typing", false);
+}
+
+// If receives an isTyping from the socket, toggles the typing indicator
+socket.on("isTyping", function (data) {
+    if (data.isTyping) {
+        $('.typing-indicator').fadeIn()
+    }
+    else {
+        $('.typing-indicator').fadeOut();
+    }
+});
+
 /* MISC FUNCTIONS */
 function endConvo() {
     // Leave the room
     socket.emit("leaveroom", "test");
-    
+
     $('.chat-section').slideUp();
     $('#warning-dialog').dialog('option', 'title', "It's over!")
         .text("Time's up, the conversation is now finished.")
@@ -210,13 +228,12 @@ function endConvo() {
         .dialog('open');
 }
 
-function autoScroll(){
+function autoScroll() {
     var chat_window = $('.chat-window').get(0);
     chat_window.scrollTop = chat_window.scrollHeight;
 }
 
-function showWarning(title, message)
-{
+function showWarning(title, message) {
     $('#warning-dialog').dialog('option', 'title', title)
         .text(message)
         .dialog('open')
@@ -224,12 +241,12 @@ function showWarning(title, message)
 
 /* Main stuff happens below!!! */
 (function ($) {
-    
+
     // Load external views
     var view_enter_name = $.get('views/enter-name.html', function (enter_name) {
         $('.content').append(enter_name);
     });
-    
+
     var view_enter_details = $.get('views/enter-details.html', function (enter_details) {
         $('.content').append(enter_details);
     });
@@ -241,16 +258,16 @@ function showWarning(title, message)
     var about_float = $.get('views/about-float.html', function (about_float) {
         $('.content').append(about_float);
     });
-    
 
-    $.when(view_enter_name, view_chat_section, about_float).done(function () {
+
+    $.when(view_enter_name, view_enter_details, view_chat_section, about_float).done(function () {
         $('.enter-name').slideDown();
-        
-        $('.enter-name .btn').click(function (event) {
+
+        $('.enter-name button').click(function (event) {
             event.preventDefault();
             my_username = $('#name').val();
             if (my_username.length > 0) {
-                $('.enter-name .btn').prop('disabled', true).html('Loading...');
+                $('.enter-name button').prop('disabled', true).html('Loading...');
                 setTimeout(function () {
                     $('.enter-name').slideUp();
                 }, 500); //simulate connecting with back-end
@@ -259,55 +276,55 @@ function showWarning(title, message)
             else
                 showWarning('Uh oh!', 'You must enter your first name to continue.')
         });
-        
+
         // Show details entering view
         function showDetails() {
             $('.enter-details').slideDown();
-            
-            // Brings focus to age text box as soon as page loads
-            $("#age").focus(); 
 
-            $('.enter-details .btn').click(function (event) {  
-                
+            // Brings focus to age text box as soon as page loads
+            $("#age").focus();
+
+            $('.enter-details button').click(function (event) {
+
                 event.preventDefault();
-                
+
                 // Get entered age
                 my_age = $('#age').val();
-                
+
                 // Get gender chosen
                 my_gender = $('input[name=gender]:checked').val();
-        
+
                 // Prompt if no age entered
                 if (my_age == null || !my_age) {
                     showWarning('Uh oh!', 'You must enter your age to continue.')
-                } 
-                
+                }
+
                 // Prompt if no gender selected
                 else if (my_gender == null || !my_age) {
                     showWarning('Uh oh!', 'You must choose your gender to continue.')
                 }
                 else {
-                    $('.enter-details .btn').prop('disabled', true).html('Matching...');
+                    $('.enter-details button').prop('disabled', true).html('Matching...');
                     setTimeout(function () {
                         $('.enter-details').slideUp();
-                        }, 500); //simulate connecting with back-end
-                        setTimeout(showChat, 1500);
-                }             
+                    }, 500); //simulate connecting with back-end
+                    setTimeout(showChat, 1500);
+                }
             })
         }
 
         // Show chat view
         function showChat() {
             $('.chat-section').slideDown();
-            
+
             // Bring focus to text-entry box
-            $("#type-message").focus(); 
-            
+            $("#type-message").focus();
+
             // Registers the specific client
             socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
             socket.emit("joinroom", "test");
-            
-            
+
+
             // Start timer
             var start = new Date;
             setInterval(function () {
@@ -329,21 +346,3 @@ function showWarning(title, message)
         }
     })
 })(jQuery);
-
-/* TYPING */
-
-// When user stops typing, reset the variables and tell the server
-function typingTimeout() {  
-  typing = false;
-  socket.emit("typing", false);
-}
-
-// If receives an isTyping from the socket, toggles the typing indicator
-socket.on("isTyping", function(data) {  
-    if (data.isTyping) {
-        $('.typing-indicator').fadeIn()
-    }
-    else {
-        $('.typing-indicator').fadeOut();
-    }
-});
