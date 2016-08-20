@@ -7,7 +7,9 @@ var my_username;
 var my_age;
 var my_gender; 
 
+// Typing variables
 var typing = false;
+var timeout = undefined;
 
 //var socket = io.connect("http://duk.im:6969/chat");
 var socket = io.connect("http://localhost:6969/chat");
@@ -65,22 +67,35 @@ $(document).ready(function () {
             }
         ]
     });
-
-    // Send message when enter pressed in text box
-    $('#type-message').keydown(function (ee) {
-        if (ee.keyCode == 13) {
+    
+    // On keypress
+    $('#type-message').keypress(function(e) {
+        // If key isn't enter, set typing to true and tell the server
+        if(e.which !== 13) {
+            if(typing === false) {
+                typing = true;
+                socket.emit("typing", true);
+            }
+            else {
+                clearTimeout(timeout);
+                timeout = setTimeout(typingTimeout, 3000);
+            }
+        }
+        // If key is enter, send message
+        else if(e.which == 13) {
             sendMessage();
         }
-    });
+    })
 
+    
     // Show about dialogue
     $('.about-button').click(function () {
-        $('.about-dialogue').slideDown();
+        $('.about-dialogue').fadeIn();
     });
 
     // Hide about dialogue
     $('.close').click(function () {
-        $('.about-dialogue').slideUp();
+        $('.about-dialogue').fadeOut();
     });
 
     // End conversation dialogue
@@ -141,9 +156,13 @@ function receiveMessage(data) {
 }
 
 function sendMessage() {
-
-    //continuously grabbing a selector isn't free!
+    
+    // Continuously grabbing a selector isn't free!
     var type_message = $('#type-message');
+    
+    // Reset typing
+    clearTimeout(timeout);
+    timeout = setTimeout(typingTimeout, 0);
 
     if (type_message.val().length > 0) {
         // Add message to the chat window
@@ -311,9 +330,9 @@ function showWarning(title, message)
     })
 })(jQuery);
 
-/* TYPING -- MOVE ME LATER */
+/* TYPING */
 
-// When user stops typing
+// When user stops typing, reset the variables and tell the server
 function typingTimeout() {  
   typing = false;
   socket.emit("typing", false);
@@ -322,12 +341,9 @@ function typingTimeout() {
 // If receives an isTyping from the socket, toggles the typing indicator
 socket.on("isTyping", function(data) {  
     if (data.isTyping) {
-        $('.typing-indicator').slideDown();
+        $('.typing-indicator').fadeIn()
     }
     else {
-        $('.typing-indicator').slideUp();
+        $('.typing-indicator').fadeOut();
     }
 });
-
-/// STILL TO BE CONTINUED -- BASING UPON http://www.tamas.io/further-additions-to-the-node-jssocket-io-chat-app/
-

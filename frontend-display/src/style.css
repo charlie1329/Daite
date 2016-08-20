@@ -1,10 +1,10 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Roboto+Condensed';
 
 /*
-
 CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 #2E0927 - Purple
 #E74C3C - Red
+#D90000 - Darker Red
 #FF2D00 - Orange
 #FF8C00 - Yellow
 #04756F - Blue
@@ -15,27 +15,15 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .continue-button {
     margin: 0 auto;
     display: flex;
-    text-align: center;
+    text-align: left;
 }
 
-.enter-name {
+.info-entry {
     display: none;
     padding: 1em;
     width: 30%;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
-}
-
-.enter-details {
-    display: none;
-    padding: 1em;
-    width: 30%;
-    border: solid .25em #FBFBFF;
-    border-radius: 1em;
-}
-
-.enter-details .detail-section {
-    padding-bottom: 20px;
 }
 
 /* Chat */
@@ -59,7 +47,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     color: black;
     text-align: center;
     line-height: 40px;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .c-b {
@@ -80,7 +68,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .chat-window {
     display: block;
     background-color: #FBFBFF;
-    height: 330px;
+    height: 335px;
     color: black;
     overflow: auto;
 }
@@ -88,7 +76,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .message-list {
     list-style: none;
     overflow: auto;
-    word-wrap: break-word
+    word-wrap: break-word;
 }
 
 li {
@@ -96,7 +84,7 @@ li {
 }
 
 .user-name {
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .message-text {
@@ -228,6 +216,7 @@ fieldset[disabled] .btn:hover, .btn.disabled:focus, .btn[disabled]:focus, fields
 .ui-widget-header {
     border: none;
     background: none;
+    font-size: 19px;
     color: #FBFBFF;
 }
 
@@ -255,9 +244,12 @@ fieldset[disabled] .btn:hover, .btn.disabled:focus, .btn[disabled]:focus, fields
 
 /* About Dialogue */
 
+.about-dialogue h2 {
+    padding-top: 10px;
+}
+
 table {
     margin: 0 auto;
-    float: left;
 }
 
 th {
@@ -265,7 +257,7 @@ th {
 }
 
 td {
-    padding-right: 5vw;
+    padding-right: 3vw;
     font-size: 16px;
 }
 
@@ -276,18 +268,19 @@ td {
     position: fixed;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
-    background-color: #FBFBFB;
+    background-color: #4C0B2E;
     margin: 10% auto;
     padding: 25px;
-    height: 65%;
-    width: 60%;
-    color: black;
+    height: 70%;
+    width: 70%;
+    color: #FBFBFF;
 }
 
+
 .close {
-    color: #aaa;
+    color: white;
     float: right;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
 }
 
