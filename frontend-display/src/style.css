@@ -12,11 +12,6 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 */
 
 /* Start page */
-.continue-button {
-    margin: 0 auto;
-    display: flex;
-    text-align: left;
-}
 
 .info-entry {
     display: none;
@@ -24,6 +19,12 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     width: 30%;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
+}
+
+.continue-button {
+    margin: 0 auto;
+    display: flex;
+    text-align: left;
 }
 
 /* Chat */
@@ -36,7 +37,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     display: block;
     background-color: #FBFBFF;
     height: 400px;
-    border: solid .25em #FBFBFF;
+    border: none;
     border-radius: 1em;
 
 }
@@ -174,6 +175,7 @@ footer {
     border: none;
     color: #FBFBFF;
     background-color: #FF8C00;
+    outline: none;
 }
 
 .ui-button:hover, .ui-button:focus, .ui-button:active {

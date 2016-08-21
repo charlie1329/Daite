@@ -19,7 +19,8 @@ var my_username,
 $(document).ready(function () {
 
     // Brings focus to name entry text box on page load
-    $("#name").focus();
+    var name = $("#name");
+    name.focus();
 
     // Define the dialogs
     var content = $('.content'),
@@ -68,6 +69,19 @@ $(document).ready(function () {
         ]
     });
 
+    // Button tooltips
+
+    var name_continue = $('#name-continue'),
+        details_continue = $('#details-continue');
+
+    name_continue.tooltip({
+        position: {my: "left+10% center", at: "right center", of: name_continue, within: content}
+    });
+
+    details_continue.tooltip({
+        position: {my: "left+10% center", at: "right center", of: details_continue, within: content}
+    });
+
     // On keypress
     $('#type-message').keypress(function (e) {
         // If key isn't enter, set typing to true and tell the server
@@ -86,6 +100,26 @@ $(document).ready(function () {
             sendMessage();
         }
     });
+
+    name.on("keyup", function () {
+        if (name.val())
+            $('#name-continue').tooltip('option', 'disabled', true);
+        else
+            $('#name-continue').tooltip('option', 'disabled', false);
+    });
+
+    $('#age').on('keyup', enter_details_validate);
+    $('input[name=gender]').on('change', enter_details_validate);
+
+    function enter_details_validate () {
+        var age = $('#age').val(),
+            gender = $('input[name=gender]:checked').val();
+
+        if (!age || !gender)
+            details_continue.tooltip('option', 'disabled', false);
+        else
+            details_continue.tooltip('option', 'disabled', true);
+    }
 
 
     // Show about dialogue
@@ -263,18 +297,16 @@ function showWarning(title, message) {
     $.when(view_enter_name, view_enter_details, view_chat_section, about_float).done(function () {
         $('.enter-name').slideDown();
 
-        $('.enter-name button').click(function (event) {
+        $('#name-continue').click(function (event) {
             event.preventDefault();
             my_username = $('#name').val();
             if (my_username.length > 0) {
-                $('.enter-name button').prop('disabled', true).html('Loading...');
+                $('#name-continue').prop('disabled', true).html('Loading...');
                 setTimeout(function () {
                     $('.enter-name').slideUp();
                 }, 500); //simulate connecting with back-end
                 setTimeout(showDetails, 1000);
             }
-            else
-                showWarning('Uh oh!', 'You must enter your first name to continue.')
         });
 
         // Show details entering view
@@ -284,7 +316,7 @@ function showWarning(title, message) {
             // Brings focus to age text box as soon as page loads
             $("#age").focus();
 
-            $('.enter-details button').click(function (event) {
+            $('#details-continue').click(function (event) {
 
                 event.preventDefault();
 
@@ -294,17 +326,8 @@ function showWarning(title, message) {
                 // Get gender chosen
                 my_gender = $('input[name=gender]:checked').val();
 
-                // Prompt if no age entered
-                if (my_age == null || !my_age) {
-                    showWarning('Uh oh!', 'You must enter your age to continue.')
-                }
-
-                // Prompt if no gender selected
-                else if (my_gender == null || !my_age) {
-                    showWarning('Uh oh!', 'You must choose your gender to continue.')
-                }
-                else {
-                    $('.enter-details button').prop('disabled', true).html('Matching...');
+                if (my_age && my_gender) {
+                    $('#details-continue').prop('disabled', true).html('Matching...');
                     setTimeout(function () {
                         $('.enter-details').slideUp();
                     }, 500); //simulate connecting with back-end
