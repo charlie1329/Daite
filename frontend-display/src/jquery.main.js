@@ -11,8 +11,8 @@ var my_username,
     typing = false,
     timeout = undefined,
 
-//  socket = io.connect("http://duk.im:6969/chat");
-    socket = io.connect("http://localhost:6969/chat");
+    socket = io.connect("http://duk.im:6969/chat");
+//  socket = io.connect("http://localhost:6969/chat");
 
 
 /* ON LOAD */
@@ -83,9 +83,9 @@ $(document).ready(function () {
     });
 
     // On keypress
-    $('#type-message').keypress(function (e) {
+    $('#type-message').keydown(function (e) {
         // If key isn't enter, set typing to true and tell the server
-        if (e.which !== 13) {
+        if (e.which != 13) {
             if (typing === false) {
                 typing = true;
                 socket.emit("typing", true);
@@ -178,10 +178,8 @@ function receiveMessage(data) {
 
     // Add message to the chat window
     var received_message =
-        "<li class='message' style='display: list-item'>" +
-        "<span class='user-name match'>" +
-        match_username +
-        "</span> <span class='message-text'>" +
+        "<li class='message match'>" +
+        "<span class='message-text'>" +
         match_message +
         "</span> </li>";
 
@@ -202,10 +200,8 @@ function sendMessage() {
         // Add message to the chat window
         // Pending class used to grey out message until we know the server got it.
         var client_message =
-            "<li class='message pending'>" +
-            "<span class='user-name me''>" +
-            my_username +
-            "</span> <span class='message-text'>" +
+            "<li class='message me pending'>" +
+            "<span class='message-text'>" +
             type_message.val() +
             "</span> </li>";
         $('.message-list').append(client_message);
@@ -349,6 +345,7 @@ function showWarning(title, message) {
 
 
             // Start timer
+            /*
             var start = new Date;
             setInterval(function () {
 
@@ -366,6 +363,7 @@ function showWarning(title, message) {
                 };
                 $('#timer').text(countdown() + " seconds");
             }, 1000);
+            */
         }
     })
 })(jQuery);
