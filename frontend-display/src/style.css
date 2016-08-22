@@ -30,16 +30,16 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 /* Chat */
 .chat-section {
     width: 100%;
+    height: 75vh;
     display: none;
 }
 
 .chat-box {
     display: block;
     background-color: #FBFBFF;
-    height: 400px;
+    height: 65vh;
     border: none;
     border-radius: 1em;
-
 }
 
 .chat-buttons {
@@ -69,36 +69,36 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .chat-window {
     display: block;
     background-color: #FBFBFF;
-    height: 335px;
+    height: 55vh;
     color: black;
     overflow: auto;
 }
 
 .message-list {
     list-style: none;
+    padding-left: 1em;
     overflow: auto;
     word-wrap: break-word;
-}
-
-li {
-    padding-bottom: 7px;
-}
-
-.user-name {
-    font-size: 22px;
-}
-
-.message-text {
-    padding-left: 10px;
     font-size: 20px;
 }
 
+.message {
+    display: inline-block;
+    border-radius: 1em;
+    padding: .5em 1em .5em 1em;
+    margin-bottom: 1em;
+    width: 50.01%; /* so each message is on its own line... */
+}
+
 .me {
-    color: #D90000;
+    background: #E74C3C;
+    float: right;
+    text-align: right;
+    margin-right: 1em;
 }
 
 .match {
-    color: #FF8C00;
+    background: #FF8C00;
 }
 
 #type-message {
