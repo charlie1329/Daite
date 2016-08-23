@@ -29,7 +29,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 /* Chat */
 .chat-section {
-    width: 100%;
+    width: 90%;
     height: 75vh;
     display: none;
 }
@@ -70,13 +70,13 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     display: block;
     background-color: #FBFBFF;
     height: 55vh;
-    color: black;
+    color: #FBFBFF;
     overflow: auto;
 }
 
 .message-list {
     list-style: none;
-    padding-left: 1em;
+    padding-left: 2em;
     overflow: auto;
     word-wrap: break-word;
     font-size: 20px;
@@ -84,21 +84,25 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 .message {
     display: inline-block;
+    margin-bottom: .5em;
+    width: 100%;
+}
+
+.message-text {
     border-radius: 1em;
     padding: .5em 1em .5em 1em;
-    margin-bottom: 1em;
-    width: 50.01%; /* so each message is on its own line... */
 }
 
 .me {
     background: #E74C3C;
     float: right;
     text-align: right;
-    margin-right: 1em;
+    margin-right: 2em;
 }
 
 .match {
     background: #FF8C00;
+    float: left;
 }
 
 #type-message {
