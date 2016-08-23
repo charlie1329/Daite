@@ -178,8 +178,8 @@ function receiveMessage(data) {
 
     // Add message to the chat window
     var received_message =
-        "<li class='message match'>" +
-        "<span class='message-text'>" +
+        "<li class='message'>" +
+        "<span class='message-text match'>" +
         match_message +
         "</span> </li>";
 
@@ -200,8 +200,8 @@ function sendMessage() {
         // Add message to the chat window
         // Pending class used to grey out message until we know the server got it.
         var client_message =
-            "<li class='message me pending'>" +
-            "<span class='message-text'>" +
+            "<li class='message pending'>" +
+            "<span class='message-text me'>" +
             type_message.val() +
             "</span> </li>";
         $('.message-list').append(client_message);
