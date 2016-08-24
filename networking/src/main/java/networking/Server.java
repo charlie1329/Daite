@@ -40,6 +40,7 @@ public class Server {
     	// Handle register requests
     	chatNamespace.addEventListener("register", ChatUser.class, (client, data, ackSender) -> {
     		client.set("userData", data);
+    		client.set("registered", true);
       		log.info("Registration from {}: {}, {}, {}", client.getRemoteAddress(), data.getName(), data.getAge(), data.getGender());
 		});
     	
