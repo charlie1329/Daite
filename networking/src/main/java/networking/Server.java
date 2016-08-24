@@ -20,10 +20,12 @@ import networking.chat.ChatUser;
 public class Server {
 	private static final Logger log = LoggerFactory.getLogger(Server.class);
 	private SocketIOServer socketServer;
+	private Matcher matcher;
 	
 	public Server(Configuration config) {
 
     	socketServer = new SocketIOServer(config);
+    	matcher = new Matcher();
     	
     	SocketIONamespace chatNamespace = socketServer.addNamespace("/chat");
     	
@@ -41,6 +43,8 @@ public class Server {
     	chatNamespace.addEventListener("register", ChatUser.class, (client, data, ackSender) -> {
     		client.set("userData", data);
     		client.set("registered", true);
+    		// Attempt to match the client
+    		matcher.match(client);
       		log.info("Registration from {}: {}, {}, {}", client.getRemoteAddress(), data.getName(), data.getAge(), data.getGender());
 		});
     	
@@ -68,7 +72,7 @@ public class Server {
     	chatNamespace.addEventListener("leaveroom", String.class, (client, data, ackSender) -> {
     		client.leaveRoom(data);
     		log.info("{} left room {}", ((ChatUser)client.get("userData")).getName(), data);
-    	
+    		
 		});
     	
     	// Handle messages
