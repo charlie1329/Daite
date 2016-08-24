@@ -132,7 +132,7 @@ body {
     background-color: #2E0927;
 }
 
-.page {
+.container {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
