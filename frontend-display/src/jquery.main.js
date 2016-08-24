@@ -117,10 +117,21 @@
             var age = $('#age').val(),
                 gender = $('input[name=gender]:checked').val();
 
-            if (!age || !gender)
-                details_continue.tooltip('option', 'disabled', false);
-            else
-                details_continue.tooltip('option', 'disabled', true);
+            if (!age) {
+                if(gender)
+                    details_continue.tooltip('option', 'content', 'Enter your age to continue.')
+                        .tooltip('option', 'disabled', false);
+                else
+                    details_continue.tooltip('option', 'content', 'Enter your age and specify your gender to continue.')
+                        .tooltip('option', 'disabled', false);
+            }
+            else {
+                if(gender)
+                    details_continue.tooltip('option', 'disabled', true);
+                else
+                    details_continue.tooltip('option', 'content', 'Specify your gender to continue.')
+                        .tooltip('option', 'disabled', false);
+            }
         }
 
 
