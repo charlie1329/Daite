@@ -2,275 +2,276 @@
  * Created by Artur on 09.08.2016.
  */
 
-/* Variables */
-var my_username,
-    my_age,
-    my_gender,
+(function ($) {
 
-// Typing variables
-    typing = false,
-    timeout = undefined,
+    /* Variables */
+    var my_username,
+        my_age,
+        my_gender,
 
-    socket = io.connect("http://duk.im:6969/chat");
-//  socket = io.connect("http://localhost:6969/chat");
+    // Typing variables
+        typing = false,
+        timeout = undefined,
 
-
-/* ON LOAD */
-$(document).ready(function () {
-
-    // Brings focus to name entry text box on page load
-    var name = $("#name");
-    name.focus();
-
-    // Define the dialogs
-    var content = $('.content'),
-        warning_dialog = $('#warning-dialog'),
-        yes_no_dialog = $('#yes-no-dialog');
-
-    warning_dialog.dialog({
-        autoOpen: false,
-        draggable: false,
-        resizable: false,
-        modal: true,
-        show: {effect: 'fade', duration: 500},
-        hide: {effect: 'fade', duration: 500},
-        position: {my: 'center', of: content, within: content},
-        buttons: [
-            {
-                text: "Okay",
-                click: function () {
-                    $(this).dialog('close');
-                }
-            }
-        ]
-    });
-
-    yes_no_dialog.dialog({
-        autoOpen: false,
-        draggable: false,
-        resizable: false,
-        modal: true,
-        show: {effect: 'fade', duration: 500},
-        hide: {effect: 'fade', duration: 500},
-        position: {my: 'center', of: content, within: content},
-        buttons: [
-            {
-                text: "Yes",
-                click: function () {
-                    $(this).dialog('close');
-                }
-            },
-            {
-                text: "No",
-                click: function () {
-                    $(this).dialog('close');
-                }
-            }
-        ]
-    });
-
-    // Button tooltips
-
-    var name_continue = $('#name-continue'),
-        details_continue = $('#details-continue');
-
-    name_continue.tooltip({
-        position: {my: "left+10% center", at: "right center", of: name_continue, within: content}
-    });
-
-    details_continue.tooltip({
-        position: {my: "left+10% center", at: "right center", of: details_continue, within: content}
-    });
-
-    // On keypress
-    $('#type-message').keydown(function (e) {
-        // If key isn't enter, set typing to true and tell the server
-        if (e.which != 13) {
-            if (typing === false) {
-                typing = true;
-                socket.emit("typing", true);
-            }
-            else {
-                clearTimeout(timeout);
-                timeout = setTimeout(typingTimeout, 3000);
-            }
-        }
-        // If key is enter, send message
-        else if (e.which == 13) {
-            sendMessage();
-        }
-    });
-
-    name.on("keyup", function () {
-        if (name.val())
-            $('#name-continue').tooltip('option', 'disabled', true);
-        else
-            $('#name-continue').tooltip('option', 'disabled', false);
-    });
-
-    $('#age').on('keyup', enter_details_validate);
-    $('input[name=gender]').on('change', enter_details_validate);
-
-    function enter_details_validate () {
-        var age = $('#age').val(),
-            gender = $('input[name=gender]:checked').val();
-
-        if (!age || !gender)
-            details_continue.tooltip('option', 'disabled', false);
-        else
-            details_continue.tooltip('option', 'disabled', true);
-    }
+        socket = io.connect("http://duk.im:6969/chat");
+    //  socket = io.connect("http://localhost:6969/chat");
 
 
-    // Show about dialogue
-    $('.about-button').click(function () {
-        $('.about-dialogue').fadeIn();
-    });
+    /* ON LOAD */
+    $(document).ready(function () {
 
-    // Hide about dialogue
-    $('.close').click(function () {
-        $('.about-dialogue').fadeOut();
-    });
+        // Brings focus to name entry text box on page load
+        var name = $("#name");
+        name.focus();
 
-    // End conversation dialogue
-    $('#end').click(function () {
-            yes_no_dialog.dialog('option', 'title', 'End conversation')
-                .text("Are you sure you want to end this conversation early?")
-                .dialog('option', 'buttons', [
-                    {
-                        text: "Yes",
-                        click: function () {
-                            $(this).dialog('close');
-                            endConvo()
-                        }
-                    },
-                    {
-                        text: "No",
-                        click: function () {
-                            $(this).dialog('close');
-                        }
+        // Define the dialogs
+        var content = $('.content'),
+            warning_dialog = $('#warning-dialog'),
+            yes_no_dialog = $('#yes-no-dialog');
+
+        warning_dialog.dialog({
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            modal: true,
+            show: {effect: 'fade', duration: 500},
+            hide: {effect: 'fade', duration: 500},
+            position: {my: 'center', of: content, within: content},
+            buttons: [
+                {
+                    text: "Okay",
+                    click: function () {
+                        $(this).dialog('close');
                     }
-                ])
-                .dialog('open');
+                }
+            ]
+        });
+
+        yes_no_dialog.dialog({
+            autoOpen: false,
+            draggable: false,
+            resizable: false,
+            modal: true,
+            show: {effect: 'fade', duration: 500},
+            hide: {effect: 'fade', duration: 500},
+            position: {my: 'center', of: content, within: content},
+            buttons: [
+                {
+                    text: "Yes",
+                    click: function () {
+                        $(this).dialog('close');
+                    }
+                },
+                {
+                    text: "No",
+                    click: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            ]
+        });
+
+        // Button tooltips
+
+        var name_continue = $('#name-continue'),
+            details_continue = $('#details-continue');
+
+        name_continue.tooltip({
+            position: {my: "left+10% center", at: "right center", of: name_continue, within: content}
+        });
+
+        details_continue.tooltip({
+            position: {my: "left+10% center", at: "right center", of: details_continue, within: content}
+        });
+
+        // On keypress
+        $('#type-message').keydown(function (e) {
+            // If key isn't enter, set typing to true and tell the server
+            if (e.which != 13) {
+                if (typing === false) {
+                    typing = true;
+                    socket.emit("typing", true);
+                }
+                else {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(typingTimeout, 3000);
+                }
+            }
+            // If key is enter, send message
+            else if (e.which == 13) {
+                sendMessage();
+            }
+        });
+
+        name.on("keyup", function () {
+            if (name.val())
+                $('#name-continue').tooltip('option', 'disabled', true);
+            else
+                $('#name-continue').tooltip('option', 'disabled', false);
+        });
+
+        $('#age').on('keyup', enter_details_validate);
+        $('input[name=gender]').on('change', enter_details_validate);
+
+        function enter_details_validate() {
+            var age = $('#age').val(),
+                gender = $('input[name=gender]:checked').val();
+
+            if (!age || !gender)
+                details_continue.tooltip('option', 'disabled', false);
+            else
+                details_continue.tooltip('option', 'disabled', true);
         }
-    );
-});
 
-/* Sending and Receiving Messages */
-socket.on("message", function (data) {
-    if (data.username == my_username) {
-        // Server sent the message back to us, so we know it was sent
-        // Remove pending class
-        setTimeout(function () {
-            $(".pending").removeClass("pending");
-        }, 100);
 
-    }
-    else {
-        receiveMessage(data);
-    }
-});
+        // Show about dialogue
+        $('.about-button').click(function () {
+            $('.about-dialogue').fadeIn();
+        });
 
-function receiveMessage(data) {
-    // Get username and message
-    var match_username = data.username,
-        match_message = data.message;
+        // Hide about dialogue
+        $('.close').click(function () {
+            $('.about-dialogue').fadeOut();
+        });
 
-    // Add message to the chat window
-    var received_message =
-        "<li class='message'>" +
-        "<span class='message-text match'>" +
-        match_message +
-        "</span> </li>";
+        // End conversation dialogue
+        $('#end').click(function () {
+                yes_no_dialog.dialog('option', 'title', 'End conversation')
+                    .text("Are you sure you want to end this conversation early?")
+                    .dialog('option', 'buttons', [
+                        {
+                            text: "Yes",
+                            click: function () {
+                                $(this).dialog('close');
+                                endConvo()
+                            }
+                        },
+                        {
+                            text: "No",
+                            click: function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    ])
+                    .dialog('open');
+            }
+        );
+    });
 
-    $('.message-list').append(received_message);
-    autoScroll();
+    /* Sending and Receiving Messages */
+    socket.on("message", function (data) {
+        if (data.username == my_username) {
+            // Server sent the message back to us, so we know it was sent
+            // Remove pending class
+            setTimeout(function () {
+                $(".pending").removeClass("pending");
+            }, 100);
 
-}
+        }
+        else {
+            receiveMessage(data);
+        }
+    });
 
-function sendMessage() {
+    function receiveMessage(data) {
+        // Get username and message
+        var match_username = data.username,
+            match_message = data.message;
 
-    var type_message = $('#type-message');
-
-    // Reset typing
-    clearTimeout(timeout);
-    timeout = setTimeout(typingTimeout, 0);
-
-    if (type_message.val().length > 0) {
         // Add message to the chat window
-        // Pending class used to grey out message until we know the server got it.
-        var client_message =
-            "<li class='message pending'>" +
-            "<span class='message-text me'>" +
-            type_message.val() +
+        var received_message =
+            "<li class='message'>" +
+            "<span class='message-text match'>" +
+            match_message +
             "</span> </li>";
-        $('.message-list').append(client_message);
 
-        // Sends raw message to server
-        socket.send({username: my_username, message: type_message.val()});
-
-        // Clear text entry
-        type_message.val("");
+        $('.message-list').append(received_message);
         autoScroll();
 
-        // Reset placeholder message
-        type_message.attr('placeholder', 'Press Enter to send');
     }
-    else {
-        type_message.attr('placeholder', 'Please type a message to send it').val("");
+
+    function sendMessage() {
+
+        var type_message = $('#type-message');
+
+        // Reset typing
+        clearTimeout(timeout);
+        timeout = setTimeout(typingTimeout, 0);
+
+        if (type_message.val().length > 0) {
+            // Add message to the chat window
+            // Pending class used to grey out message until we know the server got it.
+            var client_message =
+                "<li class='message pending'>" +
+                "<span class='message-text me'>" +
+                type_message.val() +
+                "</span> </li>";
+            $('.message-list').append(client_message);
+
+            // Sends raw message to server
+            socket.send({username: my_username, message: type_message.val()});
+
+            // Clear text entry
+            type_message.val("");
+            autoScroll();
+
+            // Reset placeholder message
+            type_message.attr('placeholder', 'Press Enter to send');
+        }
+        else {
+            type_message.attr('placeholder', 'Please type a message to send it').val("");
+        }
     }
-}
 
-/* TYPING */
+    /* TYPING */
 
-// When user stops typing, reset the variables and tell the server
-function typingTimeout() {
-    typing = false;
-    socket.emit("typing", false);
-}
-
-// If receives an isTyping from the socket, toggles the typing indicator
-socket.on("isTyping", function (data) {
-    if (data.isTyping) {
-        $('.typing-indicator').fadeIn()
+    // When user stops typing, reset the variables and tell the server
+    function typingTimeout() {
+        typing = false;
+        socket.emit("typing", false);
     }
-    else {
-        $('.typing-indicator').fadeOut();
-    }
-});
 
-/* MISC FUNCTIONS */
-function endConvo() {
-    // Leave the room
-    socket.emit("leaveroom", "test");
+    // If receives an isTyping from the socket, toggles the typing indicator
+    socket.on("isTyping", function (data) {
+        if (data.isTyping) {
+            $('.typing-indicator').fadeIn()
+        }
+        else {
+            $('.typing-indicator').fadeOut();
+        }
+    });
 
-    $('.chat-section').slideUp();
-    $('#warning-dialog').dialog('option', 'title', "It's over!")
-        .text("Time's up, the conversation is now finished.")
-        .dialog('option', 'buttons', [
-            {
-                text: "Okay",
-                click: function () {
-                    location.reload()
+    /* MISC FUNCTIONS */
+    function endConvo() {
+        // Leave the room
+        socket.emit("leaveroom", "test");
+
+        $('.chat-section').slideUp();
+        $('#warning-dialog').dialog('option', 'title', "It's over!")
+            .text("Time's up, the conversation is now finished.")
+            .dialog('option', 'buttons', [
+                {
+                    text: "Okay",
+                    click: function () {
+                        location.reload()
+                    }
                 }
-            }
-        ])
-        .dialog('open');
-}
+            ])
+            .dialog('open');
+    }
 
-function autoScroll() {
-    var chat_window = $('.chat-window').get(0);
-    chat_window.scrollTop = chat_window.scrollHeight;
-}
+    function autoScroll() {
+        var chat_window = $('.chat-window').get(0);
+        chat_window.scrollTop = chat_window.scrollHeight;
+    }
 
-function showWarning(title, message) {
-    $('#warning-dialog').dialog('option', 'title', title)
-        .text(message)
-        .dialog('open')
-}
+    function showWarning(title, message) {
+        $('#warning-dialog').dialog('option', 'title', title)
+            .text(message)
+            .dialog('open')
+    }
 
-/* Main stuff happens below!!! */
-(function ($) {
+    /* Main stuff happens below!!! */
 
     // Load external views
     var view_enter_name = $.get('views/enter-name.html', function (enter_name) {
@@ -346,24 +347,24 @@ function showWarning(title, message) {
 
             // Start timer
             /*
-            var start = new Date;
-            setInterval(function () {
+             var start = new Date;
+             setInterval(function () {
 
-                // Total length of time you want the conversation to be
-                var totalTime = 180;
+             // Total length of time you want the conversation to be
+             var totalTime = 180;
 
-                var time = totalTime - Math.floor((new Date - start) / 1000);
-                var countdown = function () {
-                    if (time > 0) {
-                        return time;
-                    }
-                    else if (time == 0) {
-                        endConvo(); //ends conversation when the timer reaches 0
-                    }
-                };
-                $('#timer').text(countdown() + " seconds");
-            }, 1000);
-            */
+             var time = totalTime - Math.floor((new Date - start) / 1000);
+             var countdown = function () {
+             if (time > 0) {
+             return time;
+             }
+             else if (time == 0) {
+             endConvo(); //ends conversation when the timer reaches 0
+             }
+             };
+             $('#timer').text(countdown() + " seconds");
+             }, 1000);
+             */
         }
     })
 })(jQuery);
