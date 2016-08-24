@@ -7,8 +7,13 @@
  * user guide available at https://docs.gradle.org/2.9/userguide/tutorial_java_projects.html
  */
 
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "logger.LoggerTester" 
+#set to proper main class later, but this is the class with the main method in, starting from src/main/java 
 
 // In this section you declare where to find the dependencies of your project
 repositories {
