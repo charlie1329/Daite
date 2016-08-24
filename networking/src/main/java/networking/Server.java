@@ -39,12 +39,8 @@ public class Server {
     	
     	// Handle register requests
     	chatNamespace.addEventListener("register", ChatUser.class, (client, data, ackSender) -> {
-    		// TODO: Should this data be stored somewhere else?
-    		client.set("name", data.getName());
-    		client.set("age", data.getAge());
-    		client.set("gender", data.getGender());
-    		client.set("registered", true);
-    		log.info("Registration from {}: {}, {}, {}", client.getRemoteAddress(), data.getName(), data.getAge(), data.getGender());
+    		client.set("userData", data);
+      		log.info("Registration from {}: {}, {}, {}", client.getRemoteAddress(), data.getName(), data.getAge(), data.getGender());
 		});
     	
     	// Handle joinroom requests
@@ -61,16 +57,16 @@ public class Server {
 				client.set("room", data);
 				client.joinRoom(data);
 				
-				log.info("{} requested to join room {}", client.get("name"), data);
-				
-				chatNamespace.getRoomOperations(data).sendEvent("message", new ChatMessage(client.get("name"), "joined the room"));
+				ChatUser userData = client.get("userData");
+				log.info("{} requested to join room {}", userData.getName(), data);
+				chatNamespace.getRoomOperations(data).sendEvent("message", new ChatMessage(userData.getName(), "joined the room"));
     		}
 		});
     	
     	// Handle leaveroom requests
     	chatNamespace.addEventListener("leaveroom", String.class, (client, data, ackSender) -> {
     		client.leaveRoom(data);
-    		log.info("{} left room {}", client.get("name"), data);
+    		log.info("{} left room {}", ((ChatUser)client.get("userData")).getName(), data);
     	
 		});
     	
