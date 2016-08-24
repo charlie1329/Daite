@@ -1,5 +1,9 @@
 package logger;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -33,6 +37,14 @@ public class ConvoLogger extends JFrame {
 		this.setSize(600, 400);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);//when we close window, we may still want bot to be running
 		this.add(this.scroller);//add scroll pane
+		
+		try {
+		    setIconImage(ImageIO.read(new File("images/logo.png"))); //adding icon image :)
+		}
+		catch (IOException exc) {
+		    exc.printStackTrace();
+		}
+		
 		this.setVisible(true);
 	}
 	
