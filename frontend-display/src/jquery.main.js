@@ -213,8 +213,8 @@
             // Add message to the chat window
             // Pending class used to grey out message until we know the server got it.
             var client_message =
-                "<li class='message pending'>" +
-                "<span class='message-text me'>" +
+                "<li class='message'>" +
+                "<span class='message-text me pending'>" +
                 type_message.val() +
                 "</span> </li>";
             $('.message-list').append(client_message);
