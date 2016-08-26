@@ -16,6 +16,8 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .info-entry {
     display: none;
     padding: 1em;
+    max-width: 300px;
+    min-width: 200px;
     width: 30%;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
@@ -49,6 +51,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     text-align: center;
     line-height: 40px;
     font-size: 16px;
+    display: block;
 }
 
 .c-b {
@@ -69,7 +72,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .chat-window {
     display: block;
     background-color: #FBFBFF;
-    height: 55vh;
+    height: 80%;
     color: #FBFBFF;
     overflow: auto;
 }
@@ -136,7 +139,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    width: 980px;
+    width: 80%;
     margin: 0 auto;
     font-family: "Roboto Condensed", sans-serif;
     color: #FBFBFF;
@@ -153,6 +156,15 @@ header {
     margin: 1em 0 0;
     text-align: center;
     font-family: "Open Sans Condensed", sans-serif;
+}
+
+@media screen and (max-height:600px){
+    header{
+        display: none;
+    }
+    footer{
+        display: none;
+    }
 }
 
 h1 {
