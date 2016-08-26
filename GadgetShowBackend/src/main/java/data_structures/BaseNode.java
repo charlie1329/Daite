@@ -16,16 +16,21 @@ public abstract class BaseNode {
 	private String response;//if we stop at this node then we can give a response
 	private String[] keyWords;//a list of keywords to look out for in the message
 	private ArrayList<BaseNode> neighbours;//turning these nodes into a graph (we don't know how many children we will need)
+	private boolean visited;//has the node been visited in traversal? Should improve efficiency
+	private boolean changeTopic; //certain nodes may include responses which justify a change in topic, this should aid this difficult task a bit
 	
 	/**constructor where we can't add the children yet
 	 * 
 	 * @param response the response to make if we stop here
 	 * @param keyWords the list of keywords to help judge the likelihood of a message
+	 * @param changeTopic should this node cause a change in topic if visited?
 	 */
-	public BaseNode(String response, String[] keyWords) {
+	public BaseNode(String response, String[] keyWords, boolean changeTopic) {
 		this.response = response;
 		this.keyWords = keyWords;
 		this.neighbours = new ArrayList<BaseNode>();
+		this.visited = false;//a node isn't visited when first created
+		this.changeTopic = changeTopic;
 	}
 	
 	/**second constructor for the case we know the neighbours of the node
@@ -33,11 +38,14 @@ public abstract class BaseNode {
 	 * @param response the response if we stop here
 	 * @param keyWords the keywords to look out for
 	 * @param neighbours the neighbours of the node in the topic graph
+	 * @param changeTopic should this node cause a change in topic if visited?
 	 */
-	public BaseNode(String response, String[] keyWords, ArrayList<BaseNode> neighbours) {
+	public BaseNode(String response, String[] keyWords, boolean changeTopic, ArrayList<BaseNode> neighbours) {
 		this.response = response;
 		this.keyWords = keyWords;
 		this.neighbours = neighbours;
+		this.visited = false;//see previous constructor
+		this.changeTopic = changeTopic;
 	}
 	
 	/**this is the crucial method of the class
@@ -81,5 +89,29 @@ public abstract class BaseNode {
 	public String getKeyword(int index) {
 		return this.keyWords[index];
 	}
-
+	
+	/**trivial set method
+	 * 
+	 * @param visited new visited status of node
+	 */
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+	
+	/**trivial get method
+	 * 
+	 * @return has the node been visited?
+	 */
+	public boolean isVisited() {
+		return this.visited;
+	}
+	
+	/**trivial get method
+	 * 
+	 * @return should the topic be changed when I visit this node
+	 */
+	public boolean shouldIChangeTopic() {
+		return this.changeTopic;
+	}
+	
 }
