@@ -7,7 +7,7 @@
     /* Variables */
     var my_username,
         my_age,
-        my_gender,
+        my_gender, match_username
 
     // Typing variables
         typing = false,
@@ -27,7 +27,9 @@
         // Define the dialogs
         var content = $('.content'),
             warning_dialog = $('#warning-dialog'),
-            yes_no_dialog = $('#yes-no-dialog');
+            yes_no_dialog = $('#yes-no-dialog'),
+            no_match_dialogue = $('#no-match-dialog');
+        
 
         warning_dialog.dialog({
             autoOpen: false,
@@ -72,7 +74,6 @@
         });
 
         // Button tooltips
-
         var name_continue = $('#name-continue'),
             details_continue = $('#details-continue');
 
@@ -93,6 +94,7 @@
                     socket.emit("typing", true);
                 }
                 else {
+                    // Checks if typing every 3 seconds
                     clearTimeout(timeout);
                     timeout = setTimeout(typingTimeout, 3000);
                 }
@@ -170,10 +172,11 @@
     });
 
     /* Sending and Receiving Messages */
+    
     socket.on("message", function (data) {
         if (data.username == my_username) {
             // Server sent the message back to us, so we know it was sent
-            // Remove pending class
+            // Remove pending class so message is confirmed as sent to the user
             setTimeout(function () {
                 $(".pending").removeClass("pending");
             }, 100);
@@ -183,7 +186,8 @@
             receiveMessage(data);
         }
     });
-
+    
+    // Message received is from other user
     function receiveMessage(data) {
         // Get username and message
         var match_username = data.username,
@@ -198,9 +202,9 @@
 
         $('.message-list').append(received_message);
         autoScroll();
-
     }
 
+    // Send a message to the server
     function sendMessage() {
 
         var type_message = $('#type-message');
@@ -303,8 +307,11 @@
 
 
     $.when(view_enter_name, view_enter_details, view_chat_section, about_float).done(function () {
+        
+        // Show name field
         $('.enter-name').slideDown();
 
+        // When name entered
         $('#name-continue').click(function (event) {
             event.preventDefault();
             my_username = $('#name').val();
@@ -339,9 +346,46 @@
                     setTimeout(function () {
                         $('.enter-details').slideUp();
                     }, 500); //simulate connecting with back-end
-                    setTimeout(showChat, 1500);
+                    setTimeout(getMatch, 1500);
                 }
             })
+        }
+        
+        // Communicates with the server to get a match
+        function getMatch() {
+            
+            socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
+            socket.emit("joinroom", "test");
+            
+            // Should be expanded later to receive the match from the server and if not give the user options
+            showChat();
+            
+            // Also need a function to receive the match details so can set match name
+        }
+        
+        // Gives the user options in the event a match can't be found
+        function retryMatch() {
+            
+            // If no match is found
+            $('#yes-no-dialog').dialog('option', 'title', 'No Match!')
+                    .text("No match was found! Woud you like to retry or return to the beginning?")
+                    .dialog('option', 'buttons', [
+                        {
+                            text: "Retry",
+                            click: function () {
+                                $(this).dialog('close');
+                                getMatch();
+                            }
+                        },
+                        {
+                            text: "Reset",
+                            click: function () {
+                                $(this).dialog('close');
+                                location.reload()
+                            }
+                        }
+                    ])
+                    .dialog('open');
         }
 
         // Show chat view
@@ -352,8 +396,8 @@
             $("#type-message").focus();
 
             // Registers the specific client
-            socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-            socket.emit("joinroom", "test");
+            //socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
+            //socket.emit("joinroom", "test");
 
 
             // Start timer
