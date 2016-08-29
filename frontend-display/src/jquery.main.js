@@ -7,7 +7,7 @@
     /* Variables */
     var my_username,
         my_age,
-        my_gender, match_username
+        my_gender, match_username,
 
     // Typing variables
         typing = false,
@@ -368,7 +368,7 @@
             
             // If no match is found
             $('#yes-no-dialog').dialog('option', 'title', 'No Match!')
-                    .text("No match was found! Woud you like to retry or return to the beginning?")
+                    .text("No match was found! Would you like to retry or return to the beginning?")
                     .dialog('option', 'buttons', [
                         {
                             text: "Retry",
