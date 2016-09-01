@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,8 +51,19 @@ public class BuildHashOfGraphs {
 						JSONParser parser = new JSONParser();
 						JSONObject topic = (JSONObject)parser.parse(new FileReader(currentFile));
 						String topicName = (String)topic.get("topic");//the key for the hash table
+						Question opener = null;//will be the value of the hash table!
+						JSONArray questions = (JSONArray)topic.get("questions");
 						
+						ArrayList<Question> topicQs = new ArrayList<Question>();
+						ArrayList<Response> topicRs = new ArrayList<Response>();
 						
+						for(int i = 0; i < questions.size(); i++) {//looping through all questions
+							
+						}
+						
+						synchronized(convoMap) {//putting into synchronized block to prevent any issues
+							convoMap.put(topicName, opener);//with multiple threads modifying the same object
+						}
 					} catch(Exception e) {//if something goes wrong parsing a JSON file
 						logger.logMessage("Error parsing JSON file: " + currentFile + "\n" +
 										  e.getMessage() + 
@@ -61,7 +73,7 @@ public class BuildHashOfGraphs {
 				}
 			});
 		}
-		logger.logMessage("Build completed. If no other errors have appeared, you are ready for conversation!!!");
+		logger.logMessage("All topics submitted to thread pool");
 		return convoMap;
 	}
 	
