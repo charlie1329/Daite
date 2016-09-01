@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Question extends EvaluatedNode {
 	
 	private boolean isOpener;//will state whether question is an opening question for the topic it is in
+	private boolean usedByAI;//as suggested by mac, maybe our ai doesn't want the ability to ask every question
 	
 	/**same as super class constructor with inclusion of isOpener value too
 	 * 
@@ -18,9 +19,10 @@ public class Question extends EvaluatedNode {
 	 * @param keywords the keywords in said question
 	 * @param isOpener is the question an opener for a topic
 	 */
-	public Question(String message, String[] keywords, boolean isOpener) {
+	public Question(String message, String[] keywords, boolean isOpener, boolean usedByAI) {
 		super(message, keywords);
 		this.isOpener = isOpener;
+		this.usedByAI = usedByAI;
 	}
 	
 	/**same as super class constructor with inclusion od isOpener value
@@ -30,9 +32,10 @@ public class Question extends EvaluatedNode {
 	 * @param neighbours the neighbours in the graph
 	 * @param isOpener is the question an opener for a topic
 	 */
-	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener) {
+	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener, boolean usedByAI) {
 		super(message, keywords, neighbours);
 		this.isOpener = isOpener;
+		this.usedByAI = usedByAI;
 	}
 	
 	/**returns status of isOpener field
@@ -41,6 +44,14 @@ public class Question extends EvaluatedNode {
 	 */
 	public boolean isOpener() {
 		return this.isOpener;
+	}
+	
+	/**returns whether question is asked by our AI
+	 * 
+	 * @return is the question used by our AI?
+	 */
+	public boolean isUsedByAI() {
+		return this.usedByAI;
 	}
 	
 	/**implementation from BaseNode class
