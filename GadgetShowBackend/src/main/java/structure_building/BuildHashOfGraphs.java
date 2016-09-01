@@ -76,6 +76,15 @@ public class BuildHashOfGraphs {
 		return new ArrayList<Response>();//fill in!
 	}
 	
+	/**method will make sure the links between the questions and responses, other than parent/childre relationships
+	 * are set up correctly
+	 * @param topicQs the questions for a topic
+	 * @param topicRsthe responses
+	 */
+	private static void linkUpQsAndRs(ArrayList<Question> topicQs, ArrayList<Response> topicRs) {
+		//fill in
+	}
+	
 	/**this method will build up our hash map by building each topic in a separate thread using thread pools
 	 * 
 	 * @param logger our on-screen logger for how the AI is doing
@@ -119,6 +128,8 @@ public class BuildHashOfGraphs {
 							JSONArray responses = (JSONArray)question.get("children");//getting responses for question
 							topicRs.addAll(formResponses(responses,newQuestion));
 						}
+						
+						linkUpQsAndRs(topicQs,topicRs);//link up graph correctly
 						
 						synchronized(convoMap) {//putting into synchronized block to prevent any issues
 							convoMap.put(topicName, opener);//with multiple threads modifying the same object
