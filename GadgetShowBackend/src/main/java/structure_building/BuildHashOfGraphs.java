@@ -73,10 +73,27 @@ public class BuildHashOfGraphs {
 	 * @return the responses in response objects
 	 */
 	private static ArrayList<Response> formResponses(JSONArray responses, Question parent) {
-		return new ArrayList<Response>();//fill in!
+		ArrayList<Response> builtRs = new ArrayList<Response>();
+		for(int i = 0; i < responses.size(); i++) {
+			JSONObject currentR = (JSONObject)responses.get(i);
+			
+			String message = (String)currentR.get("message");//should be compulsory!
+			String[] keys = getKeywords(currentR);
+			boolean changeTopic = false;
+			try {changeTopic = (boolean)currentR.get("switchTopic");}catch(Exception e){}//using try-catch due to JSON layout
+			boolean ourResponse = false;
+			try {ourResponse = (boolean)currentR.get("usedByAI");}catch(Exception e){}
+			String response = "";
+			try {response = (String)currentR.get("response");}catch(Exception e){}
+			
+			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response);//create response node
+			builtRs.add(newResponse);//add to list of responses
+			parent.addNeighbour(newResponse);//add as child of question
+		}
+		return builtRs;
 	}
 	
-	/**method will make sure the links between the questions and responses, other than parent/childre relationships
+	/**method will make sure the links between the questions and responses, other than parent/children relationships
 	 * are set up correctly
 	 * @param topicQs the questions for a topic
 	 * @param topicRsthe responses

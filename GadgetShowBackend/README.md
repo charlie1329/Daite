@@ -12,3 +12,8 @@ If you have any questions, or alternatively if I have messed up the organisation
 
 
 Also, because I have a tendency to be a bit crappy with git sometimes, when you push can you please ensure you don't get a load of weird gradle files appear on the repository please? (Like .settings or taskArtifacts etc.) I tried to set it up with .gitignore but I might have messed it up slightly, I'm not sure. 
+
+Conversation data JSON files
+============================
+
+Any JSON files containing our conversation data should be stored directly in the data folder in this repository (that is where JSON is being read from anyway)! If the JSON files could be named topic_name.json for general neatness that would be fantastic. Additionally if they could be frequently copied over to this repository such that we have a) the data backed up should something go horribly wrong and b) it allows me to test the system with increasing amounts of data, which is incredibly useful!!
