@@ -12,17 +12,20 @@ public class Question extends EvaluatedNode {
 	
 	private boolean isOpener;//will state whether question is an opening question for the topic it is in
 	private boolean usedByAI;//as suggested by mac, maybe our ai doesn't want the ability to ask every question
+	private int id; //used for linking questions and responses
 	
 	/**same as super class constructor with inclusion of isOpener value too
 	 * 
 	 * @param message the question the node represents
 	 * @param keywords the keywords in said question
 	 * @param isOpener is the question an opener for a topic
+	 * @param id the unique question id
 	 */
-	public Question(String message, String[] keywords, boolean isOpener, boolean usedByAI) {
+	public Question(String message, String[] keywords, boolean isOpener, boolean usedByAI, int id) {
 		super(message, keywords);
 		this.isOpener = isOpener;
 		this.usedByAI = usedByAI;
+		this.id = id;
 	}
 	
 	/**same as super class constructor with inclusion od isOpener value
@@ -31,11 +34,13 @@ public class Question extends EvaluatedNode {
 	 * @param keywords the keywords in the question
 	 * @param neighbours the neighbours in the graph
 	 * @param isOpener is the question an opener for a topic
+	 * @param id the unique question id
 	 */
-	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener, boolean usedByAI) {
+	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener, boolean usedByAI, int id) {
 		super(message, keywords, neighbours);
 		this.isOpener = isOpener;
 		this.usedByAI = usedByAI;
+		this.id = id;
 	}
 	
 	/**returns status of isOpener field
@@ -59,5 +64,13 @@ public class Question extends EvaluatedNode {
 	 */
 	public boolean isQuestion() {
 		return true;
+	}
+	
+	/**returns question id
+	 * 
+	 * @return id
+	 */
+	public int getID() {
+		return this.id;
 	}
 }

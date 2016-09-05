@@ -14,6 +14,7 @@ public class Response extends EvaluatedNode {
 	private boolean ourResponse;//if we are asked the parent question, should we answer with this response
 	private Question parent;//the parent question that can be answered with this response
 	private String acknowledgement;//the third step to a round of conversation
+	private int[] followUp; //an int array with follow up question id's
 	
 	/**same as super class constructor but added new fields into constructor
 	 * 
@@ -23,13 +24,15 @@ public class Response extends EvaluatedNode {
 	 * @param ourResponse should we use this response?
 	 * @param parent the parent question
 	 * @param ack third step acknowledgement
+	 * @param followUp the array of question id's
 	 */
-	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack) {
+	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack, int[] followUp) {
 		super(msg,keys);
 		this.changeTopic = changeTopic;
 		this.ourResponse = ourResponse;
 		this.parent = parent;
 		this.acknowledgement = ack;
+		this.followUp = followUp;
 	}
 	
 	/** overwriting second super class constructor
@@ -41,13 +44,15 @@ public class Response extends EvaluatedNode {
 	 * @param ours see above
 	 * @param parent see above
 	 * @param ack see above
+	 * @param followUp see above
 	 */
-	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack) {
+	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack, int[] followUp) {
 		super(msg,keys,neigh);
 		this.changeTopic = change;
 		this.ourResponse = ours;
 		this.parent = parent;
 		this.acknowledgement = ack;
+		this.followUp = followUp;
 	}
 	
 	/**self explanatory get method
@@ -80,6 +85,14 @@ public class Response extends EvaluatedNode {
 	 */
 	public String getAck() {
 		return this.acknowledgement;
+	}
+	
+	/**self explanatory get method
+	 * 
+	 * @return array of question ids
+	 */
+	public int[] getFollowUp() {
+		return this.followUp;
 	}
 	
 	/**self explanatory method, implemented from BaseNode class

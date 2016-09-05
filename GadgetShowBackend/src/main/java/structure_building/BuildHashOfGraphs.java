@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -66,6 +67,19 @@ public class BuildHashOfGraphs {
 		return keys;
 	}
 	
+	/**method will get the follow ups into int array form
+	 * 
+	 * @param arr the json array
+	 * @return the json array as int array
+	 */
+	private static int[] getFollowUps(JSONArray arr) {
+		int[] converted = new int[arr.size()];
+		for(int i = 0; i < arr.size(); i++) {
+			converted[i] = ((Long)arr.get(i)).intValue();//JSON gives long not int!
+		}
+		return converted;
+	}
+	
 	/**method takes a list of children from a json file and forms it into a set of responses
 	 * 
 	 * @param responses the responses from the json file
@@ -86,7 +100,11 @@ public class BuildHashOfGraphs {
 			String response = "";
 			try {response = (String)currentR.get("response");}catch(Exception e){}
 			
-			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response);//create response node
+			JSONArray followUp = null;
+			try {followUp = (JSONArray)currentR.get("followUp");}catch(Exception e){}
+			int[] intFollowUps = (followUp==null)?null:getFollowUps(followUp);
+			
+			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response,intFollowUps);//create response node
 			builtRs.add(newResponse);//add to list of responses
 			parent.addNeighbour(newResponse);//add as child of question
 		}
@@ -96,10 +114,26 @@ public class BuildHashOfGraphs {
 	/**method will make sure the links between the questions and responses, other than parent/children relationships
 	 * are set up correctly
 	 * @param topicQs the questions for a topic
-	 * @param topicRsthe responses
+	 * @param topicRs the responses
 	 */
 	private static void linkUpQsAndRs(ArrayList<Question> topicQs, ArrayList<Response> topicRs) {
-		//fill in
+		for(int i = 0; i < topicRs.size(); i++) {
+			for(int j = 0; j < topicQs.size(); j++) {
+				if(topicRs.get(i).shouldIRespondWithThis()) { //if our response
+					if(topicQs.get(j) != topicRs.get(i).getParent()) {//no point adding parent
+						topicRs.get(i).addNeighbour(topicQs.get(j));
+					}
+				} else if(!topicRs.get(i).shouldIChangeTopic()) {//this is the standard case
+					int[] links = topicRs.get(i).getFollowUp();
+					for(int k = 0; k < links.length; k++) {
+						if(links[k] == topicQs.get(j).getID()) {
+							topicRs.get(i).addNeighbour(topicQs.get(j));
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**this method will build up our hash map by building each topic in a separate thread using thread pools
@@ -138,11 +172,14 @@ public class BuildHashOfGraphs {
 							boolean isOpener = false;//is this the opening question
 							try {isOpener = (boolean)question.get("isOpener");}catch(Exception e){}
 							
-							Question newQuestion = new Question(message, keywords, isOpener, usedByAI);
+							int qID = ((Long)question.get("id")).intValue();//will always have a question ID (come through as long)
+							
+							Question newQuestion = new Question(message, keywords, isOpener, usedByAI, qID);
 							if(newQuestion.isOpener()) {opener = newQuestion;}//should only happen once
 							topicQs.add(newQuestion);//add to list
 							
 							JSONArray responses = (JSONArray)question.get("children");//getting responses for question
+							
 							topicRs.addAll(formResponses(responses,newQuestion));
 						}
 						
@@ -154,7 +191,7 @@ public class BuildHashOfGraphs {
 						
 					} catch(Exception e) {//if something goes wrong parsing a JSON file
 						logger.logMessage("Error parsing JSON file: " + currentFile + "\n" +
-										  e.getMessage() + 
+										  e.getMessage() +
 										  "\nBuilding failed. It is recommended to restart the system;\n" +
 										  "Incorrect builds will lead to bad conversations!");
 					}

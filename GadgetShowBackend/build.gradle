@@ -12,7 +12,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "logger.LoggerTester" 
+mainClassName = "structure_building.BuildHashOfGraphs" 
 //set to proper main class later, but this is the class with the main method in, starting from src/main/java 
 
 // In this section you declare where to find the dependencies of your project
