@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import org.json.simple.JSONArray;
@@ -185,9 +186,10 @@ public class BuildHashOfGraphs {
 						
 						linkUpQsAndRs(topicQs,topicRs);//link up graph correctly
 						
-						synchronized(convoMap) {//putting into synchronized block to prevent any issues
+						synchronized(convoMap) {//putting into synchronised block to prevent any issues
 							convoMap.put(topicName, opener);//with multiple threads modifying the same object
 						}
+						logger.logMessage("Task finished");
 						
 					} catch(Exception e) {//if something goes wrong parsing a JSON file
 						logger.logMessage("Error parsing JSON file: " + currentFile + "\n" +
@@ -199,6 +201,13 @@ public class BuildHashOfGraphs {
 			});
 		}
 		logger.logMessage("All topics submitted to thread pool");
+		threadPool.shutdown();
+		try {
+			threadPool.awaitTermination(1000000, TimeUnit.SECONDS);//extremely long timeout, just to check everything is finished
+		} catch(InterruptedException e) {
+			logger.logMessage("interrupted while building");//if interrupted
+		}
+		logger.logMessage("Finished building of Hash Map");
 		return convoMap;
 	}
 	
