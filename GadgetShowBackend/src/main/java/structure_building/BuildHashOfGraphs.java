@@ -15,7 +15,11 @@ import org.json.simple.parser.JSONParser;
 import data_structures.*;
 import logger.ConvoLogger;
 
-
+/**this class deals with the building of the data structures
+ * from the raw JSON data
+ * @author Charlie Street
+ *
+ */
 public class BuildHashOfGraphs {
 	
 	private final static int HOW_MANY_THREADS = 10;//how many worker threads will be used for the thread pool

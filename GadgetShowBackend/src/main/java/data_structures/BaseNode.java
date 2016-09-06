@@ -75,11 +75,10 @@ public abstract class BaseNode {
 	
 	/**returns us a neighbour of our node
 	 * to be used when traversing a graph
-	 * @param index the index in the list
-	 * @return the appropriate neighbour
+	 * @return the appropriate neighbours
 	 */
-	public BaseNode getNeighbour(int index) {
-		return this.neighbours.get(index);
+	public ArrayList<BaseNode> getNeighbours() {
+		return this.neighbours;
 	}
 	
 	/**returns a keyword
