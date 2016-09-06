@@ -23,6 +23,7 @@ import logger.ConvoLogger;
 public class BuildHashOfGraphs {
 	
 	private final static int HOW_MANY_THREADS = 10;//how many worker threads will be used for the thread pool
+	private static HashMap<String,ArrayList<Question>> questionList = new HashMap<String,ArrayList<Question>>();//necessary for traversal
 
 	/**method will retrieve all JSON files in the data folder of this repository
 	 * 
@@ -123,11 +124,7 @@ public class BuildHashOfGraphs {
 	private static void linkUpQsAndRs(ArrayList<Question> topicQs, ArrayList<Response> topicRs) {
 		for(int i = 0; i < topicRs.size(); i++) {
 			for(int j = 0; j < topicQs.size(); j++) {
-				if(topicRs.get(i).shouldIRespondWithThis()) { //if our response
-					if(topicQs.get(j) != topicRs.get(i).getParent()) {//no point adding parent
-						topicRs.get(i).addNeighbour(topicQs.get(j));
-					}
-				} else if(!topicRs.get(i).shouldIChangeTopic()) {//this is the standard case
+				 if(!topicRs.get(i).shouldIChangeTopic()) {//everything bar switch topic nodes have follow ups
 					int[] links = topicRs.get(i).getFollowUp();
 					for(int k = 0; k < links.length; k++) {
 						if(links[k] == topicQs.get(j).getID()) {
@@ -138,6 +135,21 @@ public class BuildHashOfGraphs {
 				}
 			}
 		}
+	}
+	
+	/**simple get method for question list
+	 * 
+	 * @return the question list
+	 */
+	public static HashMap<String,ArrayList<Question>> getQuestionList() {
+		return questionList;
+	}
+	
+	/**method wipes the question list since it's static
+	 * 
+	 */
+	public static void wipeQuestionList() {
+		questionList = new HashMap<String,ArrayList<Question>>();
 	}
 	
 	/**this method will build up our hash map by building each topic in a separate thread using thread pools
@@ -191,6 +203,9 @@ public class BuildHashOfGraphs {
 						
 						synchronized(convoMap) {//putting into synchronised block to prevent any issues
 							convoMap.put(topicName, opener);//with multiple threads modifying the same object
+						}
+						synchronized(questionList) {//adding to topics list
+							questionList.put(topicName, topicQs);
 						}
 						logger.logMessage("Task finished");
 						

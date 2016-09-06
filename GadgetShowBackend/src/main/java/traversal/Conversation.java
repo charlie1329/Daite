@@ -15,6 +15,9 @@ public class Conversation {
 	private final String INITIAL_TOPIC_NAME_IF_STARTING = "greetings";//this may change 
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
 	private EvaluatedNode currentNode;//node we are currently at
+	private String currentTopic;//useful for accessing questions 
+	private String previousTopic;
+	private HashMap<String,ArrayList<Question>> questionList;
 	private ArrayList<EvaluatedNode> cachedNodes;//nodes used recently than I can access easily and change internal state readily
 	private HashMap<String,Question> graphs;
 	private boolean aiStart;//who initiates our conversation
@@ -25,10 +28,13 @@ public class Conversation {
 	 * @param graphs the hash map of graphs to traverse
 	 * @param aiStart who should start the conversation 
 	 */
-	public Conversation(HashMap<String,Question> graphs, boolean aiStart) {
+	public Conversation(HashMap<String,Question> graphs, boolean aiStart, HashMap<String,ArrayList<Question>> questionList) {
 		this.cachedNodes = new ArrayList<EvaluatedNode>();
 		this.graphs = graphs;
 		this.aiStart = aiStart;
+		this.currentTopic = INITIAL_TOPIC_NAME_IF_STARTING;
+		this.previousTopic = INITIAL_TOPIC_NAME_IF_STARTING;
+		this.questionList = questionList;
 		if(aiStart) {
 			this.currentNode = this.graphs.get(INITIAL_TOPIC_NAME_IF_STARTING);
 			//intended to be something like "Hi, i'm <name>. How are you?"
@@ -54,6 +60,7 @@ public class Conversation {
 	 */
 	public ArrayList<String> respond(String message) {
 		this.cachedNodes.add(this.currentNode);//cache start node
+		this.previousTopic = this.currentTopic;
 		if(this.currentNode.isQuestion()) {//either (Q)(RQ)(ARQ) or (Q)(R)(AQ) where first Q by AI
 			return startAtQuestionResponse(message);
 		}
@@ -82,6 +89,7 @@ public class Conversation {
 	 * first element of list will be start node, rest will be visited nodes
 	 */
 	public void rollback() {
+		this.currentTopic = this.previousTopic;
 		if(this.cachedNodes.size() == 0) {//dealing with this unlikely scenario
 			return;
 		} else {
@@ -126,16 +134,8 @@ public class Conversation {
 	private ArrayList<String> startAtResponseResponse(String message) {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		//attempting to find all questions!
-		Question parent = ((Response)this.currentNode).getParent();
-		ArrayList<BaseNode> questions = new ArrayList<BaseNode>();
-		questions.add(parent);
-		for(int i = 0; i < parent.getNeighbours().size(); i++) {
-			Response response = (Response)parent.getNeighbours().get(i);
-			if(response.shouldIRespondWithThis()) {//this allows us to find all questions
-				questions.addAll(response.getNeighbours());//now I have all questions
-				break;
-			}
-		}
+		ArrayList<Question> questions = this.questionList.get(this.currentTopic);//will get all available questions on a topic
+		
 		//finding the most likely question being asked
 		Question mostLikely = null;
 		double currentMax = CONFIDENCE_THRESHOLD;
