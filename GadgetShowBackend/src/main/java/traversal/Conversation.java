@@ -59,6 +59,7 @@ public class Conversation {
 	 * @return an array list of string, which, when combined give us the full response
 	 */
 	public ArrayList<String> respond(String message) {
+		this.cachedNodes = new ArrayList<EvaluatedNode>();
 		this.cachedNodes.add(this.currentNode);//cache start node
 		this.previousTopic = this.currentTopic;
 		if(this.currentNode.isQuestion()) {//either (Q)(RQ)(ARQ) or (Q)(R)(AQ) where first Q by AI
@@ -113,7 +114,7 @@ public class Conversation {
 	 * 
 	 */
 	private void changeTopic() {
-		//TODO fill in!
+		//TODO fill in! remember topic attribute!//should change current node!!!
 	}
 	
 	/**method will carry out a round of traversing the tree, if we were at a question at the start
@@ -151,12 +152,42 @@ public class Conversation {
 		    //'moving' to this node so to speak
 			this.cachedNodes.add(mostLikely);
 			mostLikely.setVisited(true);
-			//TODO get our response, make reply and ask follow up question
-			//TODO if no follow ups are available (i.e. all asked, switch to new topic)
+			Response ourResponse = null;
+			for(int i = 0; i < mostLikely.getNeighbours().size(); i++) {//looping through to get our response
+				if(((Response)mostLikely.getNeighbours().get(i)).shouldIRespondWithThis()) {
+					ourResponse = (Response)mostLikely.getNeighbours().get(i);
+					break;
+				}
+			}
+			
+			if(ourResponse == null) {//this is just to cover us but should never happen!!!
+				ourResponse = (Response)mostLikely.getNeighbours().get(0);
+			}
+			toReturn.add(ourResponse.getMessage());//add first part of response
+			cachedNodes.add(ourResponse);
+			ourResponse.setVisited(true);
+			
+			if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
+				changeTopic();
+			} else {
+				boolean found = false;
+				for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
+					if(!ourResponse.getNeighbours().get(i).isVisited()) {
+						this.currentNode = (Question)ourResponse.getNeighbours().get(i);
+						found = true;
+						break;
+					}
+				}
+				if(!found){changeTopic();}
+			}
+			
+			toReturn.add(this.currentNode.getMessage());//adding question to response!
+			this.currentNode.setVisited(true);
+			
 		} else {//if we can't find the question
 			//TODO search for question within other topics
 			//TODO if found do same as above :)
-			//TODO otherwise use a desperation tactic
+			//TODO otherwise use  desperation tactics
 		}
 		return toReturn;
 	}
