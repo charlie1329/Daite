@@ -223,6 +223,51 @@ public class Conversation {
 		return currentBest;
 	}
 	
+	/**method takes a question asked by the subject and responds via a response and new question
+	 * 
+	 * @param askedQuestion the question asked by the subject
+	 * @return an array list of size two most likely
+	 */
+	private ArrayList<String> formResponseAndAskQuestion(Question askedQuestion) {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		Response ourResponse = null;
+		for(int i = 0; i < askedQuestion.getNeighbours().size(); i++) {//looping through to get our response
+			if(((Response)askedQuestion.getNeighbours().get(i)).shouldIRespondWithThis()) {
+				ourResponse = (Response)askedQuestion.getNeighbours().get(i);
+				break;
+			}
+		}
+		
+		if(ourResponse == null) {//this is just to cover us but should never happen!!!
+			ourResponse = (Response)askedQuestion.getNeighbours().get(0);//if this goes wrong there are further fail-safes at higher levels
+		}
+		toReturn.add(ourResponse.getMessage());//add first part of response
+		cachedNodes.add(ourResponse);
+		ourResponse.setVisited(true);
+		
+		//GET FOLLOW UP QUESTION
+		if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
+			changeTopic();
+		} else {
+			boolean found = false;
+			for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
+				if(!ourResponse.getNeighbours().get(i).isVisited()) {
+					this.currentNode = (Question)ourResponse.getNeighbours().get(i);
+					found = true;
+					break;
+				}
+			}
+			if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
+		}
+		
+		toReturn.add(this.currentNode.getMessage());//adding question to response!
+		this.currentNode.setVisited(true);
+		this.cachedNodes.add(this.currentNode);
+		
+		return toReturn;
+	}
+	
 	/**method will carry out a round of traversing the tree, if we were at a response at the start
 	 * i.e. we have been asked a question
 	 * @String message the user input message
@@ -246,52 +291,25 @@ public class Conversation {
 		}
 		
 		if(currentMax > CONFIDENCE_THRESHOLD && mostLikely != null) {//if we have a suitable level of confidence we have found the question
-		    //'moving' to this node so to speak
+		    
+			//'moving' to this node so to speak
 			this.cachedNodes.add(mostLikely);
 			mostLikely.setVisited(true);
-			//GETTING RESPONSE
-			Response ourResponse = null;
-			for(int i = 0; i < mostLikely.getNeighbours().size(); i++) {//looping through to get our response
-				if(((Response)mostLikely.getNeighbours().get(i)).shouldIRespondWithThis()) {
-					ourResponse = (Response)mostLikely.getNeighbours().get(i);
-					break;
-				}
-			}
 			
-			if(ourResponse == null) {//this is just to cover us but should never happen!!!
-				ourResponse = (Response)mostLikely.getNeighbours().get(0);//if this goes wrong there are further fail-safes at higher levels
-			}
-			toReturn.add(ourResponse.getMessage());//add first part of response
-			cachedNodes.add(ourResponse);
-			ourResponse.setVisited(true);
-			
-			//GET FOLLOW UP QUESTION
-			if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
-				changeTopic();
-			} else {
-				boolean found = false;
-				for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
-					if(!ourResponse.getNeighbours().get(i).isVisited()) {
-						this.currentNode = (Question)ourResponse.getNeighbours().get(i);
-						found = true;
-						break;
-					}
-				}
-				if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
-			}
-			
-			toReturn.add(this.currentNode.getMessage());//adding question to response!
-			this.currentNode.setVisited(true);
-			this.cachedNodes.add(this.currentNode);
+			//GETTING RESPONSE & ASKING FOLLOW UP
+			toReturn.addAll(formResponseAndAskQuestion(mostLikely));
 			
 		} else {//if we can't find the question
 			Question subjectsQ = null;
 			subjectsQ = findQuestion(message);
+			
 			if(subjectsQ!=null) {//if we've found something
 				
-				this.cachedNodes.add(subjectsQ);
+				this.cachedNodes.add(subjectsQ);//move to this node
 				subjectsQ.setVisited(true);
-				//TODO if found do same as above :)
+				
+				//GETTING RESPONSE & ASKING FOLLOW UP
+				toReturn.addAll(formResponseAndAskQuestion(subjectsQ));
 			} else {
 				throw new IDontKnowWhatToSayException("Can't find a suitable question in entire dataset");//this brings us back up, this shouldn't hopefully ever be needed
 			}
