@@ -1,0 +1,206 @@
+﻿# the apostrophes are missing deliberately as they are not likely to be present a lot of the time
+# except in words like "we'll" and "I'll"
+# these are used more as punctuation so may be better off being changed to a token for sentiment analysis?
+lmao, laughing my ass off
+lol, laughing out loud
+roflmao, rolling on the floor laughing
+smh, shaking my head
+wtf, what the fuck
+wth, what the hell
+jk, just kidding
+x, kiss
+o, hug
+xo, hug and kiss
+#ox, male cattle
+# here are some emoticons cos they're basically the same
+:), smile
+:(, frown
+# here are the rest in sort-of alphabetical order
+2, to, too
+2moro, tomorrow
+2nite, tonight
+aint, am not, is not, are not, has not, have not
+amnt, am not
+arent, are not
+bb, baby
+brb, be right back
+btw, by the way
+b4n, bye for now
+bcnu, be seeing you
+bff, best friends forever
+cant, cannot
+cos, because
+couldve, could have
+couldnt, could not
+couldntve, could not have
+cya, see you
+didnt, did not
+doesnt, does not
+dont, do not
+gonna, going to
+gotta, got to
+gr8, great
+hadnt, had not
+hadntve, he had not have
+hasnt, has not
+hasntve, has not have
+havent, have not
+hed, he had, he would
+hednt, he had not, he would not
+hedntve, he had not have, he would not have
+hedve, he would have
+he'll, he shall, he will
+hes, he has, he is
+hesnt, he has not, he is not
+howd, how did, how would
+howll, how will
+hows, how has, how is, how does
+I'd, I had, I would
+Idnt, I had not, I would not
+Idntve, I had not have, I would not have
+Idve, I would have
+I'll, I shall, I will
+Im, I am
+Ive, I have
+Ivent, I have not
+isnt, is not
+itd, it had, it would
+itdnt, it had not, it would not
+itdntve, it had not have, it would not have
+itdve, it would have
+itll, it shall, it will
+it's, it has, it is
+itsnt, it has not, it is not
+lets, let us
+m8, mate
+maam, madam
+mightnt, might not
+mightntve, might not have
+mightve, might have
+mustnt, must not
+mustntve, must not have
+mustve, must have
+neednt, need not
+notve, not have
+oclock, of the clock
+ol, old
+oughtnt, ought not
+oughtntve, ought not to have
+shant, shall not
+shed, she had, she would
+shednt, she had not, she would not
+shedntve, she had not have, she would not have
+shedve, she would have
+she'll, she shall, she will
+shes, she has, she is
+shesnt, she has not, she is not
+shouldve, should have
+shouldnt, should not
+shouldntve, should not have
+somebodyd, somebody had, somebody would
+somebodydnt, somebody had not, somebody would not
+somebodydve, somebody would have
+somebodydntve, somebody had not have, somebody would not have
+somebodyll, somebody shall, somebody will
+somebodys, somebody has, somebody is
+someoned, someone had, someone would
+someonednt, someone had not, someone would not
+someonedntve, someone had not have, someone would not have
+someonedve, someone would have
+someonell, someone shall, someone will
+someones, someone has, someone is
+somethingd, something had, something would
+somethingdnt, something had not, something would not
+somethingdntve, something had not have, something would not have
+somethingdve, something would have
+somethingll, something shall, something will
+somethings, something has, something is
+sup, whats up
+thatll, that will
+thats, that has, that is
+thatd, that would, that had
+thered, there had, there would
+therednt, there had not, there would not
+theredntve, there had not have, there would not have
+theredve, there would have
+therere, there are
+theres, there has, there is
+theyd, they had, they would
+theydnt, they had not, they would not
+theydntve, they had not have, they would not have
+theydve, they would have
+theydvent, they would have not
+theyll, they shall, they will
+theyllntve, they will not have
+theyllvent, they will have not
+theyre, they are
+theyve, they have
+theyvent, they have not
+tis, it is
+twas, it was
+wanna, want to
+wasnt, was not
+wed, we had, we would
+wedve, we would have
+wednt, we had not, we would not
+wedntve, we had not have, we would not have
+well, we will
+wellntve, we will not have
+were, we are
+weve, we have
+werent, were not
+whatd, what did
+whatll, what shall, what will
+whatre, what are
+whats, what has, what is, what does
+whatve, what have
+whens, when has, when is
+whered, where did
+wheres, where has, where is, where does
+whereve, where have
+whod, who would, who had, who did
+whodve, who would have
+wholl, who shall, who will
+who're, who are
+whos, who has, who is, who does
+whove, who have
+whyd, why did
+whyll, why will
+whyre, why are
+whys, why has, why is, why does
+wont, will not
+wontve, will not have
+wouldve, would have
+wouldnt, would not
+wouldntve, would not have
+yall, you all
+yall, you all
+yalldve, you all would have
+yalldntve, you all would not have
+yallll, you all will
+yallont, you all will not
+yallllve, you all will have
+yallre, you all are
+yallllvent, you all will have not
+youd, you had, you would
+youdve, you would have
+youll, you shall, you will
+youre, you are
+yourent, you are not
+youve, you have
+u, you
+ur, you are, your
+# screw alphabetical order right about here
+ily, I love you
+imho, in my humble opinion, in my honest opinion
+irl, in real life
+omg, oh my god
+iso, in search of
+pov, point of view
+tbh, to be honest
+tbf, to be fair
+thx, thank you
+tx, thank you
+thks, thank you
+tlc, tender loving care
+tmi, too much information
