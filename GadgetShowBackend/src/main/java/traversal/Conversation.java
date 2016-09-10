@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import data_structures.*;
+import exceptions.IDontKnowWhatToSayException;
 
 /**this class will contain the code to allow
  * the responding to user input messages
@@ -14,9 +15,13 @@ import data_structures.*;
  */
 public class Conversation {
 	
+	//CONSTANTS
 	private final String INITIAL_TOPIC_NAME_IF_STARTING = "greetings";//this may change 
 	private final String END_TOPIC = "goodbyes";//this may change
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
+	private final double FOUND_QUESTION_THRESHOLD = 0.9;//will need tweaking again, used to improve efficiency of searching through everything
+	
+	//FIELDS/ATTRIBUTES
 	private EvaluatedNode currentNode;//node we are currently at
 	private String currentTopic;//useful for accessing questions 
 	private String previousTopic;
@@ -72,7 +77,7 @@ public class Conversation {
 			else { //(Q)(RQ) where first Q by subject
 				return startAtResponseResponse(message);
 			}
-		} catch(IndexOutOfBoundsException | NullPointerException e) {//for now 
+		} catch(IndexOutOfBoundsException | NullPointerException | IDontKnowWhatToSayException e) {//all I'm catching for now
 			return iDontKnowWhatToTalkAbout();
 		}
 		
@@ -170,17 +175,66 @@ public class Conversation {
 		return new ArrayList<String>();
 	}
 	
+	/**method sorts an array of topics into those not visited first, then those visited second
+	 * 
+	 * @param allTopics an array of all of the topic titles
+	 * @return an array list with the topics rearranged by not visited, visited
+	 */
+	private ArrayList<String> sortByVisited(String[] allTopics) {
+		//a topic being visited in this instance means the opening question of said topic is classed as visited
+		ArrayList<String> notVisited = new ArrayList<String>();
+		ArrayList<String> visited = new ArrayList<String>();
+		for(int i = 0; i < allTopics.length; i++) {
+			if(this.graphs.get(allTopics[i]).isVisited()) {
+				visited.add(allTopics[i]);
+			}
+			else {
+				notVisited.add(allTopics[i]);
+			}
+		}
+		notVisited.addAll(visited);//now I am looking in a more optimal order of not visited then visited
+		return notVisited;
+	}
+	
+	/**method will deal with when we have to search across entire data set for a a question entered by the user
+	 * i have tried to order this in such a way that we try and find the question as quickly as possible
+	 * @param message the message entered by the user
+	 * @return either a suitable question or null, I have accounted for the null return elsewhere
+	 */
+	private Question findQuestion(String message) {
+		double currentMax = CONFIDENCE_THRESHOLD;
+		Question currentBest = null;
+		Set<String> keys = this.questionList.keySet();
+		String[] allTopics = keys.toArray(new String[keys.size()]);//array of all topics
+		ArrayList<String> allTopicsSorted = sortByVisited(allTopics);
+		for(int i = 0; i < allTopicsSorted.size(); i++) {
+			ArrayList<Question> topicQs = this.questionList.get(allTopicsSorted.get(i));
+			for(int j = 0; j < topicQs.size(); j++) {
+				double currentVal = topicQs.get(j).evaluate(message);
+				if(currentVal > FOUND_QUESTION_THRESHOLD) {//this would suggest we are certain
+					return topicQs.get(j);
+				} else if(currentVal > currentMax) {//standard maximum search
+					currentMax = currentVal;
+					currentBest = topicQs.get(j);
+				}
+			}
+		}
+		
+		return currentBest;
+	}
+	
 	/**method will carry out a round of traversing the tree, if we were at a response at the start
 	 * i.e. we have been asked a question
 	 * @String message the user input message
 	 * @return the possibly multiple strings which form our response
+	 * @throws IDontKnowWhatToSayException if something goes really wrong
 	 */
-	private ArrayList<String> startAtResponseResponse(String message) {
+	private ArrayList<String> startAtResponseResponse(String message) throws IDontKnowWhatToSayException {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		//attempting to find all questions!
 		ArrayList<Question> questions = this.questionList.get(this.currentTopic);//will get all available questions on a topic
 		
-		//finding the most likely question being asked
+		//FINDING THE MOST LIKELY QUESTION BEING ASKED
 		Question mostLikely = null;
 		double currentMax = CONFIDENCE_THRESHOLD;
 		for(int i = 0; i < questions.size(); i++) {//simply finding max likelihood in array list
@@ -195,6 +249,7 @@ public class Conversation {
 		    //'moving' to this node so to speak
 			this.cachedNodes.add(mostLikely);
 			mostLikely.setVisited(true);
+			//GETTING RESPONSE
 			Response ourResponse = null;
 			for(int i = 0; i < mostLikely.getNeighbours().size(); i++) {//looping through to get our response
 				if(((Response)mostLikely.getNeighbours().get(i)).shouldIRespondWithThis()) {
@@ -204,12 +259,13 @@ public class Conversation {
 			}
 			
 			if(ourResponse == null) {//this is just to cover us but should never happen!!!
-				ourResponse = (Response)mostLikely.getNeighbours().get(0);
+				ourResponse = (Response)mostLikely.getNeighbours().get(0);//if this goes wrong there are further fail-safes at higher levels
 			}
 			toReturn.add(ourResponse.getMessage());//add first part of response
 			cachedNodes.add(ourResponse);
 			ourResponse.setVisited(true);
 			
+			//GET FOLLOW UP QUESTION
 			if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
 				changeTopic();
 			} else {
@@ -221,7 +277,7 @@ public class Conversation {
 						break;
 					}
 				}
-				if(!found){changeTopic();}
+				if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
 			}
 			
 			toReturn.add(this.currentNode.getMessage());//adding question to response!
@@ -229,9 +285,16 @@ public class Conversation {
 			this.cachedNodes.add(this.currentNode);
 			
 		} else {//if we can't find the question
-			//TODO search for question within other topics
-			//TODO if found do same as above :)
-			//TODO otherwise use  desperation tactics
+			Question subjectsQ = null;
+			subjectsQ = findQuestion(message);
+			if(subjectsQ!=null) {//if we've found something
+				
+				this.cachedNodes.add(subjectsQ);
+				subjectsQ.setVisited(true);
+				//TODO if found do same as above :)
+			} else {
+				throw new IDontKnowWhatToSayException("Can't find a suitable question in entire dataset");//this brings us back up, this shouldn't hopefully ever be needed
+			}
 		}
 		return toReturn;
 	}
