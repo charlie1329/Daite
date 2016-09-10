@@ -2,6 +2,8 @@ package traversal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 import data_structures.*;
 
@@ -13,6 +15,7 @@ import data_structures.*;
 public class Conversation {
 	
 	private final String INITIAL_TOPIC_NAME_IF_STARTING = "greetings";//this may change 
+	private final String END_TOPIC = "goodbyes";//this may change
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
 	private EvaluatedNode currentNode;//node we are currently at
 	private String currentTopic;//useful for accessing questions 
@@ -59,14 +62,18 @@ public class Conversation {
 	 * @return an array list of string, which, when combined give us the full response
 	 */
 	public ArrayList<String> respond(String message) {
-		this.cachedNodes = new ArrayList<EvaluatedNode>();
-		this.cachedNodes.add(this.currentNode);//cache start node
-		this.previousTopic = this.currentTopic;
-		if(this.currentNode.isQuestion()) {//either (Q)(RQ)(ARQ) or (Q)(R)(AQ) where first Q by AI
-			return startAtQuestionResponse(message);
-		}
-		else { //(Q)(RQ) where first Q by subject
-			return startAtResponseResponse(message);
+		try {	
+			this.cachedNodes = new ArrayList<EvaluatedNode>();
+			this.cachedNodes.add(this.currentNode);//cache start node
+			this.previousTopic = this.currentTopic;
+			if(this.currentNode.isQuestion()) {//either (Q)(RQ)(ARQ) or (Q)(R)(AQ) where first Q by AI
+				return startAtQuestionResponse(message);
+			}
+			else { //(Q)(RQ) where first Q by subject
+				return startAtResponseResponse(message);
+			}
+		} catch(IndexOutOfBoundsException | NullPointerException e) {//for now 
+			return iDontKnowWhatToTalkAbout();
 		}
 		
 	}
@@ -114,7 +121,34 @@ public class Conversation {
 	 * 
 	 */
 	private void changeTopic() {
-		//TODO fill in! remember topic attribute!//should change current node!!!
+		
+		int noOfTopics = this.questionList.size();//size of hash map
+		int attempts = 0;//adding a fail-safe
+		Random randomGenerator = new Random();
+		Set<String> topicsSet = this.questionList.keySet();//just get topic names
+		String[] topicsArr = topicsSet.toArray(new String[topicsSet.size()]);//integer indexed array of topic names
+		boolean foundTopic = false;//loop condition
+		
+		while(!foundTopic) {//will loop till we find a safe topic
+			
+			int index = randomGenerator.nextInt(noOfTopics);//getting random integer for array index
+			attempts++;
+			String topicChosen = topicsArr[index];
+			boolean notOpenerOrCloser = !(topicChosen.equals(INITIAL_TOPIC_NAME_IF_STARTING) || topicChosen.equals(END_TOPIC));
+			boolean notVisited = !(this.graphs.get(topicChosen).isVisited());
+			
+			if(notOpenerOrCloser && notVisited) { //if both evaluate to true we have found our new topic
+				foundTopic = true;
+				this.currentTopic = topicChosen;//set current topic
+				this.currentNode = this.graphs.get(topicChosen);//set current node
+			}
+			
+			if(!foundTopic && attempts == noOfTopics) {//if we're all out of topics, end the conversation
+				foundTopic = true;
+				this.currentTopic = END_TOPIC;
+				this.currentNode = this.graphs.get(this.currentTopic);
+			}
+		}
 	}
 	
 	/**method will carry out a round of traversing the tree, if we were at a question at the start
@@ -123,6 +157,15 @@ public class Conversation {
 	 * @return the possibly multiple strings which form our response
 	 */
 	private ArrayList<String> startAtQuestionResponse(String message) {
+		//TODO fill in!
+		return new ArrayList<String>();
+	}
+	
+	/**method is a final measure against something going really, really wrong
+	 * 
+	 * @return a message in the case of something going horrendously wrong
+	 */
+	private ArrayList<String> iDontKnowWhatToTalkAbout() {
 		//TODO fill in!
 		return new ArrayList<String>();
 	}
@@ -183,6 +226,7 @@ public class Conversation {
 			
 			toReturn.add(this.currentNode.getMessage());//adding question to response!
 			this.currentNode.setVisited(true);
+			this.cachedNodes.add(this.currentNode);
 			
 		} else {//if we can't find the question
 			//TODO search for question within other topics

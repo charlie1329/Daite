@@ -1,11 +1,17 @@
 package psychology;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
+/**class for formalising semi formal language
+ * 
+ * @author Oliver Gratton
+ *
+ */
 public class Formaliser
 {
 	private String cfilename = "miscFiles/contractions/contractions.csv";

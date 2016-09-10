@@ -9,6 +9,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
+/**class for choosing most appropriate names
+ * 
+ * @author Oliver Gratton
+ *
+ */
 public class NameMatcher
 {
 	private static boolean M = true;
