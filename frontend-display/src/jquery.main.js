@@ -5,16 +5,15 @@
 (function ($) {
 
     /* Variables */
-    var my_username,
-        my_age,
-        my_gender, match_username,
+    var my_username, my_age, my_gender, 
+        match_username,
 
     // Typing variables
         typing = false,
         timeout = undefined,
 
-        socket = io.connect("http://duk.im:6969/chat");
-    //  socket = io.connect("http://localhost:6969/chat");
+    //  socket = io.connect("http://duk.im:6969/chat");
+        socket = io.connect("http://localhost:6969/chat");
 
 
     /* ON LOAD */
@@ -30,7 +29,6 @@
             yes_no_dialog = $('#yes-no-dialog'),
             no_match_dialogue = $('#no-match-dialog');
         
-
         warning_dialog.dialog({
             autoOpen: false,
             draggable: false,
@@ -91,12 +89,12 @@
             if (e.which != 13) {
                 if (typing === false) {
                     typing = true;
-                    socket.emit("typing", true);
+                    socket.emit("isTyping", true);
                 }
                 else {
-                    // Checks if typing every 3 seconds
+                    // Checks if typing every second
                     clearTimeout(timeout);
-                    timeout = setTimeout(typingTimeout, 3000);
+                    timeout = setTimeout(typingTimeout, 1000);
                 }
             }
             // If key is enter, send message
@@ -136,7 +134,6 @@
             }
         }
 
-
         // Show about dialogue
         $('.about-button').click(function () {
             $('.about-dialogue').fadeIn();
@@ -171,8 +168,34 @@
         );
     });
 
-    /* Sending and Receiving Messages */
+    // --- SERVER LISTENERS ---
     
+    /* 
+     * Matched on the server side 
+     *
+     * @data contains match's username and a room ID (not sure if we need it on the client side,
+     * maybe it can be used on a better message origin/acknowledgement check 
+     */ 
+    socket.on("matchfound", function (data) {
+        match_username = data.matchUsername;
+        var roomID = data.roomID;
+
+        // Debugging stuff
+        // console.log("Matched. Room ID: " + console.log(roomID) + ", match username: " +console.log(match_username));
+
+        // Stop waiting animation/text;
+        $('.enter-details').slideUp();
+
+        // Display match's username
+        $('#chat-info').text(match_username);
+
+        //Display chat
+        showChat();
+
+        // TODO start timer?
+    });
+
+    /* Sending and Receiving Messages */
     socket.on("message", function (data) {
         if (data.username == my_username) {
             // Server sent the message back to us, so we know it was sent
@@ -184,6 +207,22 @@
         }
         else {
             receiveMessage(data);
+        }
+    });
+
+    /*
+     * Toggle the typing indicator
+     */
+    // Default fade animation time seemed to be to much for very fast typing and lagged behind,
+    // but now doesn't look like an animation anymore. TODO play with fadeAnimationTime to find a compromise
+    var fadeAnimationTime = 50;
+    socket.on("isTyping", function (data) {
+        console.log("other user is typing");
+        if (data == true) {
+            $('.typing-indicator').fadeIn(fadeAnimationTime)
+        }
+        else {
+            $('.typing-indicator').fadeOut(fadeAnimationTime);
         }
     });
     
@@ -243,18 +282,8 @@
     // When user stops typing, reset the variables and tell the server
     function typingTimeout() {
         typing = false;
-        socket.emit("typing", false);
+        socket.emit("isTyping", false);
     }
-
-    // If receives an isTyping from the socket, toggles the typing indicator
-    socket.on("isTyping", function (data) {
-        if (data.isTyping) {
-            $('.typing-indicator').fadeIn()
-        }
-        else {
-            $('.typing-indicator').fadeOut();
-        }
-    });
 
     /* MISC FUNCTIONS */
     function endConvo() {
@@ -343,26 +372,20 @@
 
                 if (my_age && my_gender) {
                     $('#details-continue').prop('disabled', true).html('Matching...');
-                    setTimeout(function () {
-                        $('.enter-details').slideUp();
-                    }, 500); //simulate connecting with back-end
-                    setTimeout(getMatch, 1500);
+                    // TODO add a timeout, but in our given scenario everyone will be eventualy matched
+                    // maybe implement a request acknowledgement on the server side?
+                    getMatch();
                 }
             })
         }
         
-        // Communicates with the server to get a match
+        // Request a match from the server
         function getMatch() {
-            
             socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-            socket.emit("joinroom", "test");
+            // TODO maybe here is a good idea to display some waiting animation until server replays with a match
             
-            // Should be expanded later to receive the match from the server and if not give the user options
-            showChat();
-            
-            // Also need a function to receive the match details so can set match name
         }
-        
+
         // Gives the user options in the event a match can't be found
         function retryMatch() {
             
@@ -387,18 +410,13 @@
                     ])
                     .dialog('open');
         }
-
+    })
         // Show chat view
         function showChat() {
             $('.chat-section').slideDown();
 
             // Bring focus to text-entry box
             $("#type-message").focus();
-
-            // Registers the specific client
-            //socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-            //socket.emit("joinroom", "test");
-
 
             // Start timer
             /*
@@ -421,5 +439,4 @@
              }, 1000);
              */
         }
-    })
 })(jQuery);
