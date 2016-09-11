@@ -195,7 +195,20 @@ public class Conversation {
 		
 		//first see if (R) or (RQ)
 		ArrayList<String> splitUp = RQOrR(message);
-		if(splitUp.size() == 2) {//(RQ)
+		
+		if(splitUp.size() == 2) {//(RQ), the final Q will be based on our response to the Q in RQ, hence making everything flow better and making significantly less code
+			Response foundResponse = getResponseObject(splitUp.get(0));//this will be the R of RQ
+			if(foundResponse != null){ //if we found a response, we can give an acknowledgement
+				this.cachedNodes.add(foundResponse);//move to node 
+				foundResponse.setVisited(true);
+				toReturn.add(foundResponse.getAck());//add acknowledgement to return list
+			}
+			
+			try {
+				toReturn.addAll(startAtResponseResponse(splitUp.get(1)));//I have the A of ARQ, this will get me the RQ from the subjects Q!
+			} catch(Exception e) { //in this case I really don't want to reach the i don't know what to say scenario since I already have part of a response
+				//just need to catch, nothing else needed as I already have part of a response which is satisfactory I reckon
+			}
 			
 		} else if(splitUp.size() == 1) {//(R)
 			
