@@ -156,14 +156,80 @@ public class Conversation {
 		}
 	}
 	
+	/**method will take a response and get the corresponding response object if we can
+	 * 
+	 * @param response the response from the subject
+	 * @return the response if there is one (null if not) 
+	 * @throws IDontKnowWhatToSayException if something bad happens
+	 */
+	private Response getResponseObject(String response) throws IDontKnowWhatToSayException {
+		if(this.currentNode.isQuestion()) {
+			
+			ArrayList<BaseNode> responses = this.currentNode.getNeighbours();//getting the responses to check through
+			Response bestSoFar = null;
+			double currentMax = CONFIDENCE_THRESHOLD;
+			for(int i = 0; i < responses.size(); i++) {
+				Response currentR = (Response)responses.get(i);
+				double currentVal = currentR.evaluate(response);
+				if(!currentR.shouldIRespondWithThis()) {//don't want to include our response here!
+					if(currentVal > currentMax) {
+						currentMax = currentVal;
+						bestSoFar = currentR;
+					}
+				}
+			}
+			return bestSoFar;
+		} else {//this shouldn't happen but I am intentionally being very careful
+			throw new IDontKnowWhatToSayException("trying to find response for node that isn't question");
+		}
+	}
+	
 	/**method will carry out a round of traversing the tree, if we were at a question at the start
 	 * i.e. we have just asked a question
 	 * @param message the user input message
 	 * @return the possibly multiple strings which form our response
+	 * @throws IDontKnowWhatToSayException if something stops us from forming a reasonable response
 	 */
-	private ArrayList<String> startAtQuestionResponse(String message) {
-		//TODO fill in!
-		return new ArrayList<String>();
+	private ArrayList<String> startAtQuestionResponse(String message) throws IDontKnowWhatToSayException {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		//first see if (R) or (RQ)
+		ArrayList<String> splitUp = RQOrR(message);
+		if(splitUp.size() == 2) {//(RQ)
+			
+		} else if(splitUp.size() == 1) {//(R)
+			
+			Response foundResponse = getResponseObject(splitUp.get(0));
+			if(foundResponse != null) {
+				this.cachedNodes.add(foundResponse);
+				foundResponse.setVisited(true);
+				toReturn.add(foundResponse.getAck());//adding acknowledgement
+				if(foundResponse.shouldIChangeTopic()) {//if I should change topic
+					changeTopic();//do as response suggests
+				} else {
+					ArrayList<BaseNode> followUps = foundResponse.getNeighbours();//should be all follow up questions
+					boolean foundQ = false;//gives status of question finding
+					for(int i = 0; i < followUps.size(); i++) {
+						if(!((Question)followUps.get(i)).isVisited()) {
+							this.currentNode = (Question)followUps.get(i);
+							foundQ = true;
+							break;
+						}
+					}
+					if(!foundQ) {changeTopic();}
+				}
+			} else {//if null we can't find the response so we will change topic to get back on track!
+				changeTopic();//change the topic out of desperation basically
+			}
+			
+			this.cachedNodes.add(this.currentNode);//moving nodes
+			this.currentNode.setVisited(true);
+			toReturn.add(this.currentNode.getMessage());
+			
+		} else {//in serious problems if we reach here, should only be 1 or 2
+			throw new IDontKnowWhatToSayException("issue splitting up subject's response");
+		}
+		return toReturn;
 	}
 	
 	/**method is a final measure against something going really, really wrong
@@ -171,6 +237,18 @@ public class Conversation {
 	 * @return a message in the case of something going horrendously wrong
 	 */
 	private ArrayList<String> iDontKnowWhatToTalkAbout() {
+		//TODO fill in!
+		return new ArrayList<String>();
+	}
+	
+	/**method will take a response from the user and see whether the 
+	 * question contains just a response, or a response AND a question
+	 * if there is a question we will split the message into parts (hopefully)
+	 * in this method any acknowledgements in the message are rendered useless for the purpose of this code
+	 * @param message the message to split
+	 * @return the message split up into an array list
+	 */
+	private ArrayList<String> RQOrR(String message) {
 		//TODO fill in!
 		return new ArrayList<String>();
 	}
