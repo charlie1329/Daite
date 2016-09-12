@@ -54,28 +54,22 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 }
 
 .chat-buttons {
-    height: 40px;
-    margin-bottom: 10px;
-    color: black;
-    text-align: center;
-    line-height: 40px;
-    font-size: 16px;
-    display: block;
-}
-
-.c-b {
-    padding-left: 50px;
-    padding-right: 50px;
-    align-items: center;
+    height: 3em;
+    font-size: 18px;
     display: flex;
-    color: #04756F;
+    justify-content: space-around;
+    text-align: center;
+    color: black;
 }
 
-#timer {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: inline;
-    font-size: 20px;
+.chat-button {
+    margin: 10px;
+}
+
+#end
+{
+    float: right;
+    margin: 5px 0 10px 0;
 }
 
 .chat-window {
@@ -142,7 +136,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 }
 */
 
-#typing_indicator {
+#typing-indicator {
     display: none;
 }
 
@@ -150,7 +144,6 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     font-size: 20px;
     float: left;
     height: 50px;
-    border: solid .25em #FBFBFF;
     border-radius: 1em;
 }
 
