@@ -23,7 +23,6 @@ import logger.ConvoLogger;
 public class BuildHashOfGraphs {
 	
 	private final static int HOW_MANY_THREADS = 10;//how many worker threads will be used for the thread pool
-	private static HashMap<String,ArrayList<Question>> questionList = new HashMap<String,ArrayList<Question>>();//necessary for traversal
 
 	/**method will retrieve all JSON files in the data folder of this repository
 	 * 
@@ -137,28 +136,15 @@ public class BuildHashOfGraphs {
 		}
 	}
 	
-	/**simple get method for question list
-	 * 
-	 * @return the question list
-	 */
-	public static HashMap<String,ArrayList<Question>> getQuestionList() {
-		return questionList;
-	}
-	
-	/**method wipes the question list since it's static
-	 * 
-	 */
-	public static void wipeQuestionList() {
-		questionList = new HashMap<String,ArrayList<Question>>();
-	}
 	
 	/**this method will build up our hash map by building each topic in a separate thread using thread pools
 	 * 
 	 * @param logger our on-screen logger for how the AI is doing
-	 * @return the full data structure used for conversations
+	 * @return the full data structure(s) used for conversations
 	 */
-	public static HashMap<String,Question> build(ConvoLogger logger) {
+	public static BuildWrapper build(ConvoLogger logger) {
 		HashMap<String,Question> convoMap = new HashMap<String,Question>();//the data structure itself
+		HashMap<String,ArrayList<Question>> questionList = new HashMap<String,ArrayList<Question>>();
 		ExecutorService threadPool = Executors.newFixedThreadPool(HOW_MANY_THREADS);
 		String[] files = getJSONFiles();
 		
@@ -226,7 +212,7 @@ public class BuildHashOfGraphs {
 			logger.logMessage("interrupted while building");//if interrupted
 		}
 		logger.logMessage("Finished building of Hash Map");
-		return convoMap;
+		return new BuildWrapper(convoMap,questionList);
 	}
 	
 	public static void main(String[] args) {
