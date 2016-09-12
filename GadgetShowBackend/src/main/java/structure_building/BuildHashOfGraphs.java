@@ -72,15 +72,15 @@ public class BuildHashOfGraphs {
 		return keys;
 	}
 	
-	/**method will get the follow ups into int array form
+	/**method will get the follow ups into String array form
 	 * 
 	 * @param arr the json array
-	 * @return the json array as int array
+	 * @return the json array as String array
 	 */
-	private static int[] getFollowUps(JSONArray arr) {
-		int[] converted = new int[arr.size()];
+	private static String[] getFollowUps(JSONArray arr) {
+		String[] converted = new String[arr.size()];
 		for(int i = 0; i < arr.size(); i++) {
-			converted[i] = ((Long)arr.get(i)).intValue();//JSON gives long not int!
+			converted[i] = (String)arr.get(i);
 		}
 		return converted;
 	}
@@ -107,9 +107,9 @@ public class BuildHashOfGraphs {
 			
 			JSONArray followUp = null;
 			try {followUp = (JSONArray)currentR.get("followUp");}catch(Exception e){}
-			int[] intFollowUps = (followUp==null)?null:getFollowUps(followUp);
+			String[] hexFollowUps = (followUp==null)?null:getFollowUps(followUp);
 			
-			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response,intFollowUps);//create response node
+			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response,hexFollowUps);//create response node
 			builtRs.add(newResponse);//add to list of responses
 			parent.addNeighbour(newResponse);//add as child of question
 		}
@@ -125,9 +125,9 @@ public class BuildHashOfGraphs {
 		for(int i = 0; i < topicRs.size(); i++) {
 			for(int j = 0; j < topicQs.size(); j++) {
 				 if(!topicRs.get(i).shouldIChangeTopic()) {//everything bar switch topic nodes have follow ups
-					int[] links = topicRs.get(i).getFollowUp();
+					String[] links = topicRs.get(i).getFollowUps();
 					for(int k = 0; k < links.length; k++) {
-						if(links[k] == topicQs.get(j).getID()) {
+						if(links[k].equals(topicQs.get(j).getID())) {
 							topicRs.get(i).addNeighbour(topicQs.get(j));
 							break;
 						}
@@ -188,7 +188,7 @@ public class BuildHashOfGraphs {
 							boolean isOpener = false;//is this the opening question
 							try {isOpener = (boolean)question.get("isOpener");}catch(Exception e){}
 							
-							int qID = ((Long)question.get("id")).intValue();//will always have a question ID (come through as long)
+							String qID = (String)question.get("id");//will always have a question ID
 							
 							Question newQuestion = new Question(message, keywords, isOpener, usedByAI, qID);
 							if(newQuestion.isOpener()) {opener = newQuestion;}//should only happen once

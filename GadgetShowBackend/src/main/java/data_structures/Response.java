@@ -14,7 +14,7 @@ public class Response extends EvaluatedNode {
 	private boolean ourResponse;//if we are asked the parent question, should we answer with this response
 	private Question parent;//the parent question that can be answered with this response
 	private String acknowledgement;//the third step to a round of conversation
-	private int[] followUp; //an int array with follow up question id's
+	private String[] followUp; //a String array with follow up question id's; these are hex strings
 	
 	/**same as super class constructor but added new fields into constructor
 	 * 
@@ -26,7 +26,7 @@ public class Response extends EvaluatedNode {
 	 * @param ack third step acknowledgement
 	 * @param followUp the array of question id's
 	 */
-	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack, int[] followUp) {
+	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack, String[] followUp) {
 		super(msg,keys);
 		this.changeTopic = changeTopic;
 		this.ourResponse = ourResponse;
@@ -46,7 +46,7 @@ public class Response extends EvaluatedNode {
 	 * @param ack see above
 	 * @param followUp see above
 	 */
-	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack, int[] followUp) {
+	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack, String[] followUp) {
 		super(msg,keys,neigh);
 		this.changeTopic = change;
 		this.ourResponse = ours;
@@ -91,7 +91,7 @@ public class Response extends EvaluatedNode {
 	 * 
 	 * @return array of question ids
 	 */
-	public int[] getFollowUp() {
+	public String[] getFollowUps() {
 		return this.followUp;
 	}
 	

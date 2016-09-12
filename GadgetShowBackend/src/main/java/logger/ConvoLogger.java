@@ -35,7 +35,7 @@ public class ConvoLogger extends JFrame {
 		
 		this.setTitle("Gadget Show Bot Logger");
 		this.setSize(600, 400);
-		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);//when we close window, we may still want bot to be running
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//when we close window, we may still want bot to be running
 		this.add(this.scroller);//add scroll pane
 		
 		try {

@@ -78,7 +78,8 @@ public class Conversation {
 				return startAtResponseResponse(message);
 			}
 		} catch(IndexOutOfBoundsException | NullPointerException | IDontKnowWhatToSayException e) {//all I'm catching for now
-			return iDontKnowWhatToTalkAbout();
+			return iDontKnowWhatToTalkAbout();//responds with awkward laugh followed by new question on new topic
+			//it may make us seem slightly strange but is better than a fake disconnect or something similar
 		}
 		
 	}
@@ -246,12 +247,21 @@ public class Conversation {
 	}
 	
 	/**method is a final measure against something going really, really wrong
-	 * 
+	 * the consensus on this was to have an awkward laugh ("hahaha") followed by a new question on a new topic
 	 * @return a message in the case of something going horrendously wrong
 	 */
 	private ArrayList<String> iDontKnowWhatToTalkAbout() {
-		//TODO fill in!
-		return new ArrayList<String>();
+		ArrayList<String> toReturn = new ArrayList<String>();//array list of multiple parts of response
+		
+		toReturn.add("hahaha");//awkward laugh
+		
+		changeTopic();//move to new question
+		this.cachedNodes.add(this.currentNode);
+		this.currentNode.setVisited(true);
+		
+		toReturn.add(this.currentNode.getMessage());//ask the new question
+		
+		return toReturn;
 	}
 	
 	/**method will take a response from the user and see whether the 
