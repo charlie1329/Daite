@@ -20,6 +20,7 @@ public class Conversation {
 	private final String END_TOPIC = "goodbyes";//this may change
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
 	private final double FOUND_QUESTION_THRESHOLD = 0.9;//will need tweaking again, used to improve efficiency of searching through everything
+	private final String[] PRIORITISED_PUNCTUATION = new String[]{".","!",",",":)",";)",":(",";",":"};//emoticons could quite commonly be used to end a sentence
 	
 	//FIELDS/ATTRIBUTES
 	private EvaluatedNode currentNode;//node we are currently at
@@ -272,8 +273,33 @@ public class Conversation {
 	 * @return the message split up into an array list
 	 */
 	private ArrayList<String> RQOrR(String message) {
-		//TODO fill in!
-		return new ArrayList<String>();
+		ArrayList<String> splitUp = new ArrayList<String>();
+		
+		int findQMark = message.indexOf("?");//find if there is a question mark in the message
+		
+		if(findQMark == -1) {//if no q mark just return the whole message as one
+			splitUp.add(message);
+		} else {//i'm going to prioritise and look for certain 
+			for(int i = 0; i < PRIORITISED_PUNCTUATION.length; i++) {
+				int lastIndex = message.lastIndexOf(PRIORITISED_PUNCTUATION[i]);//looking for punctuation to split up message
+				if(lastIndex != -1 && lastIndex < findQMark) {//punctuation needs to be before question mark
+					
+					//this makes the assumption any response will be before a question (feel free to change if you have any better ideas!)
+					int breakIndex = lastIndex + PRIORITISED_PUNCTUATION[i].length();//splitting up message
+					String response = message.substring(0, breakIndex);
+					String question = message.substring(breakIndex);
+					
+					splitUp.add(response);//adding to returned list and returning early
+					splitUp.add(question);
+					return splitUp;
+				}
+			}
+			
+			splitUp.add(message);//in this case I can't find the split so I am left unable to do anything other than ignore the question altogether
+			
+		}
+		
+		return splitUp;
 	}
 	
 	/**method sorts an array of topics into those not visited first, then those visited second
