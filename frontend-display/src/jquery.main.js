@@ -13,8 +13,8 @@
         timeout = undefined,
         //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
-        socket = io.connect("http://duk.im:6969/chat");
-    //  socket = io.connect("http://localhost:6969/chat");
+    //    socket = io.connect("http://duk.im:6969/chat");
+        socket = io.connect("http://localhost:6969/chat");
 
 
     /* ON LOAD */
@@ -146,7 +146,8 @@
         });
 
         // End conversation dialogue
-        $('#end').click(function () {
+        $('#end').click(function (event) {
+                event.preventDefault();
                 yes_no_dialog.dialog('option', 'title', 'End conversation')
                     .text("Are you sure you want to end this conversation early?")
                     .dialog('option', 'buttons', [
@@ -184,14 +185,11 @@
         // Debugging stuff
         // console.log("Matched. Room ID: " + console.log(roomID) + ", match username: " +console.log(match_username));
 
-        // Stop waiting animation/text;
-        $('.enter-details').slideUp();
+        // Stop waiting animation/text and show the chat
+        $('.enter-details').slideUp(400, showChat);
 
         // Display match's username
         $('#chat-info').text(match_username);
-
-        //Display chat
-        showChat();
 
         // TODO start timer?
     });
@@ -226,14 +224,20 @@
             toggleTyping(false);
         }
     });
-    
+
+
     function toggleTyping(bool) {
             if(bool) {
+                //we want to re-insert the typing indicator into the right place!!
+                $('.message-list').append(
+                    "<li id='typing_indicator'>" +
+                    "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
+                    "</li>");
                 $('#typing_indicator').fadeIn();
                 autoScroll();
             }
             else {
-            $('#typing_indicator').fadeOut();  
+                $('#typing_indicator').fadeOut().remove();
             }     
     }
     
@@ -360,7 +364,7 @@
                 $('#name-continue').prop('disabled', true).html('Loading...');
                 setTimeout(function () {
                     $('.enter-name').slideUp();
-                }, 500); //simulate connecting with back-end
+                }, 500); //simulate work ;)
                 setTimeout(showDetails, 1000);
             }
         });
@@ -397,11 +401,6 @@
             
             // This section sohuld deal with a match, such as receiving the match name from the server and setting it
             // Need to get methods for this, for now, just goes straight to loading chat.
-            
-            setTimeout(function () {
-                $('.enter-details').slideUp();
-                }, 500); // Simulate connecting with back-end
-                     setTimeout(showChat, 1500);
         }
 
         // Gives the user options in the event a match can't be found
@@ -428,20 +427,19 @@
                     ])
                     .dialog('open');
         }
-    })
+    });
         // Show chat view
         function showChat() {
             $('.chat-section').slideDown();
 
             // Bring focus to text-entry box
             $("#type-message").focus();
-            
+
             // Creates message-typing indicator
-            $('.message-list').append("<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>");
             var typing_indicator = $('#typing_indicator');
 
             // DEBUG, DELETE ME LATER
-            $('#typing_indicator').fadeIn();
+            typing_indicator.fadeIn();
             
             // Start timer
             /*
