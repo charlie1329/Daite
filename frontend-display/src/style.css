@@ -48,7 +48,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .chat-box {
     display: block;
     background-color: #FBFBFF;
-    height: 65vh;
+    height: 64vh;
     border: none;
     border-radius: 1em;
 }
@@ -125,13 +125,33 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     border-radius: 1em;
 }
 
+/* Potentially obsolote, not removing yet
 .typing-indicator {
-    display: none;
-    color: #FBFBFF;
+    display: block;
+    color: black;
     font-size: 15px;
     position: fixed;
-    padding-top: 5px;
-    padding-left: 19px;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin-top: -105px;
+}
+
+.typing-indicator img {
+    height: 30px;
+    border-radius: 1em;
+}
+*/
+
+#typing_indicator {
+    display: none;
+}
+
+#type-gif {
+    font-size: 20px;
+    float: left;
+    height: 50px;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
 }
 
 /* Whole page */
@@ -270,12 +290,12 @@ table {
 }
 
 th {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 td {
     padding-right: 3vw;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .modal {
