@@ -7,30 +7,23 @@ package networking.chat;
  */
 public class MatchEvent {
 	
-	private ChatUser matchedUser;
-	private String room;
+	private String matchUsername;
+    private String roomID;
 
-	public MatchEvent() {}
-	
-	public MatchEvent(ChatUser matchedUser, String room) {
-		super();
-		this.matchedUser = matchedUser;
-		this.room = room;
-	}
+	public MatchEvent(String roomID, String matchUsername) {
+        this.matchUsername = matchUsername;
+        this.roomID = roomID;
+    }
 
-	public ChatUser getMatchedUser() {
-		return matchedUser;
+    public String getMatchUsername() {
+        return matchUsername;
+    }
+    
+	public String getRoomID() {
+		return roomID;
 	}
 	
-	public void setMatchedUser(ChatUser matchedUser) {
-		this.matchedUser = matchedUser;
-	}
-	
-	public String getRoom() {
-		return room;
-	}
-	
-	public void setRoom(String room) {
-		this.room = room;
+	public void setRoomID(String roomID) {
+		this.roomID = roomID;
 	}
 }
