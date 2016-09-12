@@ -11,9 +11,10 @@
     // Typing variables
         typing = false,
         timeout = undefined,
+        //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
-    //  socket = io.connect("http://duk.im:6969/chat");
-        socket = io.connect("http://localhost:6969/chat");
+        socket = io.connect("http://duk.im:6969/chat");
+    //  socket = io.connect("http://localhost:6969/chat");
 
 
     /* ON LOAD */
@@ -99,7 +100,7 @@
             }
             // If key is enter, send message
             else if (e.which == 13) {
-                sendMessage();
+                sendMessage();   
             }
         });
 
@@ -219,19 +220,30 @@
     socket.on("isTyping", function (data) {
         console.log("other user is typing");
         if (data == true) {
-            $('.typing-indicator').fadeIn(fadeAnimationTime)
+            toggleTyping(true);
         }
         else {
-            $('.typing-indicator').fadeOut(fadeAnimationTime);
+            toggleTyping(false);
         }
     });
+    
+    function toggleTyping(bool) {
+            if(bool) {
+                $('#typing_indicator').fadeIn();
+                autoScroll();
+            }
+            else {
+            $('#typing_indicator').fadeOut();  
+            }     
+    }
+    
     
     // Message received is from other user
     function receiveMessage(data) {
         // Get username and message
         var match_username = data.username,
             match_message = data.message;
-
+        
         // Add message to the chat window
         var received_message =
             "<li class='message'>" +
@@ -245,7 +257,7 @@
 
     // Send a message to the server
     function sendMessage() {
-
+        
         var type_message = $('#type-message');
 
         // Reset typing
@@ -382,8 +394,14 @@
         // Request a match from the server
         function getMatch() {
             socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-            // TODO maybe here is a good idea to display some waiting animation until server replays with a match
             
+            // This section sohuld deal with a match, such as receiving the match name from the server and setting it
+            // Need to get methods for this, for now, just goes straight to loading chat.
+            
+            setTimeout(function () {
+                $('.enter-details').slideUp();
+                }, 500); // Simulate connecting with back-end
+                     setTimeout(showChat, 1500);
         }
 
         // Gives the user options in the event a match can't be found
@@ -417,7 +435,14 @@
 
             // Bring focus to text-entry box
             $("#type-message").focus();
+            
+            // Creates message-typing indicator
+            $('.message-list').append("<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>");
+            var typing_indicator = $('#typing_indicator');
 
+            // DEBUG, DELETE ME LATER
+            $('#typing_indicator').fadeIn();
+            
             // Start timer
             /*
              var start = new Date;
@@ -437,6 +462,6 @@
              };
              $('#timer').text(countdown() + " seconds");
              }, 1000);
-             */
+             */            
         }
 })(jQuery);
