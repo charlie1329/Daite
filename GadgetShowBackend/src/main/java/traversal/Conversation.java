@@ -275,7 +275,7 @@ public class Conversation {
 	private ArrayList<String> RQOrR(String message) {
 		ArrayList<String> splitUp = new ArrayList<String>();
 		
-		int findQMark = message.indexOf("?");//find if there is a question mark in the message
+		int findQMark = message.lastIndexOf("?");//find if there is a question mark near the end of the message
 		
 		if(findQMark == -1) {//if no q mark just return the whole message as one
 			splitUp.add(message);
