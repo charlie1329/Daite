@@ -47,10 +47,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 .chat-box {
     display: block;
-    background-color: #FBFBFF;
     height: 64vh;
-    border: none;
-    border-radius: 1em;
 }
 
 .chat-buttons {
@@ -59,22 +56,24 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     display: flex;
     justify-content: space-around;
     text-align: center;
-    color: black;
+    border: solid #FBFBFF .25em;
+    color: #FBFBFF;
+    border-radius: 1em;
+    margin-bottom: 1em;
 }
 
-.chat-button {
+.chat-elem {
     margin: 10px;
 }
 
 #end
 {
     float: right;
-    margin: 5px 0 10px 0;
+    margin: 5px 0 5px 0;
 }
 
 .chat-window {
     display: block;
-    background-color: #FBFBFF;
     height: 80%;
     overflow: auto;
     color: #FBFBFF;
@@ -84,11 +83,10 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     list-style: none;
     word-wrap: break-word;
     font-size: 20px;
-    margin-left: 1em;
 }
 
 ::-webkit-scrollbar {
-    background-color: transparent;
+    background: none;
 }
 
 .message {
@@ -106,38 +104,23 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     background: #E74C3C;
     float: right;
     text-align: right;
-    margin-right: 2em;
 }
 
 .match {
     background: #FF8C00;
     float: left;
+    margin-left: -2em;
 }
 
 #type-message {
     font-size: 20px;
-    height: 50px;
+    height: 55px;
     margin-top: 10px;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
+    background: transparent;
+    color: #FBFBFF;
 }
-
-/* Potentially obsolote, not removing yet
-.typing-indicator {
-    display: block;
-    color: black;
-    font-size: 15px;
-    position: fixed;
-    padding-top: 10px;
-    padding-left: 10px;
-    margin-top: -105px;
-}
-
-.typing-indicator img {
-    height: 30px;
-    border-radius: 1em;
-}
-*/
 
 #typing-indicator {
     display: none;
@@ -148,6 +131,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     float: left;
     height: 50px;
     border-radius: 1em;
+    margin-left: -2em;
 }
 
 /* Whole page */
@@ -164,7 +148,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    width: 80%;
+    width: 65%;
     margin: 0 auto;
     font-family: "Roboto Condensed", sans-serif;
     color: #FBFBFF;
@@ -274,6 +258,14 @@ footer {
 
 .ui-dialog-titlebar-close {
     display: none
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background: none;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding-left: .75em;
 }
 
 /* About Dialogue */
