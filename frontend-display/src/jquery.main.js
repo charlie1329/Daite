@@ -256,6 +256,7 @@
             "</span> </li>";
 
         $('.message-list').append(received_message);
+        emojifyMessages();
         autoScroll();
     }
 
@@ -277,6 +278,7 @@
                 type_message.val() +
                 "</span> </li>";
             $('.message-list').append(client_message);
+            emojifyMessages();
 
             // Sends raw message to server
             socket.send({username: my_username, message: type_message.val()});
@@ -306,7 +308,7 @@
         // Leave the room
         socket.emit("leaveroom", "test");
 
-        $('.chat-section').slideUp();
+        $('.chat-section').slideUp(400,
         $('#warning-dialog').dialog('option', 'title', "It's over!")
             .text("Time's up, the conversation is now finished.")
             .dialog('option', 'buttons', [
@@ -317,7 +319,7 @@
                     }
                 }
             ])
-            .dialog('open');
+            .dialog('open'));
     }
 
     function autoScroll() {
@@ -330,6 +332,13 @@
             .text(message)
             .dialog('open')
     }
+
+    function emojifyMessages() {
+        var messages = document.getElementsByClassName('message-text');
+        for(var i = 0, l = messages.length; i < l; i++)
+            emojify.run(messages[i])
+    }
+
 
     /* Main stuff happens below!!! */
 
@@ -352,7 +361,10 @@
 
 
     $.when(view_enter_name, view_enter_details, view_chat_section, about_float).done(function () {
-        
+
+        // Configure emojify.js
+        emojify.setConfig({img_dir: 'assets/emoji'});
+
         // Show name field
         $('.enter-name').slideDown();
 
