@@ -76,16 +76,19 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
     display: block;
     background-color: #FBFBFF;
     height: 80%;
-    color: #FBFBFF;
     overflow: auto;
+    color: #FBFBFF;
 }
 
 .message-list {
     list-style: none;
-    padding-left: 2em;
-    overflow: auto;
     word-wrap: break-word;
     font-size: 20px;
+    margin-left: 1em;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
 }
 
 .message {
@@ -306,7 +309,6 @@ td {
     color: #FBFBFF;
 }
 
-
 .close {
     color: white;
     float: right;
@@ -316,4 +318,12 @@ td {
 
 .pending {
     opacity: 0.5;
+}
+
+/* emojify.js */
+
+.emoji {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
 }
