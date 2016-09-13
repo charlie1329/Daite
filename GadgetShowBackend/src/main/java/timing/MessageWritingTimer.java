@@ -30,21 +30,25 @@ public interface MessageWritingTimer {
 	 * Once {@code messageCompletedCallback} has been called, {@code loadingDotCallback}
 	 * will not be called again. The implementation will always call {@code loadingDotCallback}
 	 * to <b>hide</b> the loading dots before calling {@code messageCompletedCallback}.
-	 * Each call to {@link MessageWritingTimer#beginTyping(String, LoadingDotCallback,
+	 * Each call to {@link MessageWritingTimer#beginTyping(String, TypingDotsVisibilityCallback,
 	 * WritingCompletedCallback) beginTyping}
 	 * will spawn a new thread, and all calls to the callbacks passed to that method
 	 * call will be called from the same thread.
 	 * </p>
 	 * 
-	 * @param message The message the AI is typing as a response.
+	 * @param messagesRead The messages that the AI has read for the user before it should
+	 * start typing.
+	 * @param messagesToWrite The messages that the AI is to type for a response.
 	 * @param loadingDotCallback A callback accepting a boolean, to either show ({@code true})
-	 * or hide ({@code false}) the loading dots.
-	 * @param messageCompletedCallback A callback accepting no parameters, which is
+	 * or hide ({@code false}) the loading dots. If this parameter is null, then the message
+	 * writing timer will ignore it and not bother simulating the typing dots.
+	 * @param messageCompletedCallback A callback accepting a string, which is
 	 * called when the AI has finished "typing" and the response should be sent to the
-	 * user.
+	 * user. The parameter passed to the callback is the message that should be sent.
 	 */
 	public void beginTyping(
-			String message,
-			LoadingDotCallback loadingDotCallback,
+			String[] messagesRead,
+			String[] messagesToWrite,
+			TypingDotsVisibilityCallback loadingDotCallback,
 			WritingCompletedCallback messageCompletedCallback);
 }
