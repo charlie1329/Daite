@@ -5,15 +5,15 @@
 (function ($) {
 
     /* Variables */
-    var my_username, my_age, my_gender, 
+    var my_username, my_age, my_gender,
         match_username,
 
-    // Typing variables
+        // Typing variables
         typing = false,
         timeout = undefined,
         //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
-    //    socket = io.connect("http://duk.im:6969/chat");
+        //    socket = io.connect("http://duk.im:6969/chat");
         socket = io.connect("http://localhost:6969/chat");
 
 
@@ -29,7 +29,7 @@
             warning_dialog = $('#warning-dialog'),
             yes_no_dialog = $('#yes-no-dialog'),
             no_match_dialogue = $('#no-match-dialog');
-        
+
         warning_dialog.dialog({
             autoOpen: false,
             draggable: false,
@@ -100,7 +100,7 @@
             }
             // If key is enter, send message
             else if (e.which == 13) {
-                sendMessage();   
+                sendMessage();
             }
         });
 
@@ -119,7 +119,7 @@
                 gender = $('input[name=gender]:checked').val();
 
             if (!age) {
-                if(gender)
+                if (gender)
                     details_continue.tooltip('option', 'content', 'Enter your age to continue.')
                         .tooltip('option', 'disabled', false);
                 else
@@ -127,7 +127,7 @@
                         .tooltip('option', 'disabled', false);
             }
             else {
-                if(gender)
+                if (gender)
                     details_continue.tooltip('option', 'disabled', true);
                 else
                     details_continue.tooltip('option', 'content', 'Specify your gender to continue.')
@@ -171,13 +171,13 @@
     });
 
     // --- SERVER LISTENERS ---
-    
+
     /* 
      * Matched on the server side 
      *
      * @data contains match's username and a room ID (not sure if we need it on the client side,
      * maybe it can be used on a better message origin/acknowledgement check 
-     */ 
+     */
     socket.on("matchfound", function (data) {
         match_username = data.matchUsername;
         var roomID = data.roomID;
@@ -189,7 +189,7 @@
         $('.enter-details').slideUp(400, showChat);
 
         // Display match's username
-        $('#chat-info').text(match_username);
+        $('#match-name').text('Matched with: ' + match_username);
 
         // TODO start timer?
     });
@@ -227,27 +227,27 @@
 
 
     function toggleTyping(bool) {
-            if(bool) {
-                //we want to re-insert the typing indicator into the right place!!
-                $('.message-list').append(
-                    "<li id='typing_indicator'>" +
-                    "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
-                    "</li>");
-                $('#typing_indicator').fadeIn();
-                autoScroll();
-            }
-            else {
-                $('#typing_indicator').fadeOut().remove();
-            }     
+        if (bool) {
+            //we want to re-insert the typing indicator into the right place!!
+            $('.message-list').append(
+                "<li id='typing_indicator'>" +
+                "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
+                "</li>");
+            $('#typing_indicator').fadeIn();
+            autoScroll();
+        }
+        else {
+            $('#typing_indicator').fadeOut().remove();
+        }
     }
-    
-    
+
+
     // Message received is from other user
     function receiveMessage(data) {
         // Get username and message
         var match_username = data.username,
             match_message = data.message;
-        
+
         // Add message to the chat window
         var received_message =
             "<li class='message'>" +
@@ -262,7 +262,7 @@
 
     // Send a message to the server
     function sendMessage() {
-        
+
         var type_message = $('#type-message');
 
         // Reset typing
@@ -308,18 +308,19 @@
         // Leave the room
         socket.emit("leaveroom", "test");
 
-        $('.chat-section').slideUp(400,
-        $('#warning-dialog').dialog('option', 'title', "It's over!")
-            .text("Time's up, the conversation is now finished.")
-            .dialog('option', 'buttons', [
-                {
-                    text: "Okay",
-                    click: function () {
-                        location.reload()
+        $('.chat-section').slideUp(400, function () {
+            $('#warning-dialog').dialog('option', 'title', "It's over!")
+                .text("Time's up, the conversation is now finished.")
+                .dialog('option', 'buttons', [
+                    {
+                        text: "Okay",
+                        click: function () {
+                            location.reload()
+                        }
                     }
-                }
-            ])
-            .dialog('open'));
+                ])
+                .dialog('open')
+        });
     }
 
     function autoScroll() {
@@ -335,7 +336,7 @@
 
     function emojifyMessages() {
         var messages = document.getElementsByClassName('message-text');
-        for(var i = 0, l = messages.length; i < l; i++)
+        for (var i = 0, l = messages.length; i < l; i++)
             emojify.run(messages[i])
     }
 
@@ -406,72 +407,66 @@
                 }
             })
         }
-        
+
         // Request a match from the server
         function getMatch() {
             socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-            
+
             // This section sohuld deal with a match, such as receiving the match name from the server and setting it
             // Need to get methods for this, for now, just goes straight to loading chat.
         }
 
         // Gives the user options in the event a match can't be found
         function retryMatch() {
-            
+
             // If no match is found
             $('#yes-no-dialog').dialog('option', 'title', 'No Match!')
-                    .text("No match was found! Would you like to retry or return to the beginning?")
-                    .dialog('option', 'buttons', [
-                        {
-                            text: "Retry",
-                            click: function () {
-                                $(this).dialog('close');
-                                getMatch();
-                            }
-                        },
-                        {
-                            text: "Reset",
-                            click: function () {
-                                $(this).dialog('close');
-                                location.reload()
-                            }
+                .text("No match was found! Would you like to retry or return to the beginning?")
+                .dialog('option', 'buttons', [
+                    {
+                        text: "Retry",
+                        click: function () {
+                            $(this).dialog('close');
+                            getMatch();
                         }
-                    ])
-                    .dialog('open');
+                    },
+                    {
+                        text: "Reset",
+                        click: function () {
+                            $(this).dialog('close');
+                            location.reload()
+                        }
+                    }
+                ])
+                .dialog('open');
         }
     });
-        // Show chat view
-        function showChat() {
-            $('.chat-section').slideDown();
+    // Show chat view
+    function showChat() {
+        $('.chat-section').slideDown();
 
-            // Bring focus to text-entry box
-            $("#type-message").focus();
+        // Bring focus to text-entry box
+        $("#type-message").focus();
 
-            // Creates message-typing indicator
-            var typing_indicator = $('#typing_indicator');
+        // Start timer
+        /*
+         var start = new Date;
+         setInterval(function () {
 
-            // DEBUG, DELETE ME LATER
-            typing_indicator.fadeIn();
-            
-            // Start timer
-            /*
-             var start = new Date;
-             setInterval(function () {
+         // Total length of time you want the conversation to be
+         var totalTime = 180;
 
-             // Total length of time you want the conversation to be
-             var totalTime = 180;
-
-             var time = totalTime - Math.floor((new Date - start) / 1000);
-             var countdown = function () {
-             if (time > 0) {
-             return time;
-             }
-             else if (time == 0) {
-             endConvo(); //ends conversation when the timer reaches 0
-             }
-             };
-             $('#timer').text(countdown() + " seconds");
-             }, 1000);
-             */            
-        }
+         var time = totalTime - Math.floor((new Date - start) / 1000);
+         var countdown = function () {
+         if (time > 0) {
+         return time;
+         }
+         else if (time == 0) {
+         endConvo(); //ends conversation when the timer reaches 0
+         }
+         };
+         $('#timer').text(countdown() + " seconds");
+         }, 1000);
+         */
+    }
 })(jQuery);

@@ -222,6 +222,7 @@ footer {
 .ui-button:hover, .ui-button:focus, .ui-button:active {
     color: #FBFBFF;
     background-color: #FFA727;
+    border: none;
 }
 
 .ui-button[disabled] {
