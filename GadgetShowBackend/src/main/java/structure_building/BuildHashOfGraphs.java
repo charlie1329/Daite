@@ -36,39 +36,42 @@ public class BuildHashOfGraphs {
 		return folder;
 	}
 	
-	/**method will take a question or response and organise the keywords into one convenient array
+	/**method will take a question or response and organise the keywords into an array
 	 * 
 	 * @param qOrR the object that is either a question or response
 	 * @return a string array of keywords
 	 */
 	private static String[] getKeywords(JSONObject qOrR) {
-		JSONArray presentKeywords = null;
-		JSONArray absentKeywords = null;
-		JSONArray negatedKeywords = null;
-		try {presentKeywords = (JSONArray)qOrR.get("presentKeywords");}catch(Exception e){}
-		try {absentKeywords = (JSONArray)qOrR.get("absentKeywords");}catch(Exception e) {}
-		try {negatedKeywords = (JSONArray)qOrR.get("negatedKeywords");}catch(Exception e) {}
+		String presentKeywords = null;
+		try {presentKeywords = (String)qOrR.get("presentKeywords");}catch(Exception e){}
 		
-		ArrayList<String> keyWords = new ArrayList<String>();//converting into array list of strings
-		if(presentKeywords != null) {
-			for(int i = 0; i < presentKeywords.size(); i++) {
-				keyWords.add((String)presentKeywords.get(i));
+		if(presentKeywords == null) {
+			return null;
+			
+		} else {
+			
+			String[] keyWords = presentKeywords.split(",");//splitting by , in string
+			//removing pesky spaces from start and end of array elements
+			for(int i = 0; i < keyWords.length; i++) {
+				
+				int startSpaceIfAny = keyWords[i].indexOf(" ");
+				if(startSpaceIfAny != -1) {
+					keyWords[i] = keyWords[i].substring(startSpaceIfAny+1);//get rid of start character if any
+				}
+				
+				int endSpaceIfAny = keyWords[i].lastIndexOf(" ");//now check the end of the string
+				if(endSpaceIfAny != -1) {
+					if(endSpaceIfAny == keyWords[i].length()-1) {//if at end
+						keyWords[i] = keyWords[i].substring(0, keyWords[i].length()-1);
+					} else {
+						keyWords[i] = keyWords[i].substring(0, endSpaceIfAny) + keyWords[i].substring(endSpaceIfAny+1);
+					}
+				}
 			}
-		}
-		if(absentKeywords != null) {
-			for(int i = 0; i < absentKeywords.size(); i++) {
-				keyWords.add((String)absentKeywords.get(i));
-			}
-		}
-		if(negatedKeywords != null) {
-			for(int i = 0; i < negatedKeywords.size(); i++) {
-				keyWords.add((String)negatedKeywords.get(i));
-			}
+			
+			return keyWords;
 		}
 		
-		String[] keys = new String[keyWords.size()];//converting array list to standard array
-		keys = keyWords.toArray(keys);
-		return keys;
 	}
 	
 	/**method will get the follow ups into String array form
