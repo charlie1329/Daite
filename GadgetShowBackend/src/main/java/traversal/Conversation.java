@@ -214,10 +214,19 @@ public class Conversation {
 				toReturn.add(foundResponse.getAck());//add acknowledgement to return list
 			}
 			
-			try {
-				toReturn.addAll(startAtResponseResponse(splitUp.get(1)));//I have the A of ARQ, this will get me the RQ from the subjects Q!
-			} catch(Exception e) { //in this case I really don't want to reach the i don't know what to say scenario since I already have part of a response
-				//just need to catch, nothing else needed as I already have part of a response which is satisfactory I reckon
+			if(isRepeat((Question)this.currentNode,splitUp.get(1))) {//check if question asked is a repeat of what we have just asked
+				this.cachedNodes.add(this.currentNode);
+				this.currentNode.setVisited(true);
+				toReturn.addAll(formResponseAndAskQuestion((Question)this.currentNode,true));
+				//form response for starter question since it has been repeated by subject
+				//boolean is true as we have a repeat and so we don't want the same question as our follow up
+				//or we could end up in some kind of loop of repeating questions
+			} else {//if all is normal do what we would normally do
+				try {
+					toReturn.addAll(startAtResponseResponse(splitUp.get(1)));//I have the A of ARQ, this will get me the RQ from the subjects Q!
+				} catch(Exception e) { //in this case I really don't want to reach the i don't know what to say scenario since I already have part of a response
+					//just need to catch, nothing else needed as I already have part of a response which is satisfactory I reckon
+				}
 			}
 			
 		} else if(splitUp.size() == 1) {//(R)
@@ -361,10 +370,11 @@ public class Conversation {
 	/**method takes a question asked by the subject and responds via a response and new question
 	 * 
 	 * @param askedQuestion the question asked by the subject
+	 * @param repeatOfOurs is the asked question already repeated (we don't want to repeat again if that is the case!)
 	 * @return an array list of size two most likely
 	 * @throws IDontKnowWhatToSayException if something goes wrong
 	 */
-	private ArrayList<String> formResponseAndAskQuestion(Question askedQuestion) throws IDontKnowWhatToSayException {
+	private ArrayList<String> formResponseAndAskQuestion(Question askedQuestion, boolean repeatOfOurs) throws IDontKnowWhatToSayException {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
 		Response ourResponse = null;
@@ -391,9 +401,9 @@ public class Conversation {
 		//GET FOLLOW UP QUESTION
 		if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
 			changeTopic();
-		} else {//MODIFY HERE!
+		} else {
 			Random randRepeat = new Random();
-			if(randRepeat.nextInt(10) < CHANCE_OF_REPEATING) {//repeat question
+			if(randRepeat.nextInt(10) < CHANCE_OF_REPEATING && !repeatOfOurs) {//repeat question if probability selects it and subject question isnt repeat of ours
 				repeated = true;
 				this.currentNode = askedQuestion;//setting back by asking the same question
 				ArrayList<String> totalRepeats = new ArrayList<String>();
@@ -449,7 +459,7 @@ public class Conversation {
 			mostLikely.setVisited(true);
 			
 			//GETTING RESPONSE & ASKING FOLLOW UP
-			toReturn.addAll(formResponseAndAskQuestion(mostLikely));
+			toReturn.addAll(formResponseAndAskQuestion(mostLikely,false));
 			
 		} else {//if we can't find the question
 			Question subjectsQ = null;
@@ -461,7 +471,7 @@ public class Conversation {
 				subjectsQ.setVisited(true);
 				
 				//GETTING RESPONSE & ASKING FOLLOW UP
-				toReturn.addAll(formResponseAndAskQuestion(subjectsQ));
+				toReturn.addAll(formResponseAndAskQuestion(subjectsQ,false));
 			} else {
 				throw new IDontKnowWhatToSayException("Can't find a suitable question in entire dataset");//this brings us back up, this shouldn't hopefully ever be needed
 			}
@@ -488,6 +498,17 @@ public class Conversation {
 		}
 		
 		return (ArrayList<String>)repeats;
+	}
+	
+	/**this method will take a question just asked by us and a recent string from the subject
+	 * and see if the string is a repeat of the question
+	 * @param question the last question we asked
+	 * @param message the message entered by the subject
+	 * @return is it a repeat question?
+	 */
+	private boolean isRepeat(Question question, String message) {
+		return false;
+		//TODO fill in!
 	}
 	
 }
