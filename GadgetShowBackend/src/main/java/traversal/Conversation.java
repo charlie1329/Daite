@@ -1,9 +1,14 @@
 package traversal;
 
+import java.io.BufferedReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import data_structures.*;
 import exceptions.IDontKnowWhatToSayException;
@@ -21,6 +26,7 @@ public class Conversation {
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
 	private final double FOUND_QUESTION_THRESHOLD = 0.9;//will need tweaking again, used to improve efficiency of searching through everything
 	private final String[] PRIORITISED_PUNCTUATION = new String[]{".","!",",",":)",";)",":(",";",":"};//emoticons could quite commonly be used to end a sentence
+	private final int CHANCE_OF_REPEATING = 4;
 	
 	//FIELDS/ATTRIBUTES
 	private EvaluatedNode currentNode;//node we are currently at
@@ -30,6 +36,7 @@ public class Conversation {
 	private ArrayList<EvaluatedNode> cachedNodes;//nodes used recently than I can access easily and change internal state readily
 	private HashMap<String,Question> graphs;
 	private boolean aiStart;//who initiates our conversation
+	private ArrayList<String> repeats;//will store all ways of repeating a question
 	
 	
 	/**constructor sets up hash map and starting place, depending on who starts conversation
@@ -44,6 +51,7 @@ public class Conversation {
 		this.currentTopic = INITIAL_TOPIC_NAME_IF_STARTING;
 		this.previousTopic = INITIAL_TOPIC_NAME_IF_STARTING;
 		this.questionList = questionList;
+		this.repeats = getRepeats();
 		if(aiStart) {
 			this.currentNode = this.graphs.get(INITIAL_TOPIC_NAME_IF_STARTING);
 			//intended to be something like "Hi, i'm <name>. How are you?"
@@ -354,8 +362,9 @@ public class Conversation {
 	 * 
 	 * @param askedQuestion the question asked by the subject
 	 * @return an array list of size two most likely
+	 * @throws IDontKnowWhatToSayException if something goes wrong
 	 */
-	private ArrayList<String> formResponseAndAskQuestion(Question askedQuestion) {
+	private ArrayList<String> formResponseAndAskQuestion(Question askedQuestion) throws IDontKnowWhatToSayException {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
 		Response ourResponse = null;
@@ -367,28 +376,44 @@ public class Conversation {
 		}
 		
 		if(ourResponse == null) {//this is just to cover us but should never happen!!!
-			ourResponse = (Response)askedQuestion.getNeighbours().get(0);//if this goes wrong there are further fail-safes at higher levels
+			try {
+				ourResponse = (Response)askedQuestion.getNeighbours().get(0);//if this goes wrong there are further fail-safes at higher levels
+			} catch(Exception e) {
+				throw new IDontKnowWhatToSayException("no responses for question!");
+			}
 		}
 		toReturn.add(ourResponse.getMessage());//add first part of response
 		cachedNodes.add(ourResponse);
 		ourResponse.setVisited(true);
 		
+		boolean repeated = false;//used to prevent something happening if we repeat
+		
 		//GET FOLLOW UP QUESTION
 		if(ourResponse.getNeighbours() == null || ourResponse.getNeighbours().isEmpty()) {
 			changeTopic();
-		} else {
-			boolean found = false;
-			for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
-				if(!ourResponse.getNeighbours().get(i).isVisited()) {
-					this.currentNode = (Question)ourResponse.getNeighbours().get(i);
-					found = true;
-					break;
+		} else {//MODIFY HERE!
+			Random randRepeat = new Random();
+			if(randRepeat.nextInt(10) < CHANCE_OF_REPEATING) {//repeat question
+				repeated = true;
+				this.currentNode = askedQuestion;//setting back by asking the same question
+				ArrayList<String> totalRepeats = new ArrayList<String>();
+				totalRepeats.addAll(this.repeats);//adding all variations on wbu etc. 
+				totalRepeats.add(askedQuestion.getMessage());//adding the actual question too
+				toReturn.add(totalRepeats.get(randRepeat.nextInt(totalRepeats.size())));//will get a random array string and add to response
+			} else {
+				boolean found = false;
+				for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
+					if(!ourResponse.getNeighbours().get(i).isVisited()) {
+						this.currentNode = (Question)ourResponse.getNeighbours().get(i);
+						found = true;
+						break;
+					}
 				}
+				if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
 			}
-			if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
 		}
 		
-		toReturn.add(this.currentNode.getMessage());//adding question to response!
+		if(!repeated){toReturn.add(this.currentNode.getMessage());}//adding question to response! (if not repeated)
 		this.currentNode.setVisited(true);
 		this.cachedNodes.add(this.currentNode);
 		
@@ -442,6 +467,27 @@ public class Conversation {
 			}
 		}
 		return toReturn;
+	}
+	
+	/**method will read in all repeats from the appropriate file and write them into an array list
+	 * 
+	 * @return an array list of all repeats
+	 */
+	private ArrayList<String> getRepeats() {
+		String fileName = "miscFiles/repeating/Repeating_Questions.txt";//file path
+		List<String> repeats = new ArrayList<String>();
+		
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
+			//honestly i just got this code off Google cos this seems like a quick way of doing it
+			//Credit to: Mkyong @ https://www.mkyong.com/java8/java-8-stream-read-a-file-line-by-line/
+			//br returns as stream and convert it into a List
+			repeats = br.lines().collect(Collectors.toList());
+
+		} catch (Exception e) {//this shouldn't ever happen
+			e.printStackTrace();
+		}
+		
+		return (ArrayList<String>)repeats;
 	}
 	
 }
