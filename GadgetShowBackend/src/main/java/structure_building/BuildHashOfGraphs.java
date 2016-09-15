@@ -165,6 +165,8 @@ public class BuildHashOfGraphs {
 						ArrayList<Question> topicQs = new ArrayList<Question>();
 						ArrayList<Response> topicRs = new ArrayList<Response>();
 						
+						boolean foundOpener = false;
+						
 						for(int i = 0; i < questions.size(); i++) {//looping through all questions
 							JSONObject question = (JSONObject)questions.get(i);
 							String message = (String)question.get("message");//the actual question
@@ -180,7 +182,7 @@ public class BuildHashOfGraphs {
 							String qID = (String)question.get("id");//will always have a question ID
 							
 							Question newQuestion = new Question(message, keywords, isOpener, usedByAI, qID);
-							if(newQuestion.isOpener()) {opener = newQuestion;}//should only happen once
+							if(newQuestion.isOpener() && !foundOpener) {opener = newQuestion; foundOpener = true;}//should only happen once
 							topicQs.add(newQuestion);//add to list
 							
 							JSONArray responses = (JSONArray)question.get("children");//getting responses for question
