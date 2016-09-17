@@ -21,7 +21,7 @@ public class KeywordMagic {
 		double correct = 0.0;
 		
 		for(int i = 0; i < keys.length; i++) {
-			if(message.contains(keys[i])) {
+			if(message.toLowerCase().contains(keys[i].toLowerCase())) {
 				correct++;
 			}
 		}
