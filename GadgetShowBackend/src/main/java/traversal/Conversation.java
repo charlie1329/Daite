@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import data_structures.*;
 import exceptions.IDontKnowWhatToSayException;
+import sentimentanalysis.KeywordMagic;
 
 /**this class will contain the code to allow
  * the responding to user input messages
@@ -507,8 +508,13 @@ public class Conversation {
 	 * @return is it a repeat question?
 	 */
 	private boolean isRepeat(Question question, String message) {
-		return false;
-		//TODO fill in!
+		
+		if(question.evaluate(message) > FOUND_QUESTION_THRESHOLD) {//see if full question written first
+			return true;
+		} else {
+			double proportionKeys = KeywordMagic.correctKeyWords(this.repeats.toArray(new String[this.repeats.size()]), message);
+			return (proportionKeys > 0.0);//if > 0 then we have at least one present which is enough
+		}
 	}
 	
 }
