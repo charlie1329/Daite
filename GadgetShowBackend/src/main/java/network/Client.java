@@ -3,6 +3,11 @@ package network;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import logger.ConvoLogger;
+import psychology.NameMatcher;
+import structure_building.BuildHashOfGraphs;
+import structure_building.BuildWrapper;
+import traversal.Conversation;
 
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -12,10 +17,16 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 
+/**class contains networking code for ai client
+ * as well as the code for making the bot run
+ * @author Charlie Street - making bot run, Vlad Rotea - networking client
+ *
+ */
 public class Client {
     private Socket socket;
 
     private static final Logger log = LoggerFactory.getLogger(Client.class);
+    private static final ConvoLogger logger = new ConvoLogger();
 
     //Match details
     private boolean botMatched = false;
@@ -30,26 +41,32 @@ public class Client {
 
     public Client(String domain, String port, String namespace) {
         log.info("Bot connecting to: {}:{}/{}", domain, port, namespace);
+        logger.logMessage("Bot connecting to: " + domain + ":" + port + "/" + namespace);
         try {
             socket = IO.socket(domain + ":" + port + "/" + namespace);
         }
         catch (URISyntaxException e) {
 
         }
-        // TODO initialize bot stuff here
-        // try {
-            // bot stuff
-            
-            // connect to server after initialization is done
+        
+        //initialize bot stuff here
+        try {
+        	//TODO INITIALISE NLP STUFF HERE
+            // build data structures
+        	BuildWrapper dataStructures = BuildHashOfGraphs.build(Client.logger);
+            //initialise conversation 
+        	Conversation convo = new Conversation(dataStructures.getGraphs(),true,dataStructures.getQuestionList());
+        	logger.logMessage("Conversation Ready");
+        	//now connect
             connect();
-        // }
-        // catch () {
-        // }
+         }catch (Exception e) {
+        	 //TODO what to do here?
+         }
         
         /*
          * Server listeners
          */
-        // receving details of the user which bot was matched with
+        // receiving details of the user which bot was matched with
         socket.on("bot-matched", onMatch);
         // user typing events
         socket.on("isTyping", onTyping);
@@ -67,6 +84,7 @@ public class Client {
             public void call(Object... args) {
                 socket.emit("bot-available");
                 log.info("Bot connected to server");
+                logger.logMessage("Bot connected to server");
             }
         });
     }
@@ -88,6 +106,7 @@ public class Client {
         }
 
         log.info("Sending bot details to server: name: {}, age: {}, gender: {}", name, age, gender);
+        logger.logMessage("Sending bot details to server: name: " + name + ", age: " + age + ", gender: " + gender);
         socket.emit("register", details);
     }
 
@@ -110,6 +129,7 @@ public class Client {
 
         log.info("Sending message: {}");
         socket.emit("message", msg);
+        logger.logMessage("Bot:> "+ msg);//log on our graphical logger
     }
 
     /*
@@ -144,7 +164,15 @@ public class Client {
 
             log.info("Received match details. name: {}, gender: {}, age: {}", matchName, matchGender, matchAge);
             botMatched = true;
-            //TODO here you have the match details
+            
+            NameMatcher nameChooser = new NameMatcher();//respond with our own names and stuff
+            if(matchGender == "male") {
+            	sendDetails(nameChooser.pickName(matchName, true),20,"female");
+            } else if(matchGender == "female") {
+            	sendDetails(nameChooser.pickName(matchName, false),20,"male");
+            } else { //be female by default
+            	sendDetails(nameChooser.pickName(matchName, false),20,"female");
+            }
         }
     };
 
@@ -167,7 +195,7 @@ public class Client {
     };
     
     /* 
-     * Incomming messages
+     * Incoming messages
      */
     private Emitter.Listener onMessage = new Emitter.Listener() {
         String username, message; 
@@ -190,18 +218,22 @@ public class Client {
             else {
                 if(message != null){
                     log.info("Received message from match ({}): {}", username, message);
-                        // TODO here you have the message from the match
+                        
+                    logger.logMessage(username+":> " + message);//log to fancy logger what the user has said
+                    //TODO crazy stuff here
                 }
             }
         }
     };
 
+    /**main method for entire chat bot, will run it as a network client
+     * 
+     * @param args standard java shiz
+     */
     public static void main (String[] args) {
         // Setup connection
-        Client client = new Client("http://localhost", "6969" , "chat");
-        
-        //client.sendDetails("bot", 21, "male");
-        //client.sendMessage("this is a message from the bot");
+        Client client = new Client("http://localhost", "6969" , "chat");//this should start the bot running
+        //TODO make sure we deal with disconnecting
     }
 }
 
