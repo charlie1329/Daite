@@ -10,9 +10,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import analysis.KeywordMagic;
 import data_structures.*;
 import exceptions.IDontKnowWhatToSayException;
-import sentimentanalysis.KeywordMagic;
 
 /**this class will contain the code to allow
  * the responding to user input messages

@@ -1,4 +1,4 @@
-package sentimentanalysis;
+package analysis;
 
 /**this class deals with all methods involving 
  * looking at likelihoods of messages being the same

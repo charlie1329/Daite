@@ -1,4 +1,4 @@
-package sentimentanalysis;
+package analysis;
 
 /**this class will be solely the implementation of a sentiment analyser
  * (working on the what & how). The idea is that i will then create an evaluator class
