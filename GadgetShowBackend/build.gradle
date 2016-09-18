@@ -12,8 +12,11 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "structure_building.BuildHashOfGraphs" 
 //set to proper main class later, but this is the class with the main method in, starting from src/main/java 
+//mainClassName = "structure_building.BuildHashOfGraphs" 
+
+// run network class. uncomment the top line to go back to bot class 
+mainClassName = "network.Client"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -25,11 +28,14 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    compile 'org.slf4j:slf4j-api:1.7.13'
+    // changed version of slf, I hope that doesn't interfer with the other code
+    compile 'org.slf4j:slf4j-simple:1.7.21'
     
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 
+    // socket.IO client
+    compile ('io.socket:socket.io-client:0.7.0')
 	
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
