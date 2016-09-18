@@ -9,6 +9,10 @@ bin/
 # Ignore Gradle GUI config
 gradle-app.setting
 
+# Package Files #
+*.jar
+!lib/**/*.jar
+
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 
