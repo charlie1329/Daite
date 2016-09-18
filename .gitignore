@@ -9,7 +9,6 @@ GadgetShow.iml
 
 # Package Files #
 *.jar
-!GadgetShowBackend/lib/**/*.jar
 *.war
 *.ear
 
