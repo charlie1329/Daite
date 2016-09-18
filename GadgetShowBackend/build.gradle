@@ -39,6 +39,7 @@ dependencies {
     
     // nlp jars
     compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.6.0'
+    compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.6.0', classifier: 'models'
 
 
 	
