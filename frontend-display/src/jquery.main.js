@@ -6,11 +6,12 @@
 
     /* Variables */
     var my_username, my_age, my_gender,
-        match_username,
+        match_username, roomID,
 
         // Typing variables
         typing = false,
         timeout = undefined,
+        matchingFailed,
         //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
         //    socket = io.connect("http://duk.im:6969/chat");
@@ -179,8 +180,9 @@
      * maybe it can be used on a better message origin/acknowledgement check 
      */
     socket.on("matchfound", function (data) {
+        clearTimeout(matchingFailed);
         match_username = data.matchUsername;
-        var roomID = data.roomID;
+        roomID = data.roomID;
 
         // Debugging stuff
         // console.log("Matched. Room ID: " + console.log(roomID) + ", match username: " +console.log(match_username));
@@ -190,8 +192,6 @@
 
         // Display match's username
         $('#match-name').text('Matched with: ' + match_username);
-
-        // TODO start timer?
     });
 
     /* Sending and Receiving Messages */
@@ -256,7 +256,7 @@
             "</span> </li>";
 
         $('.message-list').append(received_message);
-        emojifyMessages();
+        emojifyMessage();
         autoScroll();
     }
 
@@ -278,7 +278,7 @@
                 type_message.val() +
                 "</span> </li>";
             $('.message-list').append(client_message);
-            emojifyMessages();
+            emojifyMessage();
 
             // Sends raw message to server
             socket.send({username: my_username, message: type_message.val()});
@@ -306,7 +306,7 @@
     /* MISC FUNCTIONS */
     function endConvo() {
         // Leave the room
-        socket.emit("leaveroom", "test");
+        socket.emit("leaveroom", roomID);
 
         $('.chat-section').slideUp(400, function () {
             $('#warning-dialog').dialog('option', 'title', "It's over!")
@@ -334,10 +334,40 @@
             .dialog('open')
     }
 
-    function emojifyMessages() {
+    function emojifyMessage() {
         var messages = document.getElementsByClassName('message-text');
-        for (var i = 0, l = messages.length; i < l; i++)
-            emojify.run(messages[i])
+        emojify.run(messages[messages.length - 1]); //we know that we have emojified any previous messages
+    }
+
+    // Request a match from the server
+    function getMatch() {
+        socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
+        matchingFailed = setTimeout(retryMatch, 60000); //matching timeout is set to 1 minute
+    }
+
+    // Gives the user options in the event a match can't be found
+    function retryMatch() {
+
+        // If no match is found
+        $('#yes-no-dialog').dialog('option', 'title', 'No Match!')
+            .text("No match was found! Would you like to retry or return to the beginning?")
+            .dialog('option', 'buttons', [
+                {
+                    text: "Retry",
+                    click: function () {
+                        $(this).dialog('close');
+                        getMatch();
+                    }
+                },
+                {
+                    text: "Reset",
+                    click: function () {
+                        $(this).dialog('close');
+                        location.reload()
+                    }
+                }
+            ])
+            .dialog('open');
     }
 
 
@@ -407,39 +437,6 @@
                 }
             })
         }
-
-        // Request a match from the server
-        function getMatch() {
-            socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
-
-            // This section sohuld deal with a match, such as receiving the match name from the server and setting it
-            // Need to get methods for this, for now, just goes straight to loading chat.
-        }
-
-        // Gives the user options in the event a match can't be found
-        function retryMatch() {
-
-            // If no match is found
-            $('#yes-no-dialog').dialog('option', 'title', 'No Match!')
-                .text("No match was found! Would you like to retry or return to the beginning?")
-                .dialog('option', 'buttons', [
-                    {
-                        text: "Retry",
-                        click: function () {
-                            $(this).dialog('close');
-                            getMatch();
-                        }
-                    },
-                    {
-                        text: "Reset",
-                        click: function () {
-                            $(this).dialog('close');
-                            location.reload()
-                        }
-                    }
-                ])
-                .dialog('open');
-        }
     });
     // Show chat view
     function showChat() {
@@ -449,24 +446,24 @@
         $("#type-message").focus();
 
         // Start timer
-        /*
-         var start = new Date;
-         setInterval(function () {
 
-         // Total length of time you want the conversation to be
-         var totalTime = 180;
+        var start = new Date,
+            // Total length of time you want the conversation to be (in seconds)
+            totalTime = 180;
 
-         var time = totalTime - Math.floor((new Date - start) / 1000);
-         var countdown = function () {
-         if (time > 0) {
-         return time;
-         }
-         else if (time == 0) {
-         endConvo(); //ends conversation when the timer reaches 0
-         }
-         };
-         $('#timer').text(countdown() + " seconds");
-         }, 1000);
-         */
+        setInterval(function () {
+
+            var time = totalTime - Math.floor((new Date - start) / 1000);
+            var countdown = function () {
+                if (time > 0) {
+                    return new Date(time * 1000);
+                }
+                else {
+                    endConvo(); //ends conversation when the timer reaches 0
+                }
+            };
+
+            $('#timer').text(countdown().toTimeString().replace(/.*(\d:\d{2}).*/, "$1")); //format minutes and seconds
+        }, 1000);
     }
 })(jQuery);
