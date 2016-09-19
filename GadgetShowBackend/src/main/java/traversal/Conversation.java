@@ -22,8 +22,8 @@ import exceptions.IDontKnowWhatToSayException;
 public class Conversation {
 	
 	//CONSTANTS
-	private final String INITIAL_TOPIC_NAME_IF_STARTING = "greetings";//this may change 
-	private final String END_TOPIC = "goodbyes";//this may change
+	private final String INITIAL_TOPIC_NAME_IF_STARTING = "Greetings";//this may change 
+	private final String END_TOPIC = "Goodbyes";//this may change
 	private final double CONFIDENCE_THRESHOLD = 0.3;//will require tweaking as I have just put this off the top of my head
 	private final double FOUND_QUESTION_THRESHOLD = 0.9;//will need tweaking again, used to improve efficiency of searching through everything
 	private final String[] PRIORITISED_PUNCTUATION = new String[]{".","!",",",":)",";)",":(",";",":"};//emoticons could quite commonly be used to end a sentence
@@ -66,6 +66,17 @@ public class Conversation {
 				}
 			}
 		}
+	}
+	
+	/**this method is used when the ai starts the conversation, it will initiate an initial message
+	 * 
+	 * @return the opening message of the conversation
+	 */
+	public String startConvo() {
+		this.cachedNodes.add(this.currentNode);//adding twice, once for current node set back, one for visited set back
+		this.cachedNodes.add(this.currentNode);
+		this.currentNode.setVisited(true);
+		return this.currentNode.getMessage();
 	}
 	
 	/**this method takes a message and, depending on the internal state of the 

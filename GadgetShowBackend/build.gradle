@@ -28,7 +28,7 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    // changed version of slf, I hope that doesn't interfer with the other code
+    // changed version of slf, I hope that doesn't interfere with the other code
     compile 'org.slf4j:slf4j-simple:1.7.21'
     
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple

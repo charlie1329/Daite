@@ -4,9 +4,13 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import logger.ConvoLogger;
+import psychology.Formaliser;
 import psychology.NameMatcher;
 import structure_building.BuildHashOfGraphs;
 import structure_building.BuildWrapper;
+import timing.StandardMessageWritingTimer;
+import timing.TypingDotsVisibilityCallback;
+import timing.WritingCompletedCallback;
 import traversal.Conversation;
 
 import org.json.JSONObject;
@@ -16,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**class contains networking code for ai client
  * as well as the code for making the bot run
@@ -26,8 +32,13 @@ public class Client {
     private Socket socket;
 
     private static final Logger log = LoggerFactory.getLogger(Client.class);
-    private static final ConvoLogger logger = new ConvoLogger();
-
+    private ConvoLogger logger = new ConvoLogger();
+    private Conversation convo;
+    private StandardMessageWritingTimer writeTimer;
+    private WritingCompletedCallback timeCompleted;
+    private TypingDotsVisibilityCallback setWriting;
+    private String currentMessage;//this is used to check whether I want to send or not
+    
     //Match details
     private boolean botMatched = false;
     private String matchName, matchGender;
@@ -36,7 +47,7 @@ public class Client {
     //Bot details
     // we need to keep the name assigned in order to ignore/check if the server received the
     // message bot send
-    private String botName = "testBOT";
+    private static String botName = "testBOT";
     
 
     public Client(String domain, String port, String namespace) {
@@ -52,15 +63,24 @@ public class Client {
         //initialize bot stuff here
         try {
         	//TODO INITIALISE NLP STUFF HERE
+        	
+        	//INITIALISE OTHER ATTRIBUTES
+        	currentMessage = "";
+        	writeTimer = new StandardMessageWritingTimer();
+        	timeCompleted = (String s) -> {};//for now I have no idea whether this really needs to do anything
+        	setWriting = (boolean setDots) -> {if(setDots) {startTyping();} else {stopTyping();}};//sets writing stuff
+        	
             // build data structures
-        	BuildWrapper dataStructures = BuildHashOfGraphs.build(Client.logger);
+        	BuildWrapper dataStructures = BuildHashOfGraphs.build(logger);
+        	
             //initialise conversation 
-        	Conversation convo = new Conversation(dataStructures.getGraphs(),true,dataStructures.getQuestionList());
+        	convo = new Conversation(dataStructures.getGraphs(),true,dataStructures.getQuestionList());
         	logger.logMessage("Conversation Ready");
+        	
         	//now connect
             connect();
          }catch (Exception e) {
-        	 //TODO what to do here?
+        	 logger.logMessage("Charlie's seriously messed up here. Shame on you, Charlie!!!");
          }
         
         /*
@@ -129,7 +149,7 @@ public class Client {
 
         log.info("Sending message: {}");
         socket.emit("message", msg);
-        logger.logMessage("Bot:> "+ msg);//log on our graphical logger
+        logger.logMessage(Client.botName + ":> "+ msg);//log on our graphical logger
     }
 
     /*
@@ -144,6 +164,13 @@ public class Client {
      */
     public void startTyping() {
         socket.emit("isTyping", true);
+    }
+    
+    /**method will start the conversation for us
+     * 
+     */
+    public void startConvo() {
+    	sendMessage(convo.startConvo());
     }
     
     /*
@@ -167,11 +194,14 @@ public class Client {
             
             NameMatcher nameChooser = new NameMatcher();//respond with our own names and stuff
             if(matchGender == "male") {
-            	sendDetails(nameChooser.pickName(matchName, true),20,"female");
+            	Client.botName = nameChooser.pickName(matchName, false);
+            	sendDetails(Client.botName,20,"female");
             } else if(matchGender == "female") {
-            	sendDetails(nameChooser.pickName(matchName, false),20,"male");
+            	Client.botName = nameChooser.pickName(matchName, true);
+            	sendDetails(Client.botName,20,"male");
             } else { //be female by default
-            	sendDetails(nameChooser.pickName(matchName, false),20,"female");
+            	Client.botName = nameChooser.pickName(matchName, false);
+            	sendDetails(Client.botName,20,"female");
             }
         }
     };
@@ -185,11 +215,11 @@ public class Client {
             boolean isTyping = (boolean) args[0];
             if (isTyping) {
                 log.info("Match started typing");
-                // TODO: match started typing
+                //bot isn't affected by this
             }
             else {
                 log.info("Match stopped typing");
-                // TODO: match stoped typing
+                //bot isn't affected by this
             }
         }
     };
@@ -220,7 +250,49 @@ public class Client {
                     log.info("Received message from match ({}): {}", username, message);
                         
                     logger.logMessage(username+":> " + message);//log to fancy logger what the user has said
-                    //TODO crazy stuff here
+                    
+                    //code to deal with receiving messages
+                    String myMessageToRead;//this will be compared with currentMessage before sending
+                    synchronized(currentMessage) {//adding to current message, this will concatenate to any previous messages
+                    	currentMessage += message;//and is how I will check whether to send or not
+                    	myMessageToRead = currentMessage;
+                    }
+                    
+                    synchronized(convo) {//due to internal states I really only want one accessing at the same time
+                    	Formaliser formalise = new Formaliser();
+                    	String formalMessage = formalise.expand(myMessageToRead);//formalise for sake of nlp stuff
+                    	ArrayList<String> response = convo.respond(formalMessage);//get our response
+                    	String[] messagesRead = new String[]{myMessageToRead};
+                    	String[] messagesToWrite = response.toArray(new String[response.size()]);
+                    	writeTimer.beginTyping(messagesRead, messagesToWrite, setWriting, timeCompleted);
+                    	
+                    	synchronized(currentMessage) {//CHECK THIS WONT GIVE DEADLOCK
+                    		if(myMessageToRead.equals(currentMessage)) {//i.e. no other messages have been sent
+                    			currentMessage = "";
+                    			
+                    			//FORMAT RESPONSE TO SEND
+                    			Random newLineOrSpace = new Random();//randomly selecting how to structure message on chat
+                    			String toSend = "";//constructing response
+                    			for(int i=0; i < response.size()-1; i++) {//don't do last item
+                    				toSend += response.get(i);
+                    				boolean currentBool = newLineOrSpace.nextBoolean();
+                    				if(currentBool) {
+                    					toSend += " \n";
+                    				} else {
+                    					toSend += " ";
+                    				}
+                    			}
+                    			toSend += response.get(response.size()-1);
+                    			
+                    			//SEND MESSAGE
+                    			sendMessage(toSend);
+                    			
+                    		} else {//if another message has come on top and that one is waiting to send
+                    			convo.rollback();//roll back the data structures so we don't have any weird stuff happening
+                    		}
+                    	}
+                    }
+                    
                 }
             }
         }
@@ -233,6 +305,7 @@ public class Client {
     public static void main (String[] args) {
         // Setup connection
         Client client = new Client("http://localhost", "6969" , "chat");//this should start the bot running
+        client.startConvo();//initiate conversation!
         //TODO make sure we deal with disconnecting
     }
 }
