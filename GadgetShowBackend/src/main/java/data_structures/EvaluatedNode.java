@@ -55,12 +55,12 @@ public abstract class EvaluatedNode extends BaseNode {
 		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage);
 		totalScore += (KEYWORD_WEIGHT * keywordScore);
 		
-		try {
-			RelationTriple dataRelation = analyser.getRelations(getMessage());
-			RelationTriple incRelation = analyser.getRelations(incMessage);
-			int information = analyser.compareInformation(dataRelation, incRelation);
-			totalScore += (INFO_WEIGHT * information);
+		RelationTriple dataRelation = analyser.getRelations(getMessage());
+		RelationTriple incRelation = analyser.getRelations(incMessage);
+		int information = analyser.compareInformation(dataRelation, incRelation);
+		totalScore += (INFO_WEIGHT * information);
 		
+		try {
 			String relation = incRelation.objectLemmaGloss();
 			int relationScore = 0;
 			for(int i = 0; i < this.getKeywords().length; i++) {
@@ -70,10 +70,9 @@ public abstract class EvaluatedNode extends BaseNode {
 				}
 			}
 			totalScore += (RELATION_WEIGHT * relationScore);
-			return totalScore;
-		} catch(Exception e) {
-			return totalScore;
-		}
+		} catch(Exception e) {}
+		
+		return totalScore;
 	}
 	
 }
