@@ -62,13 +62,21 @@ public class Analyser {
 	{
 		Annotation doc1 = pipeline.process(bugreplacement(one));
 		Annotation doc2 = pipeline.process(bugreplacement(two));
-		return Math.abs(findSentiment(doc1) - findSentiment(doc2));
+		int i = Math.abs(findSentiment(doc1) - findSentiment(doc2));
+		if(i == 0)
+			return 2;
+		if(i == 1)
+			return 1;
+		if (i == 2)
+			return 0;
+		return 0;
 	}
 	
-	public int compareInformation(RelationTriple one, RelationTriple two)
+	public double compareInformation(RelationTriple one, RelationTriple two)
 	{
 		try
 		{
+			double conf = one.confidence+two.confidence;
 			int sub = 0;
 			if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
 					sub = 1;
@@ -78,7 +86,7 @@ public class Analyser {
 			int rel = 0;
 			if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
 				rel = 1;
-			return sub+obj+rel;
+			return conf*(sub+obj+rel);
 		}
 		catch(NullPointerException e)
 		{
@@ -146,7 +154,7 @@ public class Analyser {
   public static void main(String[] args) throws Exception {
     
 	Analyser anal = new Analyser();
-	 int i = anal.compareInformation(anal.getRelations("iasdsadasdasdasdsaddl"), anal.getRelations("i quite like football"));
+	double i = anal.compareInformation(anal.getRelations("iasdsadasdasdasdsaddl"), anal.getRelations("i quite like football"));
 	 System.out.println(i);
   }
 }

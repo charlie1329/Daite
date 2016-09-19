@@ -57,7 +57,7 @@ public abstract class EvaluatedNode extends BaseNode {
 		
 		RelationTriple dataRelation = analyser.getRelations(getMessage());
 		RelationTriple incRelation = analyser.getRelations(incMessage);
-		int information = analyser.compareInformation(dataRelation, incRelation);
+		double information = analyser.compareInformation(dataRelation, incRelation);
 		totalScore += (INFO_WEIGHT * information);
 		
 		try {
