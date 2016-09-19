@@ -47,27 +47,33 @@ public abstract class EvaluatedNode extends BaseNode {
 	 */
 	public double evaluate(String incMessage) {
 		
-		int sentScore = analyser.compareSentiment(getMessage(), incMessage);
+		double totalScore = 0.0;
 		
-		RelationTriple dataRelation = analyser.getRelations(getMessage());
-		RelationTriple incRelation = analyser.getRelations(incMessage);
-		int information = analyser.compareInformation(dataRelation, incRelation);
+		int sentScore = analyser.compareSentiment(getMessage(), incMessage);
+		totalScore += (SENTIMENT_WEIGHT * sentScore);
 		
 		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage);
+		totalScore += (KEYWORD_WEIGHT * keywordScore);
 		
-		String relation = incRelation.objectLemmaGloss();
-		int relationScore = 0;
-		for(int i = 0; i < this.getKeywords().length; i++) {
-			if(relation.toLowerCase().equals(this.getKeywords()[i].toLowerCase())) {
-				relationScore = 1;
-				break;
+		try {
+			RelationTriple dataRelation = analyser.getRelations(getMessage());
+			RelationTriple incRelation = analyser.getRelations(incMessage);
+			int information = analyser.compareInformation(dataRelation, incRelation);
+			totalScore += (INFO_WEIGHT * information);
+		
+			String relation = incRelation.objectLemmaGloss();
+			int relationScore = 0;
+			for(int i = 0; i < this.getKeywords().length; i++) {
+				if(relation.toLowerCase().equals(this.getKeywords()[i].toLowerCase())) {
+					relationScore = 1;
+					break;
+				}
 			}
+			totalScore += (RELATION_WEIGHT * relationScore);
+			return totalScore;
+		} catch(Exception e) {
+			return totalScore;
 		}
-		
-		return (SENTIMENT_WEIGHT * sentScore)
-			 + (INFO_WEIGHT * information) 
-			 + (KEYWORD_WEIGHT * keywordScore)
-			 + (RELATION_WEIGHT * relationScore);
 	}
 	
 }
