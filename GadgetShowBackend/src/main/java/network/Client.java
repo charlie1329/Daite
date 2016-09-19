@@ -38,6 +38,8 @@ public class Client {
     private WritingCompletedCallback timeCompleted;
     private TypingDotsVisibilityCallback setWriting;
     private String currentMessage;//this is used to check whether I want to send or not
+    private Formaliser formalise;
+    private NameMatcher nameChooser;
     
     //Match details
     private boolean botMatched = false;
@@ -65,6 +67,8 @@ public class Client {
         	//TODO INITIALISE NLP STUFF HERE
         	
         	//INITIALISE OTHER ATTRIBUTES
+        	formalise = new Formaliser();
+        	nameChooser = new NameMatcher();
         	currentMessage = "";
         	writeTimer = new StandardMessageWritingTimer();
         	timeCompleted = (String s) -> {};//for now I have no idea whether this really needs to do anything
@@ -192,7 +196,6 @@ public class Client {
             log.info("Received match details. name: {}, gender: {}, age: {}", matchName, matchGender, matchAge);
             botMatched = true;
             
-            NameMatcher nameChooser = new NameMatcher();//respond with our own names and stuff
             if(matchGender == "male") {
             	Client.botName = nameChooser.pickName(matchName, false);
             	sendDetails(Client.botName,20,"female");
@@ -259,7 +262,6 @@ public class Client {
                     }
                     
                     synchronized(convo) {//due to internal states I really only want one accessing at the same time
-                    	Formaliser formalise = new Formaliser();
                     	String formalMessage = formalise.expand(myMessageToRead);//formalise for sake of nlp stuff
                     	ArrayList<String> response = convo.respond(formalMessage);//get our response
                     	String[] messagesRead = new String[]{myMessageToRead};
