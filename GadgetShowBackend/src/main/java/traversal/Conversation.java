@@ -98,7 +98,8 @@ public class Conversation {
 			else { //(Q)(RQ) where first Q by subject
 				return startAtResponseResponse(message);
 			}
-		} catch(IndexOutOfBoundsException | NullPointerException | IDontKnowWhatToSayException e) {//all I'm catching for now
+		} catch(Exception e) {//I DONT WANT TO TAKE ANY CHANCES
+			e.printStackTrace();
 			return iDontKnowWhatToTalkAbout();//responds with awkward laugh followed by new question on new topic
 			//it may make us seem slightly strange but is better than a fake disconnect or something similar
 		}
