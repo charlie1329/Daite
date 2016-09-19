@@ -279,7 +279,7 @@ public class Client {
                     				toSend += response.get(i);
                     				boolean currentBool = newLineOrSpace.nextBoolean();
                     				if(currentBool) {
-                    					toSend += " \n";
+                    					toSend += " <br>";
                     				} else {
                     					toSend += " ";
                     				}
