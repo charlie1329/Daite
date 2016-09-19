@@ -81,13 +81,12 @@ public abstract class BaseNode {
 		return this.neighbours;
 	}
 	
-	/**returns a keyword
+	/**returns all keywords
 	 * 
-	 * @param index self-explanatory
 	 * @return the keyword at the specified index
 	 */
-	public String getKeyword(int index) {
-		return this.keyWords[index];
+	public String[] getKeywords() {
+		return this.keyWords;
 	}
 	
 	/**trivial set method

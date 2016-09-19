@@ -3,6 +3,7 @@ package data_structures;
 import java.util.ArrayList;
 
 import analysis.Analyser;
+import analysis.KeywordMagic;
 import edu.stanford.nlp.ie.util.RelationTriple;
 
 /**this class will implement the evaluate method from the BaseNode class
@@ -13,6 +14,10 @@ import edu.stanford.nlp.ie.util.RelationTriple;
 public abstract class EvaluatedNode extends BaseNode {
 
 	private Analyser analyser;
+	private final double SENTIMENT_WEIGHT = 1;
+	private final double INFO_WEIGHT = 1;
+	private final double KEYWORD_WEIGHT = 3;
+	private final double RELATION_WEIGHT = 3;
 	
 	/**constructor same as superclass
 	 * 
@@ -41,11 +46,28 @@ public abstract class EvaluatedNode extends BaseNode {
 	 * see that class for reference about what this should do
 	 */
 	public double evaluate(String incMessage) {
+		
 		int sentScore = analyser.compareSentiment(getMessage(), incMessage);
+		
 		RelationTriple dataRelation = analyser.getRelations(getMessage());
 		RelationTriple incRelation = analyser.getRelations(incMessage);
 		int information = analyser.compareInformation(dataRelation, incRelation);
-		return 0.5;
+		
+		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage);
+		
+		String relation = incRelation.objectLemmaGloss();
+		int relationScore = 0;
+		for(int i = 0; i < this.getKeywords().length; i++) {
+			if(relation.toLowerCase().equals(this.getKeywords()[i].toLowerCase())) {
+				relationScore = 1;
+				break;
+			}
+		}
+		
+		return (SENTIMENT_WEIGHT * sentScore)
+			 + (INFO_WEIGHT * information) 
+			 + (KEYWORD_WEIGHT * keywordScore)
+			 + (RELATION_WEIGHT * relationScore);
 	}
 	
 }
