@@ -2,6 +2,8 @@ package data_structures;
 
 import java.util.ArrayList;
 
+import analysis.Analyser;
+
 /**this class represents a response to a question with a third step acknowledgement
  * 
  * @author Charlie Street
@@ -25,9 +27,10 @@ public class Response extends EvaluatedNode {
 	 * @param parent the parent question
 	 * @param ack third step acknowledgement
 	 * @param followUp the array of question id's
+	 * @param analyser the nlp object
 	 */
-	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack, String[] followUp) {
-		super(msg,keys);
+	public Response(String msg, String[] keys, boolean changeTopic, boolean ourResponse, Question parent, String ack, String[] followUp, Analyser analyser) {
+		super(msg,keys,analyser);
 		this.changeTopic = changeTopic;
 		this.ourResponse = ourResponse;
 		this.parent = parent;
@@ -45,9 +48,10 @@ public class Response extends EvaluatedNode {
 	 * @param parent see above
 	 * @param ack see above
 	 * @param followUp see above
+	 * @param analyser see above
 	 */
-	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack, String[] followUp) {
-		super(msg,keys,neigh);
+	public Response(String msg, String[] keys, ArrayList<BaseNode> neigh, boolean change, boolean ours, Question parent, String ack, String[] followUp, Analyser analyser) {
+		super(msg,keys,neigh,analyser);
 		this.changeTopic = change;
 		this.ourResponse = ours;
 		this.parent = parent;

@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import analysis.Analyser;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -64,7 +66,8 @@ public class Client {
         
         //initialize bot stuff here
         try {
-        	//TODO INITIALISE NLP STUFF HERE
+        	//INITIALISE NLP STUFF
+        	Analyser analyser = new Analyser();
         	
         	//INITIALISE OTHER ATTRIBUTES
         	formalise = new Formaliser();
@@ -75,7 +78,7 @@ public class Client {
         	setWriting = (boolean setDots) -> {if(setDots) {startTyping();} else {stopTyping();}};//sets writing stuff
         	
             // build data structures
-        	BuildWrapper dataStructures = BuildHashOfGraphs.build(logger);
+        	BuildWrapper dataStructures = BuildHashOfGraphs.build(logger, analyser);
         	
             //initialise conversation 
         	convo = new Conversation(dataStructures.getGraphs(),true,dataStructures.getQuestionList());

@@ -2,6 +2,8 @@ package data_structures;
 
 import java.util.ArrayList;
 
+import analysis.Analyser;
+
 /**this class represents a question in a conversation
  * the main addition from it's super class is the implementation
  * of the isQuestion method and the inclusion of an opener field
@@ -20,9 +22,10 @@ public class Question extends EvaluatedNode {
 	 * @param keywords the keywords in said question
 	 * @param isOpener is the question an opener for a topic
 	 * @param id the unique question id
+	 * @param analyser the nlp object
 	 */
-	public Question(String message, String[] keywords, boolean isOpener, boolean usedByAI, String id) {
-		super(message, keywords);
+	public Question(String message, String[] keywords, boolean isOpener, boolean usedByAI, String id, Analyser analyser) {
+		super(message, keywords, analyser);
 		this.isOpener = isOpener;
 		this.usedByAI = usedByAI;
 		this.id = id;
@@ -35,9 +38,10 @@ public class Question extends EvaluatedNode {
 	 * @param neighbours the neighbours in the graph
 	 * @param isOpener is the question an opener for a topic
 	 * @param id the unique question id
+	 * @param analyser the nlp object
 	 */
-	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener, boolean usedByAI, String id) {
-		super(message, keywords, neighbours);
+	public Question(String message, String[] keywords, ArrayList<BaseNode> neighbours, boolean isOpener, boolean usedByAI, String id, Analyser analyser) {
+		super(message, keywords, neighbours, analyser);
 		this.isOpener = isOpener;
 		this.usedByAI = usedByAI;
 		this.id = id;

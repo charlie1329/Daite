@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import analysis.Analyser;
 import data_structures.*;
 import logger.ConvoLogger;
 
@@ -91,9 +92,10 @@ public class BuildHashOfGraphs {
 	 * 
 	 * @param responses the responses from the json file
 	 * @param parent the question those responses are suitable for
+	 * @param analyser the nlp object
 	 * @return the responses in response objects
 	 */
-	private static ArrayList<Response> formResponses(JSONArray responses, Question parent) {
+	private static ArrayList<Response> formResponses(JSONArray responses, Question parent, Analyser analyser) {
 		ArrayList<Response> builtRs = new ArrayList<Response>();
 		for(int i = 0; i < responses.size(); i++) {
 			JSONObject currentR = (JSONObject)responses.get(i);
@@ -111,7 +113,7 @@ public class BuildHashOfGraphs {
 			try {followUp = (JSONArray)currentR.get("followUp");}catch(Exception e){}
 			String[] hexFollowUps = (followUp==null)?null:getFollowUps(followUp);
 			
-			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response,hexFollowUps);//create response node
+			Response newResponse = new Response(message,keys,changeTopic,ourResponse,parent,response,hexFollowUps, analyser);//create response node
 			builtRs.add(newResponse);//add to list of responses
 			parent.addNeighbour(newResponse);//add as child of question
 		}
@@ -143,9 +145,10 @@ public class BuildHashOfGraphs {
 	/**this method will build up our hash map by building each topic in a separate thread using thread pools
 	 * 
 	 * @param logger our on-screen logger for how the AI is doing
+	 * @param analyser the nlp object
 	 * @return the full data structure(s) used for conversations
 	 */
-	public static BuildWrapper build(ConvoLogger logger) {
+	public static BuildWrapper build(ConvoLogger logger, Analyser analyser) {
 		HashMap<String,Question> convoMap = new HashMap<String,Question>();//the data structure itself
 		HashMap<String,ArrayList<Question>> questionList = new HashMap<String,ArrayList<Question>>();
 		ExecutorService threadPool = Executors.newFixedThreadPool(HOW_MANY_THREADS);
@@ -181,13 +184,13 @@ public class BuildHashOfGraphs {
 							
 							String qID = (String)question.get("id");//will always have a question ID
 							
-							Question newQuestion = new Question(message, keywords, isOpener, usedByAI, qID);
+							Question newQuestion = new Question(message, keywords, isOpener, usedByAI, qID, analyser);
 							if(newQuestion.isOpener() && !foundOpener) {opener = newQuestion; foundOpener = true;}//should only happen once
 							topicQs.add(newQuestion);//add to list
 							
 							JSONArray responses = (JSONArray)question.get("children");//getting responses for question
 							
-							topicRs.addAll(formResponses(responses,newQuestion));
+							topicRs.addAll(formResponses(responses,newQuestion, analyser));
 						}
 						
 						linkUpQsAndRs(topicQs,topicRs);//link up graph correctly
@@ -221,6 +224,6 @@ public class BuildHashOfGraphs {
 	}
 	
 	public static void main(String[] args) {
-		build(new ConvoLogger());
+		build(new ConvoLogger(), new Analyser());
 	}
 }
