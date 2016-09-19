@@ -67,16 +67,23 @@ public class Analyser {
 	
 	public int compareInformation(RelationTriple one, RelationTriple two)
 	{
-		int sub = 0;
-		if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
-				sub = 1;
-		int obj = 0;
-		if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
-				obj = 1;
-		int rel = 0;
-		if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
-			rel = 1;
-		return sub+obj+rel;
+		try
+		{
+			int sub = 0;
+			if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
+					sub = 1;
+			int obj = 0;
+			if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
+					obj = 1;
+			int rel = 0;
+			if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
+				rel = 1;
+			return sub+obj+rel;
+		}
+		catch(NullPointerException e)
+		{
+			return 0;
+		}
 				
 	}
 	
@@ -139,6 +146,7 @@ public class Analyser {
   public static void main(String[] args) throws Exception {
     
 	Analyser anal = new Analyser();
-	anal.analyse("i like football");
+	 int i = anal.compareInformation(anal.getRelations("iasdsadasdasdasdsaddl"), anal.getRelations("i quite like football"));
+	 System.out.println(i);
   }
 }
