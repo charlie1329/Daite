@@ -25,8 +25,7 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .info-entry {
     display: none;
     padding: 1em;
-    max-width: 300px;
-    min-width: 200px;
+    min-width: 40%;
     width: 30%;
     border: solid .25em #FBFBFF;
     border-radius: 1em;
@@ -103,7 +102,6 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 .me {
     background: #E74C3C;
     float: right;
-    text-align: right;
 }
 
 .match {

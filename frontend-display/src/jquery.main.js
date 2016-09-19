@@ -5,7 +5,7 @@
 (function ($) {
 
     /* Variables */
-    var my_username, my_age, my_gender,
+    var my_username, my_age, my_gender, my_interests,
         match_username, roomID,
 
         // Typing variables
@@ -105,20 +105,34 @@
             }
         });
 
-        name.on("keyup", function () {
+        name.on("input", function () {
             if (name.val())
                 $('#name-continue').tooltip('option', 'disabled', true);
             else
                 $('#name-continue').tooltip('option', 'disabled', false);
         });
 
-        $('#age').on('keyup', enter_details_validate);
-        $('input[name=gender]').on('change', enter_details_validate);
+        $('#interests').tagsInput({
+            height: 'auto',
+            width: 'auto',
+            defaultText: 'Add an interest'
+        });
+        details_continue.hover(enter_details_validate, enter_details_validate);
 
         function enter_details_validate() {
-            var age = $('#age').val(),
-                gender = $('input[name=gender]:checked').val();
+            my_age = $('#age').val();
+            my_gender = $('input[name=gender]:checked').val();
+            my_interests = $('#interests').val();
 
+            if(my_age && my_gender && my_interests) {
+                details_continue.tooltip('option', 'disabled', true);
+            }
+            else {
+                details_continue.tooltip('option', 'content', 'Enter your details to continue.')
+                    .tooltip('option', 'disabled', false);
+            }
+
+            /*
             if (!age) {
                 if (gender)
                     details_continue.tooltip('option', 'content', 'Enter your age to continue.')
@@ -134,6 +148,7 @@
                     details_continue.tooltip('option', 'content', 'Specify your gender to continue.')
                         .tooltip('option', 'disabled', false);
             }
+            */
         }
 
         // Show about dialogue
@@ -423,16 +438,12 @@
 
                 event.preventDefault();
 
-                // Get entered age
                 my_age = $('#age').val();
-
-                // Get gender chosen
                 my_gender = $('input[name=gender]:checked').val();
+                my_interests = $('#interests').val();
 
-                if (my_age && my_gender) {
+                if (my_age && my_gender && my_interests) {
                     $('#details-continue').prop('disabled', true).html('Matching...');
-                    // TODO add a timeout, but in our given scenario everyone will be eventualy matched
-                    // maybe implement a request acknowledgement on the server side?
                     getMatch();
                 }
             })
