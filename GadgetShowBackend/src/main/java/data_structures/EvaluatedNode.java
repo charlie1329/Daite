@@ -3,6 +3,7 @@ package data_structures;
 import java.util.ArrayList;
 
 import analysis.Analyser;
+import edu.stanford.nlp.ie.util.RelationTriple;
 
 /**this class will implement the evaluate method from the BaseNode class
  * this will just make it a bit easier to account for other team members current work
@@ -39,7 +40,11 @@ public abstract class EvaluatedNode extends BaseNode {
 	/**implemented from BaseNode class
 	 * see that class for reference about what this should do
 	 */
-	public double evaluate(String message) {
+	public double evaluate(String incMessage) {
+		int sentScore = analyser.compareSentiment(getMessage(), incMessage);
+		RelationTriple dataRelation = analyser.getRelations(getMessage());
+		RelationTriple incRelation = analyser.getRelations(incMessage);
+		int information = analyser.compareInformation(dataRelation, incRelation);
 		return 0.5;
 	}
 	

@@ -36,7 +36,7 @@ public class Analyser {
 		Annotation doc = pipeline.process(bugreplacement(phrase));
 		System.out.println("Phrase to be analysed: " + phrase);
 		findSentiment(doc);
-		getRelations(doc);
+		getRelations(phrase);
 	}
 	
 	private int findSentiment(Annotation doc)
@@ -54,14 +54,14 @@ public class Analyser {
                 longest = partText.length();
             }
 		}
-		System.out.println("Sentiment score = " + mainSentiment);
+		//System.out.println("Sentiment score = " + mainSentiment);
 		return mainSentiment;
 	}
 	
 	public int compareSentiment(String one, String two)
 	{
 		Annotation doc1 = pipeline.process(bugreplacement(one));
-		Annotation doc2 = pipeline.process(two);
+		Annotation doc2 = pipeline.process(bugreplacement(two));
 		return Math.abs(findSentiment(doc1) - findSentiment(doc2));
 	}
 	
@@ -95,8 +95,9 @@ public class Analyser {
 		
 		return toChange;
 	}
-	public RelationTriple getRelations(Annotation doc)
+	public RelationTriple getRelations(String phrase)
 	{
+		Annotation doc = pipeline.process(bugreplacement(phrase));
 		for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
 		      // Get the OpenIE triples for the sentence
