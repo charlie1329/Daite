@@ -14,8 +14,6 @@ import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.SocketIOClient;
 
-import networking.Connection;
-
 import networking.chat.ChatMessage;
 import networking.chat.ChatUser;
 import networking.chat.DisconnectEvent;
