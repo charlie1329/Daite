@@ -10,8 +10,10 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'war'
 
 mainClassName = "networking.Server"
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -25,6 +27,15 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-simple:1.7.21'
 
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.6.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
+
+    //test
+    compile ('io.socket:socket.io-client:0.7.0')
+
+    //simpele json
+    compile ('com.googlecode.json-simple:json-simple:1.1.1')
+
     // https://mvnrepository.com/artifact/com.corundumstudio.socketio/netty-socketio
     compile group: 'com.corundumstudio.socketio', name: 'netty-socketio', version: '1.7.11'
 
@@ -34,3 +45,9 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
 }
+
+war {
+    from('src/main/resorces') 
+    include('log4j.properties')
+}
+
