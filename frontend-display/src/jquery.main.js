@@ -171,7 +171,7 @@
                             text: "Yes",
                             click: function () {
                                 $(this).dialog('close');
-                                endConvo()
+                                endConvo(true)
                             }
                         },
                         {
@@ -222,6 +222,25 @@
         else {
             receiveMessage(data);
         }
+    });
+
+    /* Our match has disconnected early */
+    socket.on("leaveroom", function () {
+        socket.emit("leaveroom", {roomID: roomID, early: false});
+
+        $('.chat-section').slideUp(400, function () {
+            $('#warning-dialog').dialog('option', 'title', "Oops!")
+                .text("It looks like your match left the conversation early...")
+                .dialog('option', 'buttons', [
+                    {
+                        text: "Okay",
+                        click: function () {
+                            location.reload()
+                        }
+                    }
+                ])
+                .dialog('open')
+        });
     });
 
     /*
@@ -319,13 +338,13 @@
     }
 
     /* MISC FUNCTIONS */
-    function endConvo() {
+    function endConvo(early) {
         // Leave the room
-        socket.emit("leaveroom", roomID);
+        socket.emit("leaveroom", {roomID: roomID, early: early});
 
         $('.chat-section').slideUp(400, function () {
             $('#warning-dialog').dialog('option', 'title', "It's over!")
-                .text("Time's up, the conversation is now finished.")
+                .text(early ? "By your wish" : "Time's up," + " the conversation is now finished.")
                 .dialog('option', 'buttons', [
                     {
                         text: "Okay",
@@ -343,11 +362,13 @@
         chat_window.scrollTop = chat_window.scrollHeight;
     }
 
+    /*
     function showWarning(title, message) {
         $('#warning-dialog').dialog('option', 'title', title)
             .text(message)
             .dialog('open')
     }
+    */
 
     function emojifyMessage() {
         var messages = document.getElementsByClassName('message-text');
@@ -470,7 +491,7 @@
                     return new Date(time * 1000);
                 }
                 else {
-                    endConvo(); //ends conversation when the timer reaches 0
+                    endConvo(false); //ends conversation when the timer reaches 0
                 }
             };
 
