@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,6 @@ public class Matcher {
 	public Matcher() {
 		matchQueue = new LinkedBlockingDeque<>();
         availableBots = new LinkedBlockingDeque<>();
-
 	}
 
     /*
@@ -37,7 +38,7 @@ public class Matcher {
      */
 	public void match(SocketIOClient user) throws InterruptedException {
         // FIXME for now, always match a real user with a bot
-        boolean matchingUsers = true;
+        boolean matchingUsers = false;
 
         //Check if user will be matched with a real client or with a bot
         if(matchingUsers) {
@@ -83,7 +84,7 @@ public class Matcher {
      * When bot sent details, chat is ready to start 
      */
     public void startBotChat(String room){
-        Match match = searchMatch(room);
+        Match match = getMatch(room);
         if(match != null) {
             match.setBotDetails();
         }
@@ -138,7 +139,7 @@ public class Matcher {
     public SocketIOClient getMatchedClient (SocketIOClient client) { 
         //TODO catch empty room ID
         String clientRoomID = client.getAllRooms().iterator().next();
-        Match match = searchMatch(clientRoomID);
+        Match match = getMatch(clientRoomID);
         if(match != null) {
             ChatUser chatuser = client.get("userData");
             return match.getPairedClient(client.getSessionId());
@@ -148,7 +149,7 @@ public class Matcher {
 
     }
 
-    public Match searchMatch(String roomID) {
+    public Match getMatch(String roomID) {
         Enumeration roomIDs = matches.keys();
         while(roomIDs.hasMoreElements()) {
             if(roomID.equals((String) roomIDs.nextElement())) {
@@ -156,6 +157,16 @@ public class Matcher {
             }
         }
         return null;
+    }
+
+    public String getRoomFromClient(SocketIOClient client) {
+        List<String> allRoomsList = new ArrayList<>(client.getAllRooms());
+        if(allRoomsList.size() == 1) {
+            return allRoomsList.get(0);
+        }
+        else {
+            return null;
+        }
     }
 
     /* Add a new bot available */

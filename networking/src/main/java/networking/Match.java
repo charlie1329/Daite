@@ -19,38 +19,29 @@ public class Match {
     private ChatUser chatClient1, chatClient2;
     private String roomID;
     private boolean validMatch;
-    private SocketIOClient bot = null;
+    private boolean matchedWithBot;
 
     private Logger log = LoggerFactory.getLogger(Matcher.class);
 
 
     /*
-     * Match between two real users
+     * Match contains the details of the matched clients
+     * Call this method with bot client as second paramenter
      */
     public Match(SocketIOClient user1, SocketIOClient user2) {
         client1 = user1;
         client2 = user2;
 
-        //this is called from register event, so isBot shoud be setted
-        //get which one is the bot
-        if(client1.get("isBot")) {
-            log.info("[MATCH] user1 is the bot");
-            bot = client1;
-        }
-        else {
-            //is not bot, set details
-            chatClient1 = client1.get("userData");
+        chatClient1 = client1.get("userData");
 
-        }
+        //Check if match is done with a bot
         if(client2.get("isBot")) {
-            log.info("[MATCH] user2 is the bot");
-            bot = client2;
+            matchedWithBot = true;
         }
         else {
+            matchedWithBot = false;
             chatClient2 = client2.get("userData");            
         }
-        //if(bot != null) {
-        //}
 
         roomID = generateRoomID(client1, client2);
 
@@ -60,45 +51,41 @@ public class Match {
         if (clearRooms(client1) && clearRooms(client2)) {
             client1.joinRoom(roomID);
             client2.joinRoom(roomID);
-            
-            
-            //validMatch = true;
-            
-            //Send message to clients about the new match
         }
         else {
-            //TODO error
-            log.error("Failed to create a match between {} and {} with roomID: {}", chatClient1.getName(), chatClient2.getName(), roomID);
+            log.error("Failed to create a room between {} and {} with roomID: {}", chatClient1.getName(), chatClient2.getName(), roomID);
             validMatch = false;
             return;
         }
 
-        if(bot == null) {
+        if(!matchedWithBot) {
             log.info("Created new match between {} and {} in room {}", chatClient1.getName(), chatClient2.getName(), roomID);
             validMatch = true;
             emitMatch();
         }
         else 
         {
-            log.info("Created room: {} for {} with bot\n Waiting for bot to  details...",roomID, chatClient1.getName());
+            log.info("Created room: {} for user {}, matched with bot", roomID, chatClient1.getName());
+            log.info("Waiting for bot to reply with details...");
         }
     }
+
     /*
-     * TODO Match between a user and AI
+     * Set bot details and emit the matching event
      */
-    public Match(){
-    
-    }
     public void setBotDetails() {
         chatClient2 = client2.get("userData");
-        log.info("Setting bot details: {}", chatClient2.getName());
+        log.info("Setting bot details: {}, {}, {} for matching with {}, {}, {}", 
+                chatClient2.getName(), chatClient2.getAge(), chatClient2.getGender(), 
+                chatClient1.getName(), chatClient2.getAge(), chatClient2.getGender());
+        //send event
         emitMatch();
     }
+
     /*
      * Send match event 
      */
     public void emitMatch() {
-        System.out.println(chatClient2.getName());
         client1.sendEvent("matchfound", new MatchEvent(roomID, chatClient2.getName()));
         client2.sendEvent("matchfound", new MatchEvent(roomID, chatClient1.getName()));
 

@@ -33,9 +33,7 @@ public class Server {
     	matcher = new Matcher();
     	
     	SocketIONamespace chatNamespace = socketServer.addNamespace("/chat");
-
-        SocketIONamespace botNamespace = socketServer.addNamespace("/botmanagement");
-    	
+	
     	log.info("Created namespace: {}", chatNamespace.getName());
     	
     	chatNamespace.addConnectListener(client -> {
@@ -49,11 +47,26 @@ public class Server {
                 log.info("Client removed from queue");
                 return;
             }
-            
-            // If client is a bot and is waiting 
-            if(matcher.removeAvailableBot(client)) {
-                log.info("Bot disconnected and was removed from the bots list");
-            }
+
+            if(client.get("isBot")) {
+                // If bot disconnects while is waiting 
+                if(matcher.removeAvailableBot(client)) {
+                    log.info("Bot disconnected and was removed from the bots list");
+                }
+                
+                // If bot has a room assigned
+                String botRoom = matcher.getRoomFromClient(client);
+                if(botRoom != null) {
+                    //Remove the match
+                    if(matcher.removeMatch(botRoom)) {
+                        //Fake a conversation end on the user side
+                        SocketIOClient matchedUser = matcher.getMatchedClient(client);
+                        log.info("Bot disconnected while matched. Removed match in room: {} with: ",
+                                botRoom);//, matchedUser.get("userData").getName());
+                        //TODO send event to matchedUser
+                    }
+                }
+            }      
         });
     	
     	// Handle register requests
