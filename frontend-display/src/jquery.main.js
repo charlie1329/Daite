@@ -12,6 +12,7 @@
         typing = false,
         timeout = undefined,
         matchingFailed,
+        timer,
         //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
         //    socket = io.connect("http://duk.im:6969/chat");
@@ -227,6 +228,7 @@
     /* Our match has disconnected early */
     socket.on("leaveroom", function () {
         socket.emit("leaveroom", {roomID: roomID, early: false});
+        clearInterval(timer);
 
         $('.chat-section').slideUp(400, function () {
             $('#warning-dialog').dialog('option', 'title', "Oops!")
@@ -341,6 +343,7 @@
     function endConvo(early) {
         // Leave the room
         socket.emit("leaveroom", {roomID: roomID, early: early});
+        clearInterval(timer);
 
         $('.chat-section').slideUp(400, function () {
             $('#warning-dialog').dialog('option', 'title', "It's over!")
@@ -483,11 +486,13 @@
             // Total length of time you want the conversation to be (in seconds)
             totalTime = 180;
 
-        setInterval(function () {
+        timer = setInterval(function () {
 
             var time = totalTime - Math.floor((new Date - start) / 1000);
             var countdown = function () {
                 if (time > 0) {
+                    if (time == 20) //20 seconds left til the end, time for the AI to say goodbye!
+                        socket.emit('timer20');
                     return new Date(time * 1000);
                 }
                 else {
