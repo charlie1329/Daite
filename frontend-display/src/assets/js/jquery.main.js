@@ -87,7 +87,7 @@
         // On keypress
         $('#type-message').keydown(function (e) {
             // If key isn't enter, set typing to true and tell the server
-            if (e.which != 13) {
+            if (e.keyCode != 13) {
                 if (typing === false) {
                     typing = true;
                     socket.emit("isTyping", true);
@@ -99,7 +99,7 @@
                 }
             }
             // If key is enter, send message
-            else if (e.which == 13) {
+            else if (e.keyCode == 13) {
                 sendMessage();
             }
         });
