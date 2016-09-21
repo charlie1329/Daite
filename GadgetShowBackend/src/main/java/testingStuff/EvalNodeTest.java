@@ -11,12 +11,13 @@ public class EvalNodeTest
  public static void main(String[] args) 
  {
 	Analyser analyser = new Analyser();
-	String heldMessage = "do you have any pets?";
-	String[] kWords = new String[1];
-	kWords[0] = "pets";
-	//kWords[1] = "pet";
+	String heldMessage = "Do you like memes?";
+	String[] kWords = new String[3];
+	kWords[0] = "memes";
+	kWords[1] = "like";
+	kWords[2] = "dank";
 	ArrayList<String> neighbours = new ArrayList<String>();
-	String incQuestion = "so then, do you have any pets?";
+	String incQuestion = "how do you like your eggs in the morning?";
 	Question node = new Question(heldMessage, kWords, false, false, "test", analyser);
 	System.out.println(node.evaluate(incQuestion));
 			

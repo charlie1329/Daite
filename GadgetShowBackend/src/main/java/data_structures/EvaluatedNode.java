@@ -16,7 +16,7 @@ public abstract class EvaluatedNode extends BaseNode {
 	private Analyser analyser;
 	private final double SENTIMENT_WEIGHT = 1;
 	private final double INFO_WEIGHT = 1;
-	private final double KEYWORD_WEIGHT = 3;
+	private final double KEYWORD_WEIGHT = 2;
 	private final double RELATION_WEIGHT = 3;
 	
 	/**constructor same as superclass
