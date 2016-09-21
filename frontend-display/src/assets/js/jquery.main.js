@@ -10,12 +10,12 @@
 
         // Typing variables
         typing = false,
-        timeout = undefined,
+        timeout,
+
+        //Matching variables
         matchingFailed,
         timer,
-        //typing_indicator_obj = "<li id='typing_indicator'> <span> <img id='type-gif' src='assets/type.gif'> </span> </li>",
 
-        //    socket = io.connect("http://duk.im:6969/chat");
         socket = io.connect("http://localhost:6969/chat");
 
 
@@ -125,7 +125,7 @@
             my_gender = $('input[name=gender]:checked').val();
             my_interests = $('#interests').val();
 
-            if(my_age && my_gender && my_interests) {
+            if (my_age && my_gender && my_interests) {
                 details_continue.tooltip('option', 'disabled', true);
             }
             else {
@@ -134,22 +134,22 @@
             }
 
             /*
-            if (!age) {
-                if (gender)
-                    details_continue.tooltip('option', 'content', 'Enter your age to continue.')
-                        .tooltip('option', 'disabled', false);
-                else
-                    details_continue.tooltip('option', 'content', 'Enter your age and specify your gender to continue.')
-                        .tooltip('option', 'disabled', false);
-            }
-            else {
-                if (gender)
-                    details_continue.tooltip('option', 'disabled', true);
-                else
-                    details_continue.tooltip('option', 'content', 'Specify your gender to continue.')
-                        .tooltip('option', 'disabled', false);
-            }
-            */
+             if (!age) {
+             if (gender)
+             details_continue.tooltip('option', 'content', 'Enter your age to continue.')
+             .tooltip('option', 'disabled', false);
+             else
+             details_continue.tooltip('option', 'content', 'Enter your age and specify your gender to continue.')
+             .tooltip('option', 'disabled', false);
+             }
+             else {
+             if (gender)
+             details_continue.tooltip('option', 'disabled', true);
+             else
+             details_continue.tooltip('option', 'content', 'Specify your gender to continue.')
+             .tooltip('option', 'disabled', false);
+             }
+             */
         }
 
         // Show about dialogue
@@ -366,12 +366,12 @@
     }
 
     /*
-    function showWarning(title, message) {
-        $('#warning-dialog').dialog('option', 'title', title)
-            .text(message)
-            .dialog('open')
-    }
-    */
+     function showWarning(title, message) {
+     $('#warning-dialog').dialog('option', 'title', title)
+     .text(message)
+     .dialog('open')
+     }
+     */
 
     function emojifyMessage() {
         var messages = document.getElementsByClassName('message-text');
