@@ -88,6 +88,7 @@ public class Client {
             connect();
          }catch (Exception e) {
              // at least we know who to blame :)
+        	 logger.logMessage(e.toString());
         	 logger.logMessage("Charlie's seriously messed up here. Shame on you, Charlie!!!");
          }
         
@@ -157,9 +158,9 @@ public class Client {
             log.error(e.getMessage());
         }
 
-        log.info("Sending message: {}");
+        log.info("Sending message: "+message);
         socket.emit("message", msg);
-        logger.logMessage(Client.botName + ":> "+ msg);//log on our graphical logger
+        logger.logMessage(Client.botName + ":> "+ message);//log on our graphical logger
     }
 
     /*
@@ -260,8 +261,8 @@ public class Client {
                 log.error(e.getMessage());
                 return;
             }
-
-            if(username == botName) {
+            logger.logMessage(username);
+            if(username.equals(botName)) {
                 // ignore for now the messages bot sent
             }
             else {
@@ -322,7 +323,7 @@ public class Client {
      */
     public static void main (String[] args) {
         // Setup connection
-        Client client = new Client("http://localhost", "6969" , "chat");//this should start the bot running
+        Client client = new Client("http://138.68.139.139", "6969" , "chat");//this should start the bot running
         //Moved this to event call;
         //client.startConvo();//initiate conversation!
         //TODO make sure we deal with disconnecting
