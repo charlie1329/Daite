@@ -77,15 +77,15 @@ public class Analyser {
 		try
 		{
 			double conf = one.confidence+two.confidence;
-			int sub = 0;
+			double sub = 0;
 			if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
-					sub = 1;
-			int obj = 0;
+					sub = 0.75;
+			double obj = 0;
 			if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
 					obj = 1;
-			int rel = 0;
+			double rel = 0;
 			if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
-				rel = 1;
+				rel = 0.75;
 			return conf*(sub+obj+rel);
 		}
 		catch(NullPointerException e)

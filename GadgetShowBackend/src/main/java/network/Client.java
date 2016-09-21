@@ -87,6 +87,7 @@ public class Client {
         	//now connect
             connect();
          }catch (Exception e) {
+             // at least we know who to blame :)
         	 logger.logMessage("Charlie's seriously messed up here. Shame on you, Charlie!!!");
          }
         
@@ -99,6 +100,8 @@ public class Client {
         socket.on("isTyping", onTyping);
         // receiving messages
         socket.on("message", onMessage);
+        // matching is completed, chat is ready to start
+        socket.on("matchfound", onMatchCompleted);
     }
    
     /*
@@ -213,6 +216,16 @@ public class Client {
     };
 
     /*
+     * Due to how exchange of details is done, the conversation must be started here
+     * when this event happens, the chat is ready to start :)
+     */
+    private Emitter.Listener onMatchCompleted = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            startConvo();
+        }
+    };
+    /*
      * On typing listener
      */
     private Emitter.Listener onTyping = new Emitter.Listener() {
@@ -310,7 +323,8 @@ public class Client {
     public static void main (String[] args) {
         // Setup connection
         Client client = new Client("http://localhost", "6969" , "chat");//this should start the bot running
-        client.startConvo();//initiate conversation!
+        //Moved this to event call;
+        //client.startConvo();//initiate conversation!
         //TODO make sure we deal with disconnecting
     }
 }
