@@ -16,7 +16,7 @@
         matchingFailed,
         timer,
 
-        socket = io.connect("http://localhost:6969/chat");
+        socket = io.connect("http://138.68.139.139:6969/chat");
 
 
     /* ON LOAD */
@@ -265,11 +265,13 @@
     function toggleTyping(bool) {
         if (bool) {
             //we want to re-insert the typing indicator into the right place!!
-            $('.message-list').append(
-                "<li id='typing_indicator'>" +
-                "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
-                "</li>");
-            $('#typing_indicator').fadeIn();
+            if(document.getElementById('typing_indicator') === null) {
+                $('.message-list').append(
+                    "<li id='typing_indicator'>" +
+                    "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
+                    "</li>");
+                $('#typing_indicator').fadeIn();
+            }
             autoScroll();
         }
         else {
@@ -347,7 +349,7 @@
 
         $('.chat-section').slideUp(400, function () {
             $('#warning-dialog').dialog('option', 'title', "It's over!")
-                .text(early ? "By your wish" : "Time's up," + " the conversation is now finished.")
+                .text((early ? "By your wish" : "Time's up,") + " the conversation is now finished.")
                 .dialog('option', 'buttons', [
                     {
                         text: "Okay",
@@ -380,7 +382,7 @@
 
     // Request a match from the server
     function getMatch() {
-        socket.emit("register", {name: my_username, age: my_age, gender: my_gender});
+        socket.emit("register", {name: my_username, age: my_age, gender: my_gender, isBot: false});
         matchingFailed = setTimeout(retryMatch, 60000); //matching timeout is set to 1 minute
     }
 
