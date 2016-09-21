@@ -28,6 +28,9 @@ public class Matcher {
 
     private BlockingQueue<SocketIOClient> availableBots;
 
+    boolean matchingUsers = true;
+    
+
 	public Matcher() {
 		matchQueue = new LinkedBlockingDeque<>();
         availableBots = new LinkedBlockingDeque<>();
@@ -38,8 +41,7 @@ public class Matcher {
      */
 	public void match(SocketIOClient user) throws InterruptedException {
         // FIXME for now, always match a real user with a bot
-        boolean matchingUsers = false;
-
+        
         //Check if user will be matched with a real client or with a bot
         if(matchingUsers) {
             // Here is done the matching between two real users
@@ -112,8 +114,9 @@ public class Matcher {
         Enumeration roomIDs = matches.keys();
         while(roomIDs.hasMoreElements()) {
             if(room.equals(roomIDs.nextElement())){
+                log.info("Removing match with room ID: {}", room);
+                //TODO have a look over this later
                 matches.remove(room);
-                log.info("Removed match with room ID: {}", room);
                 return true;
             }   
         }
@@ -147,6 +150,19 @@ public class Matcher {
         else
             return null;
 
+    }
+    /**
+     * @param client the client who disconnected
+     */
+    public void sendDisconnectEvent(SocketIOClient client) {
+        SocketIOClient other = getMatchedClient(client);
+        if(other != null) {
+            // simulate the same thing as if the disconnect was intentional, never blame the server
+            other.sendEvent("leaveroom", true);
+        }
+        else {
+            log.info("Could not send the disconnect event");
+        }
     }
 
     public Match getMatch(String roomID) {
