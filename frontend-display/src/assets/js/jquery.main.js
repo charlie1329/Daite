@@ -14,9 +14,7 @@
 
         //Matching variables
         matchingFailed,
-        timer,
-
-        socket = io.connect("http://138.68.139.139:6969/chat");
+        timer;
 
 
     /* ON LOAD */
