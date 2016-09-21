@@ -63,10 +63,10 @@ public abstract class EvaluatedNode extends BaseNode {
 		
 		double totalScore = 0.0;
 		
-		int sentScore = analyser.compareSentiment(getMessage(), incMessage);
+		int sentScore = analyser.compareSentiment(this.getMessage().toLowerCase(), incMessage.toLowerCase());
 		totalScore += (SENTIMENT_WEIGHT * sentScore);
 		
-		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage);
+		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage.toLowerCase());
 		totalScore += (KEYWORD_WEIGHT * keywordScore);
 		
 		RelationTriple dataRelation = analyser.getRelations(getMessage());
