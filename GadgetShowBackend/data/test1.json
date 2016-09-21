@@ -1,0 +1,5 @@
+{"topic":"pets", "questions":[
+{"message":"Do you have any pets?", "id":"2", "usedByAI":true, "isOpener":true, "presentKeywords":["pets"], "children":[
+{"message":"Yes I have a dog", "presentKeywords":["dog"], "response":"Awesome, I have a dog as well!", "followUp":["21","34"]},
+{"message":"No, I don't.", "noAnswer":true, "response":"Oh, that's a shame", "switchTopic":true},
+{"message":"Yes, I have an amazing dog!!!", "usedByAI":true, "followUp":["24","37"]}]}]}
