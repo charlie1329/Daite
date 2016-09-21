@@ -333,7 +333,11 @@ public class Client {
      */
     public static void main (String[] args) {
         // Setup connection
-        Client client = new Client("http://138.68.139.139", "6969" , "chat");//this should start the bot running
+    	String port = "6969";
+    	if(args.length != 0) {
+    		port = args[0];
+    	}
+        Client client = new Client("http://138.68.139.139", port , "chat");//this should start the bot running
         //Moved this to event call;
         //client.startConvo();//initiate conversation!
         //TODO make sure we deal with disconnecting
