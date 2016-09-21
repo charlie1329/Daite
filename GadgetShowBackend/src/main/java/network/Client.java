@@ -74,7 +74,7 @@ public class Client {
         	nameChooser = new NameMatcher();
         	currentMessage = "";
         	writeTimer = new StandardMessageWritingTimer();
-        	timeCompleted = (String s) -> {};//for now I have no idea whether this really needs to do anything
+        	timeCompleted = (String s) -> {logger.logMessage("FINISHED TYPING");};//for now I have no idea whether this really needs to do anything
         	setWriting = (boolean setDots) -> {if(setDots) {startTyping();} else {stopTyping();}};//sets writing stuff
         	
             // build data structures
@@ -296,9 +296,9 @@ public class Client {
                     				toSend += response.get(i);
                     				boolean currentBool = newLineOrSpace.nextBoolean();
                     				if(currentBool) {
-                    					toSend += " <br>";
+                    					toSend += ". <br>";
                     				} else {
-                    					toSend += " ";
+                    					toSend += ". ";
                     				}
                     			}
                     			toSend += response.get(response.size()-1);
