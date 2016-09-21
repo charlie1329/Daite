@@ -24,6 +24,7 @@ import analysis.Analyser;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 /**class contains networking code for ai client
  * as well as the code for making the bot run
@@ -283,24 +284,34 @@ public class Client {
                     	ArrayList<String> response = convo.respond(formalMessage);//get our response
                     	String[] messagesRead = new String[]{myMessageToRead};
                     	String[] messagesToWrite = response.toArray(new String[response.size()]);
-                    	writeTimer.beginTyping(messagesRead, messagesToWrite, setWriting, timeCompleted);
+                    	
+                    	//FORMAT RESPONSE TO SEND
+            			Random newLineOrSpace = new Random();//randomly selecting how to structure message on chat
+            			String toSend = "";//constructing response
+            			for(int i=0; i < response.size()-1; i++) {//don't do last item
+            				toSend += response.get(i);
+            				boolean currentBool = newLineOrSpace.nextBoolean();
+            				if(currentBool) {
+            					toSend += " <br>";
+            				} else {
+            					toSend += " ";
+            				}
+            			}
+            			toSend += response.get(response.size()-1);
+                    	
+            			final CountDownLatch waitForTimer = new CountDownLatch(1);//only need 1
+            			
+                    	writeTimer.beginTyping(messagesRead, new String[]{toSend}, setWriting, (String s) -> { waitForTimer.countDown(); });
+                    	
+                    	try {
+                    		waitForTimer.await();//wait to finish
+                    	} catch(InterruptedException e) {
+                    		logger.logMessage("timer interrupted");//this shouldn't happen
+                    	}
+                    	
                     	synchronized(currentMessage) {//CHECK THIS WONT GIVE DEADLOCK
                     		if(myMessageToRead.equals(currentMessage)) {//i.e. no other messages have been sent
                     			currentMessage = "";
-                    			
-                    			//FORMAT RESPONSE TO SEND
-                    			Random newLineOrSpace = new Random();//randomly selecting how to structure message on chat
-                    			String toSend = "";//constructing response
-                    			for(int i=0; i < response.size()-1; i++) {//don't do last item
-                    				toSend += response.get(i);
-                    				boolean currentBool = newLineOrSpace.nextBoolean();
-                    				if(currentBool) {
-                    					toSend += ". <br>";
-                    				} else {
-                    					toSend += ". ";
-                    				}
-                    			}
-                    			toSend += response.get(response.size()-1);
                     			
                     			//SEND MESSAGE
                     			sendMessage(toSend);
