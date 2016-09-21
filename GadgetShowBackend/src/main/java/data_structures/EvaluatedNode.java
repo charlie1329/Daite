@@ -48,7 +48,7 @@ public abstract class EvaluatedNode extends BaseNode {
 	 * @return Scaled score based on Tom's lovely method (just trust him :( )
 	 */
 	private double scale(double score) {
-		final double TOMS_MAGIC_NUMBER = 1000;
+		final double TOMS_MAGIC_NUMBER = 280;
 		
 		double exponentiated = Math.pow(Math.E, score); //Weight the scale towards the "perfect" end
 		double scaledBack = exponentiated/TOMS_MAGIC_NUMBER;

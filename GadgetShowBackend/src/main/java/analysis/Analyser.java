@@ -134,10 +134,10 @@ public class Analyser {
 		    	  while(itr.hasNext()) {
 		          last=itr.next();
 		    	  }
-		    	  System.out.println(last.confidence + "\t" +
-		    	            last.subjectLemmaGloss() + "\t" +
-		    	            last.relationLemmaGloss() + "\t" +
-		    	            last.objectLemmaGloss());
+		    	  //System.out.println(last.confidence + "\t" +
+		    	    //        last.subjectLemmaGloss() + "\t" +
+		    	      //      last.relationLemmaGloss() + "\t" +
+		    	        //    last.objectLemmaGloss());
 		    	  return last;
 		    	  
 		      }
