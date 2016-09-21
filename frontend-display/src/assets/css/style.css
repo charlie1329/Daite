@@ -13,13 +13,8 @@ CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
 
 /* Start page */
 
-#chat-info {
-    color: #FF8C00;
-    font-size: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
-    align-items: center;
-    display: flex;
+label {
+    font-weight: 300;
 }
 
 .info-entry {
