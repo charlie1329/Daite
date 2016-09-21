@@ -26,6 +26,6 @@ public class KeywordMagic {
 			}
 		}
 		
-		return (double)(correct/total);
+		return (double)(correct);
 	}
 }

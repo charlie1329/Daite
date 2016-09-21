@@ -76,10 +76,10 @@ public class Analyser {
 	{
 		try
 		{
-			double conf = one.confidence+two.confidence;
+			double conf = one.confidence*two.confidence;
 			double sub = 0;
 			if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
-					sub = 0.75;
+					sub = 0.5;
 			double obj = 0;
 			if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
 					obj = 1;

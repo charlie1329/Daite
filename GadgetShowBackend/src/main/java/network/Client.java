@@ -261,7 +261,7 @@ public class Client {
                 log.error(e.getMessage());
                 return;
             }
-            logger.logMessage(username);
+
             if(username.equals(botName)) {
                 // ignore for now the messages bot sent
             }
@@ -284,7 +284,6 @@ public class Client {
                     	String[] messagesRead = new String[]{myMessageToRead};
                     	String[] messagesToWrite = response.toArray(new String[response.size()]);
                     	writeTimer.beginTyping(messagesRead, messagesToWrite, setWriting, timeCompleted);
-                    	
                     	synchronized(currentMessage) {//CHECK THIS WONT GIVE DEADLOCK
                     		if(myMessageToRead.equals(currentMessage)) {//i.e. no other messages have been sent
                     			currentMessage = "";

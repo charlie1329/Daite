@@ -42,6 +42,20 @@ public abstract class EvaluatedNode extends BaseNode {
 		this.analyser = analyser;
 	}
 	
+	/** 
+	 * @author TauOmicronMu
+	 * @param score the similarity score to be scaled.
+	 * @return Scaled score based on Tom's lovely method (just trust him :( )
+	 */
+	private double scale(double score) {
+		final double TOMS_MAGIC_NUMBER = 1000;
+		
+		double exponentiated = Math.pow(Math.E, score); //Weight the scale towards the "perfect" end
+		double scaledBack = exponentiated/TOMS_MAGIC_NUMBER;
+		
+		return scaledBack;
+	}
+	
 	/**implemented from BaseNode class
 	 * see that class for reference about what this should do
 	 */
@@ -72,7 +86,7 @@ public abstract class EvaluatedNode extends BaseNode {
 			totalScore += (RELATION_WEIGHT * relationScore);
 		} catch(Exception e) {}
 		
-		return totalScore;
+		return scale(totalScore);
 	}
 	
 }
