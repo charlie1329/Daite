@@ -38,7 +38,7 @@ public class Matcher {
      */
 	public void match(SocketIOClient user) throws InterruptedException {
         // FIXME for now, always match a real user with a bot
-        boolean matchingUsers = false;
+        boolean matchingUsers = true;
 
         //Check if user will be matched with a real client or with a bot
         if(matchingUsers) {
