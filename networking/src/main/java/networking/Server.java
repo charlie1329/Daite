@@ -42,13 +42,49 @@ public class Server {
     	
     	chatNamespace.addDisconnectListener(client -> {
 			log.info("{} disconnected from namespace {}", client.getRemoteAddress(), chatNamespace.getName());
-		    // If a client disconnects, check first if it is matching queue, but not already matched
-            if(matcher.removeFromQueue(client)) {
-                log.info("Client removed from queue");
+		    if(client.get("registered") == null) {
+                //if not registered yet, we don't care :)
+                log.info("Not registered");
+                return;
+            }
+            // If we don't know what the client is yet
+            if(client.get("isBot") == null) {
+                log.info("failed at it's bot");
+                // could either fail at the begining of registration for client
+                // or right before adding a bot to the list, so we don't have any stored data
                 return;
             }
 
-            if(client.get("isBot")) {
+            // client disconnects
+            // TODO this is not working properly
+            boolean isBot = client.get("isBot");
+            if(isBot != true) {
+                // if in matching queue, but not already matched
+                log.info("got here");
+                if(matcher.removeFromQueue(client)) {
+                    log.info("Client removed from queue");
+                    return;
+                }
+                // If a client disconnects while matched
+                // get the room first
+                String room = matcher.getRoomFromClient(client);
+                if(room != null) {
+                    //remove the match
+
+                    matcher.sendDisconnectEvent(client);
+                    if(matcher.removeMatch(room)) {
+                    }                                      
+                    else {
+                        log.info("Trying to remove a room which could not be found");
+                        return;
+                    }
+                }
+                else {
+                    //FIXME does this ever happen?
+                    return;
+                }
+            }
+            else  {
                 // If bot disconnects while is waiting 
                 if(matcher.removeAvailableBot(client)) {
                     log.info("Bot disconnected and was removed from the bots list");
@@ -57,16 +93,19 @@ public class Server {
                 // If bot has a room assigned
                 String botRoom = matcher.getRoomFromClient(client);
                 if(botRoom != null) {
+                    //Fake a conversation end on the user side
+                    matcher.sendDisconnectEvent(client);
+
                     //Remove the match
                     if(matcher.removeMatch(botRoom)) {
-                        //Fake a conversation end on the user side
-                        SocketIOClient matchedUser = matcher.getMatchedClient(client);
                         log.info("Bot disconnected while matched. Removed match in room: {} with: ",
                                 botRoom);//, matchedUser.get("userData").getName());
-                        //TODO send event to matchedUser
+
                     }
                 }
-            }      
+            } 
+            //if we get at this point :(
+            log.info("Client choose a really bad moment to disconnect unexpectedly :(");
         });
     	
     	// Handle register requests
@@ -116,6 +155,8 @@ public class Server {
             
             if(matchedClient != null) {
                 matchedClient.sendEvent("isTyping", data);
+                ChatUser user = matchedClient.get("userData");
+                log.info("Sending is typing event to {} ", user.getName());
             }
             else {
                 ChatUser user = client.get("userData");
@@ -129,14 +170,27 @@ public class Server {
 
             // Check if valid room
             if(matcher.isCurrentRoom(data.getRoomID())) {
+                if(data.getEarly()) {
+                    //send disconnect event to the other client
+                    matcher.sendDisconnectEvent(client);
+                }
                 // Remove the match
                 matcher.removeMatch(data.getRoomID());
                 // in case the user ended the conversation, send event to the matched user
-                if(data.getEarly()) {
-                    //TODO send disconnect event to the other client
-                }
             }	
 		});
+
+        /*
+         * When chat is about to run out, web clients will emit this event which will be 
+         * forwarded to the matched bot 
+         */
+        chatNamespace.addEventListener("timer20", String.class, (client, data, ackSender) ->  {
+            log.info("Timer is about to run out. Sending signal in room: {}", data);
+            //TODO do some checks
+            //let the other user know
+            SocketIOClient other = matcher.getMatchedClient(client);
+            other.sendEvent("timer20", data);
+        });
     	
     	// Handle messages
     	chatNamespace.addEventListener("message", ChatMessage.class, (client, data, ackSender) -> {
@@ -204,8 +258,9 @@ public class Server {
 	
 	
     public static void main(String[] args) {
+        System.out.println(args[0]);
 		Configuration config = new Configuration();
-    	config.setPort(6969);
+    	config.setPort(Integer.parseInt(args[0]));
 
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
