@@ -12,13 +12,13 @@ public class EvalNodeTest
  {
 	Analyser analyser = new Analyser();
 
-	String heldMessage = "do you like cake?";
+	String heldMessage = "do you like memes?";
 	String[] kWords = new String[2];
-	kWords[0] = "cake";
+	kWords[0] = "memes";
 	kWords[1] = "like";
-	String incQuestion = "do you like cake?";
-	String goodQuestion = "how much do you like cake?";
-	String avgQuestion = "what is your opinion on cake?";
+	String incQuestion = "do you like memes?";
+	String goodQuestion = "how much do you like memes?";
+	String avgQuestion = "what is your opinion on memes?";
 	String mehQuestion = "do you like hitler?";
 	String badQuestion = "how is your pet rhinocerous this fine morning?";
     Question node = new Question(heldMessage, kWords, false, false, "test", analyser);

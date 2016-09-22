@@ -81,11 +81,21 @@ public class Analyser {
 			if(one.subjectLemmaGloss().equals(two.subjectLemmaGloss()))
 					sub = 0.5;
 			double obj = 0;
-			if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
-					obj = 1;
 			double rel = 0;
-			if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
-				rel = 0.75;
+			//If there is an object...
+			if(two.objectLemmaGloss() != null && two.objectLemmaGloss().length() > 0) {
+				if(one.objectLemmaGloss().equals(two.objectLemmaGloss()))
+						obj = 1;
+				rel = 0;
+				if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
+					rel = 0.75;
+			}
+			//If there is no object...
+			else {
+				rel = 0;
+				if(one.relationLemmaGloss().equals(two.relationLemmaGloss()))
+					rel = 1.5;
+			}
 			return conf*(sub+obj+rel);
 		}
 		catch(NullPointerException e)
