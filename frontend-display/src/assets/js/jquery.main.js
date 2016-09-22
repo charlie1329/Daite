@@ -263,13 +263,11 @@
     function toggleTyping(bool) {
         if (bool) {
             //we want to re-insert the typing indicator into the right place!!
-            if(document.getElementById('typing_indicator') === null) {
-                $('.message-list').append(
-                    "<li id='typing_indicator'>" +
-                    "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
-                    "</li>");
-                $('#typing_indicator').fadeIn();
-            }
+            $('.message-list').append(
+                "<li id='typing_indicator'>" +
+                "<span> <img id='type-gif' src='assets/type.gif'> </span>" +
+                "</li>");
+            $('#typing_indicator').fadeIn();
             autoScroll();
         }
         else {
