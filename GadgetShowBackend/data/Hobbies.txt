@@ -1,0 +1,454 @@
+{
+   "topic":"Hobbies",
+   "questions":[
+      {
+         "message":"What do you do in your spare time?",
+         "id":"32887837-7f8c-46fc-a89e-b7c5318bb199",
+         "isOpener":true,
+         "presentKeywords":"spare,time,free,pasttime,hobby,activities",
+         "children":[
+            {
+               "message":"I cycle a fair amount, and play the guitar when I get the chance.",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Not much",
+               "presentKeywords":"lazy,nothing,not,much",
+               "response":"Fair play, I don't blame you.",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            },
+            {
+               "message":"Quite into my sport",
+               "presentKeywords":"sport,football,tennis,basketball,hockey,squash,rugby,cricket",
+               "response":"Ah nice! I like sporty people ;)",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Have you been doing it long?",
+         "id":"5631ee37-ef53-495c-ae0d-71c3a497abd6",
+         "isOpener":false,
+         "presentKeywords":"how,long,time",
+         "children":[
+            {
+               "message":"Since I was about 12, I used to do it with my dad.",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Only just started recently",
+               "presentKeywords":"year,recent,recently",
+               "response":"Ah nice stuff",
+               "followUp":[
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb",
+                  "f036f433-a5e5-4d2c-84d8-a0eb8c6af0f7"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"Been doing it for ages",
+               "presentKeywords":"ages,long,time,years,eons,young",
+               "response":"Cool stuff :)",
+               "followUp":[
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb",
+                  "f036f433-a5e5-4d2c-84d8-a0eb8c6af0f7"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Do you do it with friends?",
+         "id":"b72da6be-29ec-443a-af04-aa061af0da14",
+         "isOpener":false,
+         "presentKeywords":"friends,pals,buddies",
+         "children":[
+            {
+               "message":"Occasionally with my flatmate Dom, but most the time it's just to uni.",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "32887837-7f8c-46fc-a89e-b7c5318bb199",
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "f036f433-a5e5-4d2c-84d8-a0eb8c6af0f7"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yes, lots",
+               "presentKeywords":"yeh,ye,yes,always",
+               "response":"Ah nice stuff",
+               "followUp":[
+                  "32887837-7f8c-46fc-a89e-b7c5318bb199",
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"No not really",
+               "presentKeywords":"no,not,never,hardly,occasionally,sometimes",
+               "response":"Ah fair enough :)",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Do you do it uni?",
+         "id":"ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+         "isOpener":false,
+         "presentKeywords":"uni,university,club",
+         "children":[
+            {
+               "message":"Yeh, I cycle lectures to and stuff",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb",
+                  "cd6cc4b5-6042-4ff2-ab03-464b5c21514f"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yeh I do",
+               "presentKeywords":"yes,yeh,ye,of,course,team",
+               "response":"Cool!",
+               "followUp":[
+                  "cd6cc4b5-6042-4ff2-ab03-464b5c21514f"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"No",
+               "presentKeywords":"nah,no,never",
+               "response":"Fair enough",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Did your parents make you do it?",
+         "id":"caae4d82-377d-4373-bec0-d34683ab56fa",
+         "isOpener":false,
+         "presentKeywords":"parents,peer,pressure,younger",
+         "children":[
+            {
+               "message":"No, I cycle of my own free will haha :p",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yes, from when I was younger",
+               "presentKeywords":"yes,yeh,they,do,younger",
+               "response":"Fair play, parents can be annoying.",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"No, why would they?",
+               "presentKeywords":"no,don't,nope,why",
+               "response":"Yeh, you're right, why would they?! lol",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"How often do you do it?",
+         "id":"d5f83aed-6a32-4be6-b0dc-167020b2f6fb",
+         "isOpener":false,
+         "presentKeywords":"often,frequency",
+         "children":[
+            {
+               "message":"Yeh, everyday to uni :)",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "cd6704f2-1ea6-47f6-82f2-16efa1f43d23"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Every day",
+               "presentKeywords":"every,often,frequently,lots,loads",
+               "response":"Nice one!",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "cd6704f2-1ea6-47f6-82f2-16efa1f43d23"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"Not very often",
+               "presentKeywords":"not,rarely,barely,hardly,never,seldom",
+               "response":"Don't blame you, uni life is pretty hectic.",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "cd6704f2-1ea6-47f6-82f2-16efa1f43d23"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"You do it as part of a society?",
+         "id":"cd6cc4b5-6042-4ff2-ab03-464b5c21514f",
+         "isOpener":false,
+         "presentKeywords":"society,soc,part,member",
+         "children":[
+            {
+               "message":"No, but I might join this year :)",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb",
+                  "cd6704f2-1ea6-47f6-82f2-16efa1f43d23"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yeh I do",
+               "presentKeywords":"yes,yeh,ye,yup,do,indeed",
+               "response":"Cool, I bet they have good parties!",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            },
+            {
+               "message":"No I couldn't be bothered to sign up",
+               "presentKeywords":"no,not,never,didn't",
+               "response":"Fair play, they're an effort really.",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Does it cost you a lot?",
+         "id":"cd6704f2-1ea6-47f6-82f2-16efa1f43d23",
+         "isOpener":false,
+         "presentKeywords":"cost,expensive,cheap,money,spend",
+         "children":[
+            {
+               "message":"Only if I get a puncture or robbed haha",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yeh it's very expensive",
+               "presentKeywords":"lots,lot,money,expensive",
+               "response":"Understandably! ",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa"
+               ],
+               "switchTopic":false,
+               "usedByAI":false
+            },
+            {
+               "message":"Not much at all surprisingly.",
+               "presentKeywords":"no,little,small,hardly",
+               "response":"Great stuff!",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Do you enjoy it though?",
+         "id":"348efb60-6385-4e58-b250-1b6ce960737d",
+         "isOpener":false,
+         "presentKeywords":"enjoy,fun",
+         "children":[
+            {
+               "message":"Yeh I'm definitely a huge fan.",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe",
+                  "caae4d82-377d-4373-bec0-d34683ab56fa",
+                  "d5f83aed-6a32-4be6-b0dc-167020b2f6fb"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Yes it's great fun!",
+               "presentKeywords":"yes,yeh,ye,definitely,every,time",
+               "response":"I should try it :)",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            },
+            {
+               "message":"No it's terrible",
+               "presentKeywords":"no,hate,nah,not,really",
+               "response":"Haha, fair play.",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            }
+         ]
+      },
+      {
+         "message":"Whereabouts do you do it?",
+         "id":"f036f433-a5e5-4d2c-84d8-a0eb8c6af0f7",
+         "isOpener":false,
+         "presentKeywords":"where,whereabouts",
+         "children":[
+            {
+               "message":"I like to do it in public ;)",
+               "presentKeywords":"",
+               "response":"",
+               "followUp":[
+                  "5631ee37-ef53-495c-ae0d-71c3a497abd6",
+                  "b72da6be-29ec-443a-af04-aa061af0da14",
+                  "ecad7b6c-6f7d-48b0-a062-64b787f069fe"
+               ],
+               "switchTopic":false,
+               "usedByAI":true
+            },
+            {
+               "message":"Outdoors",
+               "presentKeywords":"outdoors,outside,park,pitch,street,roads,forests,beach",
+               "response":"Ah cool stuff!",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            },
+            {
+               "message":"Indoors",
+               "presentKeywords":"inside,court,room,building,gym",
+               "response":"Cool cool :D",
+               "followUp":[
+
+               ],
+               "switchTopic":true,
+               "usedByAI":false
+            }
+         ]
+      }
+   ]
+}
