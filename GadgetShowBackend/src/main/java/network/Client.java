@@ -337,7 +337,7 @@ public class Client {
      */
     public static void main (String[] args) {
         // Setup connection
-    	String port = "6969";
+    	String port = "6960";
     	if(args.length != 0) {
     		port = args[0];
     	}

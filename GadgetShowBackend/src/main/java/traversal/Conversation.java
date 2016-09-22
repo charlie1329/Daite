@@ -424,14 +424,25 @@ public class Conversation {
 				totalRepeats.add(askedQuestion.getMessage());//adding the actual question too
 				toReturn.add(totalRepeats.get(randRepeat.nextInt(totalRepeats.size())));//will get a random array string and add to response
 			} else {
-				boolean found = false;
-				for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
+				boolean found = false;//TODO CHANGE TO RANDOM
+				int attempts = 0;
+				Random randFollowUp = new Random();
+				while(!found && attempts < ourResponse.getNeighbours().size()) {
+					int randIndex = randFollowUp.nextInt(ourResponse.getNeighbours().size());
+					if(!ourResponse.getNeighbours().get(randIndex).isVisited()) {
+						this.currentNode = (Question)ourResponse.getNeighbours().get(randIndex);
+						found = true;
+
+					}
+					attempts++;
+				}
+				/*for(int i = 0; i < ourResponse.getNeighbours().size(); i++) {//looping through follow up questions
 					if(!ourResponse.getNeighbours().get(i).isVisited()) {
 						this.currentNode = (Question)ourResponse.getNeighbours().get(i);
 						found = true;
 						break;
 					}
-				}
+				}*/
 				if(!found){changeTopic();}//if we've asked all possible follow up questions move up to a new topic!
 			}
 		}
