@@ -1,9 +1,14 @@
 <html>
+    <head>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
-    var socket = io.connect("http://localhost:6960/chat");
+    console.log("testing shit");
+    var socket = io.connect("http://localhost:6969/chat");
     socket.on("message", function(data) {
         console.log(data.username + ": " + data.message);
-    })
+    });
 </script>
+    </head>
+<body>
+</body>
 </html>
