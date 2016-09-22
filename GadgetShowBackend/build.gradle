@@ -10,6 +10,13 @@
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+compileJava {
+//raise heap
+options.fork = 'true'
+options.forkOptions.with {
+memoryMaximumSize = "2048m"
+}
+}
 apply plugin: 'application'
 
 //set to proper main class later, but this is the class with the main method in, starting from src/main/java 
