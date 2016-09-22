@@ -155,6 +155,8 @@ public class Server {
             
             if(matchedClient != null) {
                 matchedClient.sendEvent("isTyping", data);
+                ChatUser user = matchedClient.get("userData");
+                log.info("Sending is typing event to {} ", user.getName());
             }
             else {
                 ChatUser user = client.get("userData");
