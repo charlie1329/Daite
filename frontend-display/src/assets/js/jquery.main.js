@@ -152,13 +152,20 @@
 
         // Show about dialogue
         $('.about-button').click(function () {
+            
             $('.about-dialogue').fadeIn();
         });
 
         // Hide about dialogue
+        $(document).on ("click","#close", function () {
+          $('.about-dialogue').fadeOut();  
+        })
+        
+        /*
         $('.close').click(function () {
             $('.about-dialogue').fadeOut();
         });
+        */
 
         // End conversation dialogue
         $('#end').click(function (event) {

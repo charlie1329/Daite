@@ -314,7 +314,7 @@ td {
     color: #FBFBFF;
 }
 
-.close {
+#close {
     color: white;
     float: right;
     font-size: 40px;
