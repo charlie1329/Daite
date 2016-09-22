@@ -1,0 +1,365 @@
+Bot connecting to: http://138.68.139.139:6960/chat
+
+All topics submitted to thread pool
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Finished building of Hash Map
+
+Conversation Ready
+
+Bot connected to server
+
+Sending bot details to server: name: anonymous1, age: 20, gender: male
+
+anonymous1:> What's up?
+
+Mitch:> Hola
+
+anonymous1:> Do you play many video games?
+
+Mitch:> A few select ones, I used to play a lot when I was younger.
+
+anonymous1:> What's your favorite film?
+
+Mitch:> You?
+
+anonymous1:> So what sort of music do you listen to?
+
+Mitch:> Pirates of the Caribbean is great
+
+anonymous1:> Do you study at Birmingham?
+
+Mitch:> Love the humour, soundtrack etc.
+
+anonymous1:> Are you a fan of the warm weather?
+
+Mitch:> Into indie rock mainly but I listen to all sorts
+
+anonymous1:> How is your family?
+
+Mitch:> Just not Drake
+
+anonymous1:> Do you follow sports?
+
+Mitch:> Or heavy metal
+
+anonymous1:> What's your favourite food?
+
+Mitch:> Yeah, I'm assuming you do too if we're both doing this thing right?
+
+anonymous1:> 
+
+Mitch:> It's like an interrogation in here :o
+
+anonymous1:> Have you been abroad recently?
+
+Mitch:> Prefer the hot to the cold
+
+anonymous1:> What's your favourite animal?
+
+Mitch:> Family's great
+
+anonymous1:> What do you do in your spare time?
+
+Mitch:> Don't follow much sport but I'll watch it if it's on
+
+anonymous1:> lovely speaking to you! hope to talk again soon :)
+
+Mitch:> Right now tell me a bit more about you!
+
+anonymous1:> lovely speaking to you! hope to talk again soon :)
+
+Mitch:> You have 10s haha
+
+anonymous1:> lovely speaking to you! hope to talk again soon :)
+
+
+
+
+
+-----------------------------------------------
+
+
+
+
+
+Bot connecting to: http://138.68.139.139:6961/chat
+
+All topics submitted to thread pool
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Finished building of Hash Map
+
+Conversation Ready
+
+Bot connected to server
+
+Sending bot details to server: name: anonymous2, age: 20, gender: male
+
+anonymous2:> What's up?
+
+Jason:> The ceiling
+
+anonymous2:> Do you follow sports?
+
+Jason:> yeah, i follow the football a lot, I'm  a big Arsenal fan, yourself?
+
+anonymous2:> yeah, mostly tennis and rugby. <br>Do you watch football much? Who do you support?
+
+Jason:> Tennis is good! I play and watch football, I'm an Arsenal fan
+
+anonymous2:> How is your family?
+
+Jason:> They're good! Yours?
+
+anonymous2:> 
+
+
+
+
+
+----------------------
+
+
+
+
+
+Bot connecting to: http://138.68.139.139:6962/chat
+
+All topics submitted to thread pool
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Finished building of Hash Map
+
+Conversation Ready
+
+Bot connected to server
+
+Sending bot details to server: name: anonymous3, age: 20, gender: male
+
+anonymous3:> What's up?
+
+Gino:> Hello. How are you? I'm fine thanks. 
+
+anonymous3:> How is your family?
+
+Gino:> They are ok thanks. Nothing too unordinary. Yourself?
+
+anonymous3:> They're all good thank you :) just keeping busy with work <br>Are you an only child?
+
+Gino:> No, I have a sister. How about yourself? 
+
+anonymous3:> Nope, I have a sister. <br>What does your sister do?
+
+Gino:> She is a student, still. Is that the same for you?
+
+anonymous3:> She's a student. How's your sister?
+
+
+
+
+
+---------------------------------
+
+
+
+
+
+
+Bot connecting to: http://138.68.139.139:6963/chat
+
+All topics submitted to thread pool
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Finished building of Hash Map
+
+Conversation Ready
+
+Bot connected to server
+
+Sending bot details to server: name: anonymous4, age: 20, gender: male
+
+anonymous4:> What's up?
+
+zoe:> hey! not much you?
+
+anonymous4:> I'm great thanks :) how are you? <br>Do you study at Birmingham?
+
+zoe:> yeah I study history, you?
+
+anonymous4:> Yeah, I do <br>What year are you in?
+
+zoe:> 4th year you?
+
+anonymous4:> Are you a fan of the warm weather?
+
+zoe:> yeah its ok im pale though so suncream always at the ready haha
+
+anonymous4:> What's your favorite film?
+
+zoe:> i love tarantino you?
+
+anonymous4:> What do you do in your spare time?
+
+
+
+
+
+------------------------
+
+
+
+
+
+Bot connecting to: http://138.68.139.139:6964/chat
+
+All topics submitted to thread pool
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Task finished
+
+Finished building of Hash Map
+
+Conversation Ready
+
+Bot connected to server
+
+Sending bot details to server: name: anonymous5, age: 20, gender: male
+
+anonymous5:> What's up?
+
+Dave:> Hi
+
+anonymous5:> Do you play many video games?
+
+Dave:> Just a little, like some 3ds games and xbox. What about yourself?
+
+anonymous5:> I got into League of Legends recently! Do you play League of Legends?
+
+Dave:> I've heard of that but haven't played it. There seems to be a massive following for it. What prompted you to get into it?
+
+anonymous5:> Closer to him than I am closer to my mom! <br>How's your dad?
+
