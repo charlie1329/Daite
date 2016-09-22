@@ -48,6 +48,7 @@ public class Client {
     private boolean botMatched = false;
     private String matchName, matchGender;
     private int matchAge;
+    private static int port;
 
     //Bot details
     // we need to keep the name assigned in order to ignore/check if the server received the
@@ -58,6 +59,7 @@ public class Client {
     public Client(String domain, String port, String namespace) {
         log.info("Bot connecting to: {}:{}/{}", domain, port, namespace);
         logger.logMessage("Bot connecting to: " + domain + ":" + port + "/" + namespace);
+        this.port = Integer.parseInt(port);
         try {
             socket = IO.socket(domain + ":" + port + "/" + namespace);
         }
@@ -204,7 +206,9 @@ public class Client {
             log.info("Received match details. name: {}, gender: {}, age: {}", matchName, matchGender, matchAge);
             botMatched = true;
             
-            if(matchGender == "male") {
+            Client.botName = "anonymous" + (Client.port-6959);
+            sendDetails(Client.botName,20,"male");
+            /*if(matchGender == "male") {
             	Client.botName = nameChooser.pickName(matchName, false);
             	sendDetails(Client.botName,20,"female");
             } else if(matchGender == "female") {
@@ -213,7 +217,7 @@ public class Client {
             } else { //be female by default
             	Client.botName = nameChooser.pickName(matchName, false);
             	sendDetails(Client.botName,20,"female");
-            }
+            }*/
         }
     };
 
