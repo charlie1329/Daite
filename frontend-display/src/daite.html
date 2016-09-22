@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Daite</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- jQuery -->
+    <script src="assets/js/jquery-3.1.0.min.js"></script>
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+
+    <!-- jQuery Tags Input -->
+    <script src="assets/js/jquery.tagsinput.js"></script>
+    <link rel="stylesheet" href="assets/css/jquery.tagsinput.css">
+
+    <!-- emojify.js -->
+    <script src="assets/js/emojify.min.js"></script>
+
+    <!-- Socket.io -->
+    <script src="assets/js/socket.io-1.4.5.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="assets/info-icon.png" class="about-button" style="height: 20px; float: right">
+        <h1>Daite</h1>
+        <h2>A smart dating app!</h2>
+    </header>
+
+    <main class="content">
+
+        <!-- Dialogs -->
+        <div class="dialog">
+            <div id="warning-dialog" title="Warning dialog">This is a warning.</div>
+            <div id="yes-no-dialog" title="Yes/No dialog">This is a yes/no dialog.</div>
+        </div>
+
+        <script>var socket = io.connect("http://138.68.139.139:6970/chat")</script>
+        <script src="assets/js/jquery.main.js"></script>
+    </main>
+
+    <footer>
+        Made for The Gadget Show by University of Birmingham Computer Science Students &copy; 2016
+    </footer>
+</div>
+
+</body>
+</html>

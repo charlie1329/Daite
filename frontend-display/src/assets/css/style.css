@@ -1,0 +1,334 @@
+/*@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Roboto+Condensed';*/
+
+@font-face {
+    font-family: 'Open Sans Condensed';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url('../font/gk5FxslNkTTHtojXrkp-xGAzD5WKQVN4wSyA0MYYi4rr7w4p9aSvGirXi6XmeXNA.woff') format('woff');
+}
+@font-face {
+    font-family: 'Open Sans Condensed';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url('../font/gk5FxslNkTTHtojXrkp-xGAzD5WKQVN4wSyA0MYYi4rr7w4p9aSvGirXi6XmeXNA.woff') format('woff');
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url('../font/gk5FxslNkTTHtojXrkp-xGAzD5WKQVN4wSyA0MYYi4rr7w4p9aSvGirXi6XmeXNA.woff') format('woff');
+}
+
+/*
+CURRENT COLOUR SCHEME: https://color.adobe.com/Circus-III-color-theme-36202/
+#2E0927 - Purple
+#E74C3C - Red
+#D90000 - Darker Red
+#FF2D00 - Orange
+#FF8C00 - Yellow
+#04756F - Blue
+#FBFBFF - White
+*/
+
+/* Start page */
+
+label {
+    font-weight: 300;
+}
+
+.info-entry {
+    display: none;
+    padding: 1em;
+    min-width: 40%;
+    width: 30%;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+}
+
+.continue-button {
+    margin: 0 auto;
+    display: flex;
+    text-align: left;
+}
+
+/* Chat */
+.chat-section {
+    width: 90%;
+    height: 75vh;
+    display: none;
+}
+
+.chat-box {
+    display: block;
+    height: 64vh;
+}
+
+.chat-buttons {
+    height: 3em;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    border: solid #FBFBFF .25em;
+    color: #FBFBFF;
+    border-radius: 1em;
+    margin-bottom: 1em;
+}
+
+.chat-elem {
+    margin: 10px;
+}
+
+#end
+{
+    float: right;
+    margin: 5px 0 5px 0;
+}
+
+.chat-window {
+    display: block;
+    height: 80%;
+    overflow: auto;
+    color: #FBFBFF;
+}
+
+.message-list {
+    list-style: none;
+    word-wrap: break-word;
+    font-size: 20px;
+}
+
+::-webkit-scrollbar {
+    background: none;
+}
+
+.message {
+    display: inline-block;
+    margin-bottom: .5em;
+    width: 100%;
+}
+
+.message-text {
+    border-radius: 1em;
+    padding: .5em 1em .5em 1em;
+}
+
+.me {
+    background: #E74C3C;
+    float: right;
+}
+
+.match {
+    background: #FF8C00;
+    float: left;
+    margin-left: -2em;
+}
+
+#type-message {
+    font-size: 20px;
+    height: 55px;
+    margin-top: 10px;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+    background: transparent;
+    color: #FBFBFF;
+}
+
+#typing-indicator {
+    display: none;
+}
+
+#type-gif {
+    font-size: 20px;
+    float: left;
+    height: 50px;
+    border-radius: 1em;
+    margin-left: -2em;
+}
+
+/* Whole page */
+* {
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    background-color: #2E0927;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    width: 65%;
+    margin: 0 auto;
+    font-family: "Roboto Condensed", sans-serif;
+    color: #FBFBFF;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+header {
+    margin: 1em 0 0;
+    text-align: center;
+    font-family: "Open Sans Condensed", sans-serif;
+}
+
+@media screen and (max-height:600px){
+    header{
+        display: none;
+    }
+    footer{
+        display: none;
+    }
+}
+
+h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 36pt;
+}
+
+h2 {
+    margin: 0;
+    font-weight: 300;
+    font-size: 18pt;
+}
+
+footer {
+    margin: 0 0 1em;
+    text-align: center;
+}
+
+/* jQuery UI Dialog */
+
+.ui-button {
+    padding: 6px 12px;
+    border: none;
+    color: #FBFBFF;
+    background-color: #FF8C00;
+    outline: none;
+}
+
+.ui-button:hover, .ui-button:focus, .ui-button:active {
+    color: #FBFBFF;
+    background-color: #FFA727;
+    border: none;
+}
+
+.ui-button[disabled] {
+    background-color: #A85C00;
+    border-color: #A85C00;
+}
+
+.ui-button-text-only .ui-button-text {
+    padding: 0;
+}
+
+.ui-corner-all {
+    border-radius: 1em;
+}
+
+.ui-widget-content {
+    border: none;
+    background: #2E0927;
+}
+
+.ui-widget {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.ui-widget-header {
+    border: none;
+    background: none;
+    font-size: 19px;
+    color: #FBFBFF;
+}
+
+.ui-widget-content {
+    color: #FBFBFF;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default {
+    border: none;
+    background: #FF8C00;
+    color: #FBFBFF;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover {
+    background: #FFA727;
+}
+
+.ui-widget button {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.ui-dialog-titlebar-close {
+    display: none
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background: none;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding-left: .75em;
+}
+
+/* About Dialogue */
+
+.about-dialogue h2 {
+    padding-top: 10px;
+}
+
+table {
+    margin: 0 auto;
+}
+
+th {
+    font-size: 20px;
+}
+
+td {
+    padding-right: 3vw;
+    font-size: 15px;
+}
+
+.modal {
+    display: none;
+    overflow: auto;
+    z-index: 1;
+    position: fixed;
+    border: solid .25em #FBFBFF;
+    border-radius: 1em;
+    background-color: #4C0B2E;
+    margin: 10% auto;
+    padding: 25px;
+    height: 70%;
+    width: 70%;
+    color: #FBFBFF;
+}
+
+#close {
+    color: white;
+    float: right;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.pending {
+    opacity: 0.5;
+}
+
+/* emojify.js */
+
+.emoji {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+}
