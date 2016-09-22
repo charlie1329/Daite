@@ -12,31 +12,41 @@ public class EvalNodeTest
  {
 	Analyser analyser = new Analyser();
 
-     public static testqs(String h, String q1, String q2, String q3, String q4, String q5, String[] kwords) {
-         Question node = new Question(h, kwords, false, false, "test", analyser);
-         System.out.println("Score: " + node.evaluate(badQuestion));
-         System.out.println("Score: " + node.evaluate(mehQuestion));
-         System.out.println("Score: " + node.evaluate(avgQuestion));
-         System.out.println("Score: " + node.evaluate(goodQuestion));
-         System.out.println("Score: " + node.evaluate(incQuestion));
- }
-
 	String heldMessage = "do you like memes?";
-	String[] kWords = ["memes", "like"];
+	String[] kWords = new String[2];
+	kWords[0] = "memes";
+	kWords[1] = "like";
 	String incQuestion = "do you like memes?";
 	String goodQuestion = "how much do you like memes?";
 	String avgQuestion = "what is your opinion on memes?";
 	String mehQuestion = "do you like hitler?";
 	String badQuestion = "how is your pet rhinocerous this fine morning?";
-	testqs(heldMessage,badQuestion,mehQuestion,avgQuestion,goodQuestion,incQuestion, kWords);
+    Question node = new Question(heldMessage, kWords, false, false, "test", analyser);
+    System.out.println("Actual Question: " + heldMessage);
+    System.out.println("Question: " + badQuestion + " | Score: " + node.evaluate(badQuestion));
+    System.out.println("Question: " + mehQuestion + " | Score: " + node.evaluate(mehQuestion));
+    System.out.println("Question: " + avgQuestion + " | Score: " + node.evaluate(avgQuestion));
+    System.out.println("Question: " + goodQuestion + " | Score: " + node.evaluate(goodQuestion));
+    System.out.println("Question: " + incQuestion + " | Score: " + node.evaluate(incQuestion));
 
+    System.out.println("--------------------------------------------------");
+    
      heldMessage = "what do you think about the untimely death of harambe?";
-     kWords = ["think", "death", "harambe"];
+     kWords = new String[3];
+     kWords[0] = "think";
+     kWords[1] = "death";
+     kWords[2] = "harambe";
      incQuestion = "what do you think about the untimely death of harambe?";
-	 goodQuestion = "what do you think about harambe's death?";
-     avgQuestion = "how did you feel about harambe's death";
+	 goodQuestion = "what do you think about harambe death?";
+     avgQuestion = "how did you feel about harambe death?";
      mehQuestion = "do you think about death a lot?";
 
-     testqs(heldMessage,badQuestion,mehQuestion,avgQuestion,goodQuestion,incQuestion, kWords);
+     node = new Question(heldMessage, kWords, false, false, "test", analyser);
+     System.out.println("Actual Question: " + heldMessage);
+     System.out.println("Question: " + badQuestion + " | Score: " + node.evaluate(badQuestion));
+     System.out.println("Question: " + mehQuestion + " | Score: " + node.evaluate(mehQuestion));
+     System.out.println("Question: " + avgQuestion + " | Score: " + node.evaluate(avgQuestion));
+     System.out.println("Question: " + goodQuestion + " | Score: " + node.evaluate(goodQuestion));
+     System.out.println("Question: " + incQuestion + " | Score: " + node.evaluate(incQuestion));
  }
 }
