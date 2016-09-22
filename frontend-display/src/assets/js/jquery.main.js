@@ -235,7 +235,7 @@
                     {
                         text: "Okay",
                         click: function () {
-                            location.reload()
+                            $('.enter-name').slideDown()
                         }
                     }
                 ])
@@ -352,7 +352,7 @@
                     {
                         text: "Okay",
                         click: function () {
-                            location.reload()
+                            $('.enter-name').slideDown();
                         }
                     }
                 ])
@@ -402,13 +402,14 @@
                     text: "Reset",
                     click: function () {
                         $(this).dialog('close');
-                        location.reload()
+                        $('.enter-details').slideUp(400, function () {
+                            $('.enter-name').slideDown()
+                        });
                     }
                 }
             ])
             .dialog('open');
     }
-
 
     /* Main stuff happens below!!! */
 
