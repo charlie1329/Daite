@@ -40,48 +40,53 @@ public class Matcher {
      * Where the actual matching is done
      */
 	public void match(SocketIOClient user) throws InterruptedException {
-        // FIXME for now, always match a real user with a bot
-        
-        //Check if user will be matched with a real client or with a bot
-        if(matchingUsers) {
-            // Here is done the matching between two real users
-            synchronized (matchQueue) {
-                // Store the connecting client
-                matchQueue.put(user);
-
-                //If we have another client available, do the match
-                if(matchQueue.size() >= 2) {
-				    SocketIOClient matchedClient = matchQueue.take();
-				    matchQueue.remove(user);
-				
-                    // Create a new match
-                    Match newMatch = new Match(matchedClient, user);
-                    matches.put(newMatch.getRoomID(), newMatch);
-                    listAllMatches();
-                 }
-            }
-        }
         //Matching with the ai
-        else {
-            synchronized(availableBots) {
-                //Check if a bot is available
-                if(availableBots.size() > 0) {
-                    // get a bot
-                    SocketIOClient bot = availableBots.take();
-                    
-                    //Trigger the bot with user details
-                    triggerBot(bot, user.get("userData"));
+		//Check if a bot is available
+		if(availableBots.size() > 0) {
 
-                    // Create a new match and store it in the match list
-                    // At this point, the conversation is NOT ready to start, cause we need to wait for
-                    // the bot to reply with detials
-                    Match newMatch = new Match(user, bot);
-                    matches.put(newMatch.getRoomID(), newMatch);
-                }
-            }
-        }         
-	}
+			SocketIOClient bot;
+			// get a bot
+			synchronized(availableBots)
+			{
+				bot = availableBots.take();
+			}
 
+			//Trigger the bot with user details
+			triggerBot(bot, user.get("userData"));
+
+			// Create a new match and store it in the match list
+			// At this point, the conversation is NOT ready to start, cause we need to wait for
+			// the bot to reply with detials
+			Match newMatch = new Match(user, bot);
+			matches.put(newMatch.getRoomID(), newMatch);
+		}
+		else
+		{
+			//Check if user will be matched with a real client or with a bot
+			// Here is done the matching between two real users
+			// Store the connecting client
+			synchronized(matchQueue)
+			{
+				matchQueue.put(user);
+			}
+
+			//If we have another client available, do the match
+			if(matchQueue.size() >= 2)
+			{
+				SocketIOClient matchedClient;
+				synchronized(matchQueue)
+				{
+					matchedClient = matchQueue.take();
+					matchQueue.remove(user);
+				}
+
+				// Create a new match
+				Match newMatch = new Match(matchedClient, user);
+				matches.put(newMatch.getRoomID(), newMatch);
+				listAllMatches();
+			}
+        }
+    }
     /*
      * When bot sent details, chat is ready to start 
      */

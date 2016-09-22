@@ -256,8 +256,9 @@ public class Server {
 	
 	
     public static void main(String[] args) {
+        System.out.println(args[0]);
 		Configuration config = new Configuration();
-    	config.setPort(6969);
+    	config.setPort(Integer.parseInt(args[0]));
 
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
