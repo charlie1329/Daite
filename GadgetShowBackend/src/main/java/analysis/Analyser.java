@@ -107,6 +107,7 @@ public class Analyser {
 		toChange = toChange.replaceAll("watch", "watched");
 		toChange = toChange.replaceAll("listen", "listened");
 		toChange = toChange.replaceAll("are", "were");
+		toChange = toChange.replaceAll("is", "was");
 		
 		return toChange;
 	}

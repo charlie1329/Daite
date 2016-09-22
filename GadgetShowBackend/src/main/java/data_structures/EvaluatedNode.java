@@ -18,6 +18,7 @@ public abstract class EvaluatedNode extends BaseNode {
 	private final double INFO_WEIGHT = 1;
 	private final double KEYWORD_WEIGHT = 2;
 	private final double RELATION_WEIGHT = 3;
+	private final boolean LOGGING_ON = false;
 	
 	/**constructor same as superclass
 	 * 
@@ -48,10 +49,10 @@ public abstract class EvaluatedNode extends BaseNode {
 	 * @return Scaled score based on Tom's lovely method (just trust him :( )
 	 */
 	private double scale(double score) {
-		final double TOMS_MAGIC_NUMBER = 280;
+		final double TOMS_MAGIC_NUMBER = 10;
 		
-		double exponentiated = Math.pow(Math.E, score); //Weight the scale towards the "perfect" end
-		double scaledBack = exponentiated/TOMS_MAGIC_NUMBER;
+		double squared = Math.pow(score, 2); //Weight the scale towards the "perfect" end
+		double scaledBack = squared/TOMS_MAGIC_NUMBER;
 		
 		return scaledBack;
 	}
@@ -66,12 +67,19 @@ public abstract class EvaluatedNode extends BaseNode {
 		int sentScore = analyser.compareSentiment(this.getMessage().toLowerCase(), incMessage.toLowerCase());
 		totalScore += (SENTIMENT_WEIGHT * sentScore);
 		
+		if(LOGGING_ON) System.out.println("Sent score: " + sentScore);
+		
 		double keywordScore = KeywordMagic.correctKeyWords(this.getKeywords(), incMessage.toLowerCase());
 		totalScore += (KEYWORD_WEIGHT * keywordScore);
+		
+		if(LOGGING_ON) System.out.println("Keyword score: " + keywordScore);
 		
 		RelationTriple dataRelation = analyser.getRelations(getMessage());
 		RelationTriple incRelation = analyser.getRelations(incMessage);
 		double information = analyser.compareInformation(dataRelation, incRelation);
+		
+		if(LOGGING_ON) System.out.println("Information: " + information);
+		
 		totalScore += (INFO_WEIGHT * information);
 		
 		try {
@@ -84,6 +92,8 @@ public abstract class EvaluatedNode extends BaseNode {
 				}
 			}
 			totalScore += (RELATION_WEIGHT * relationScore);
+			
+			if(LOGGING_ON) System.out.println("Relation score: " + relationScore);
 		} catch(Exception e) {}
 		
 		return scale(totalScore);
