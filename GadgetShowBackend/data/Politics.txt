@@ -1,1 +1,0 @@
-{"topic":"Politics","questions":[{"message":"Are you into politics?","id":"853b0b00-a21a-4a50-b17c-d68d73dad266","isOpener":true,"presentKeywords":"politics interest","children":[{"message":"I guess I am, yeah.","presentKeywords":"","response":"","followUp":[],"switchTopic":false,"usedByAI":true}]}]}

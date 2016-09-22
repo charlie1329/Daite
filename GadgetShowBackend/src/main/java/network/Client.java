@@ -301,8 +301,10 @@ public class Client {
             					toSend += " ";
             				}
             			}
-            			toSend += response.get(response.size()-1);
-                    	
+            			
+            			if(response.size()> 0) {
+            				toSend += response.get(response.size()-1);
+            			}
             			final CountDownLatch waitForTimer = new CountDownLatch(1);//only need 1
             			
                     	writeTimer.beginTyping(messagesRead, new String[]{toSend}, setWriting, (String s) -> { waitForTimer.countDown(); });
