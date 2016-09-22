@@ -306,15 +306,19 @@ public class Client {
             				toSend += response.get(response.size()-1);
             			}
             			final CountDownLatch waitForTimer = new CountDownLatch(1);//only need 1
-            			
+            			try {
+            				Thread.sleep(2000);
+            			} catch(InterruptedException e) {
+            				
+            			}
+            			startTyping();
                     	writeTimer.beginTyping(messagesRead, new String[]{toSend}, setWriting, (String s) -> { waitForTimer.countDown(); });
-                    	
                     	try {
                     		waitForTimer.await();//wait to finish
                     	} catch(InterruptedException e) {
                     		logger.logMessage("timer interrupted");//this shouldn't happen
                     	}
-                    	
+                    	stopTyping();
                     	synchronized(currentMessage) {//CHECK THIS WONT GIVE DEADLOCK
                     		if(myMessageToRead.equals(currentMessage)) {//i.e. no other messages have been sent
                     			currentMessage = "";
