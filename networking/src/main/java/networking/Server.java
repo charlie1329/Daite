@@ -102,7 +102,7 @@ public class Server {
     public static void main(String[] args) {
     	
 		Configuration config = new Configuration();
-    	config.setPort(6969);
+    	config.setPort(6960);
     	SocketConfig socketConfig = new SocketConfig();
     	socketConfig.setReuseAddress(true);
     	config.setSocketConfig(socketConfig);
