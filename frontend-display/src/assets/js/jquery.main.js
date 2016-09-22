@@ -496,7 +496,33 @@
 		console.log("bobby finished");
         });
 
-        // Show details entering view
+        // On keypress
+        $('#type-message').keydown(function (e) {
+            // If key isn't enter, set typing to true and tell the server
+            if (e.keyCode != 13) {
+                if (typing === false) {
+                    typing = true;
+                    socket.emit("isTyping", true);
+                }
+                else {
+                    // Checks if typing every second
+                    clearTimeout(timeout);
+                    timeout = setTimeout(typingTimeout, 1000);
+                }
+            }
+            // If key is enter, send message
+            else if (e.keyCode == 13) {
+                sendMessage();
+            }
+        });
+        
+        $('#interests').tagsInput({
+            height: 'auto',
+            width: 'auto',
+            defaultText: 'Add an interest'
+        });
+
+	// Show details entering view
         function showDetails() {
             $('.enter-details').slideDown();
 
